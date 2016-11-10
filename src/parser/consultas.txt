@@ -1,0 +1,5 @@
+preguntar por chequeos semanticos de matrices
+		tipo incorrecto ensubindices de arreglo/matriz
+		
+que pasa con las variables no declaradas
+tipo incorrecto en limite de iteraciones for
