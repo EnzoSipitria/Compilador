@@ -21,8 +21,8 @@ public class TercetoResta extends Terceto {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         String op1 = ((Element) this.first).getOperando();
         String op2 = ((Element) this.second).getOperando();
-        String operacion = new String();
-
+        String operacion = this+"\n";
+        System.out.println("==========================================getAssembler  terceto"+this);
         if (typeVariable.equals("integer")){
             operacion += "MOV BX, " + op1 + "\n";
             operacion += "SUB BX, " + op2 + "\n";

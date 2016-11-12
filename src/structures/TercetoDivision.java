@@ -19,8 +19,8 @@ public class TercetoDivision extends Terceto {
 	public String getAssembler() {    //no llores por un bou
 		 String op1 =((Element)this.first).getOperando();
 	        String op2 =((Element)this.second).getOperando();
-        String operacion = new String();
-
+        String operacion = this+"\n";
+        System.out.println("==========================================getAssembler  terceto"+this);
         if (this.typeVariable.equals("integer")) {
             operacion += "XOR BX, BX \n"; //set eax to 0 
             operacion += "ADD BX, " + op2 + "\n";

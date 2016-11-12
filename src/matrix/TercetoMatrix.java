@@ -20,6 +20,12 @@ public class TercetoMatrix extends Terceto {
 	@Override
 	public String toString(){
 		return "("+operator+","+first+","+second+")";
+	}
+
+	@Override
+	public String getAssembler() {
+		// TODO Auto-generated method stub
+		return null;
 	};
 
 

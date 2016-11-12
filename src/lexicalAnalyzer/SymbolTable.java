@@ -34,7 +34,9 @@ public class SymbolTable {
 	public void addToken(String key, TokenMatrix token) {
 		symbolsTable.put(key, token);
 	}
-	
+	public HashMap<String,Token> getTokenList(){
+		return this.symbolsTable;
+	}
 	public String toString() {
 		String values = "";        
 		for(String key : symbolsTable.keySet()){

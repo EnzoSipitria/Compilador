@@ -20,8 +20,8 @@ public class TercetoMultiplicacion extends Terceto {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         String op1 = ((Element)this.first).getOperando();
         String op2 = ((Element)this.second).getOperando();
-        String operacion = new String();
-
+        String operacion = this+"\n";
+        System.out.println("==========================================getAssembler  op1"+op1);
         if (this.typeVariable.equals("integer")) {
             operacion += "MOV AX, " + op1 + "\n";
             operacion += "MOV DX, 0\n";

@@ -137,7 +137,8 @@ public class Token extends Element{
 
 	@Override
 	public String getAssembler() {
-        if (this.type.equals("Identificador")) {
+		System.out.println("==========================================getAssembler  terceto"+this);
+        if (this.type.equals("IDENTIFICADOR") || this.type.equals("INTEGER") || this.type.equals("FLOAT") || this.type.equals("CADENA")) {
             if (this.lexema.substring(0, 1).equals("@")) {
                 return this.lexema;
             }

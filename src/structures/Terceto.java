@@ -5,7 +5,7 @@ public abstract class Terceto extends Element{
 	protected Object operator;
 	protected Object first;
 	protected Object second;
-	private String aux;
+	protected String aux;
 	
 //	public String toString(){
 //		return "("+operator+","+((Element) first).getLexema()+","+((Element) second).getLexema()+")";

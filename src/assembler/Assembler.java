@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import lexicalAnalyzer.SymbolTable;
 import parser.Parser;
+import structures.AuxGenerator;
 import structures.Terceto;
 import structures.Token;
 
@@ -16,12 +17,25 @@ public class Assembler {
     private SymbolTable symbolTable;
     public static HashMap<Token, String> constantes = new HashMap<Token, String>();
     public static int numConst = 0;
-
-    public Assembler() {
+    private static AuxGenerator generator = new AuxGenerator();
+    public Assembler(ArrayList<Terceto> tercetos, SymbolTable symbolTable) {
+    	this.listaTerceto = tercetos;
+    	this.symbolTable = symbolTable; 
 
     }
+ 
+    
+    public ArrayList<Terceto> getListaTerceto() {
+		return listaTerceto;
+	}
 
-    public static String getIdConst(Token t) {
+
+	public void setListaTerceto(ArrayList<Terceto> listaTerceto) {
+		this.listaTerceto = listaTerceto;
+	}
+
+
+	public static String getIdConst(Token t) {
         String nombre = constantes.get(t);
         if (nombre != null) {
             return nombre;
@@ -46,7 +60,7 @@ public class Assembler {
         return encabezado;
     }
 
-    private String getDeclaraciones() {
+    private String getDeclarations() {
         String declaration = new String();
         declaration += ".data\n";
         declaration += "__MIN DD  1.17549435e-38\n";
@@ -56,17 +70,24 @@ public class Assembler {
         int numCad = 0;
         for (String key : keys) {
         		Token token= symbolTable.getToken(key);
-                if (token.getTypeVariable().equals("integer")) {
-                    declaration += token.getAssembler() + " DW ?\n"; // entero = 2 bytes
-                } else {
-                    declaration += token.getAssembler() + " DD ?\n"; //  flotantes = 8 bytes
-                } 
-        	    if (token.getType().equals("CADENA")) {  
-        	    	String name = "cadena" + numCad;
-        	    	token.setLexema(name);
-        	    	declaration += token.getAssembler() + " DB " + token.getLexema() + ", 0\n";
-        	    	numCad++;
-        	    }
+        		System.out.println("Tipo del token: "+token);
+        		if(token.getTypeVariable() != null){
+	                if (token.getTypeVariable().equals("integer")) {
+//	                	System.out.println("token en get declarations"+token);
+//	                	System.out.println("declaration "+token.getAssembler() + " DW ?\n");
+	                    declaration += token.getAssembler() + " DW ?\n"; // entero = 2 bytes
+	                } else {
+	                    declaration += token.getAssembler() + " DD ?\n"; //  flotantes = 8 bytes
+	                } 
+	        	    if (token.getType().equals("CADENA")) {  
+	        	    	String name = "cadena" + numCad;
+	        	    	token.setLexema(name);
+	        	    	declaration += token.getAssembler() + " DB " + token.getLexema() + ", 0\n";
+	        	    	numCad++;
+	        	    }
+        		}else{
+        			System.out.println("El token sin tipo es: "+token);
+        		}
         }
         return declaration;   
     }
@@ -93,11 +114,16 @@ public class Assembler {
 //        instrucciones += getcontrolindex();
         instrucciones += getDivCero();
         instrucciones += "start:\n";
+        System.out.println("starttttttttttttttttttt");
         for (Terceto terceto : listaTerceto) {
+        	System.out.println("====GetCodigo===="+terceto);
+        	terceto.setAux("@"+generator.getName());
+        	Token token = new Token("IDENTIFICADOR", terceto.getAux(), 0, 0, terceto.getTypeVariable());
+        	symbolTable.addToken(terceto.getAux(), token);
             instrucciones += terceto.getAssembler();
         }
 
-        Assemblercode += getDeclaraciones(); // Va despues de generar las intrucciones porque se incluyen las @aux# en la TS
+        Assemblercode += getDeclarations(); // Va despues de generar las intrucciones porque se incluyen las @aux# en la TS
         Assemblercode += instrucciones;
         Assemblercode += "invoke ExitProcess, 0\n";
         Assemblercode += "end start";

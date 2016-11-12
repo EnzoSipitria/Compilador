@@ -24,7 +24,7 @@ public class TercetoBInconditional extends Terceto {
 
 	@Override
 	public String getAssembler() {
-		// TODO Auto-generated method stub
+		System.out.println("==========================================getAssembler  terceto"+this);
 		return null;
 	}
 

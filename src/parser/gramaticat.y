@@ -28,6 +28,7 @@ import structures.TercetoBInconditional;
 import structures.TercetoSimple;
 import structures.TercetoBase;
 import structures.TercetoReferencia;
+import structures.AuxGenerator;
 
 
 %}
@@ -42,7 +43,8 @@ inicio : IDENTIFICADOR programa{ lexAn.getSymbolTable().getToken(((Token) $1.obj
                                  ((Token) $1.obj).setUse("nombre de programa");};
 
 programa :  sentencia_declarativa bloque_sentencias
-          | sentencia_declarativa 
+          | sentencia_declarativa
+		  //|	'{'error'}' {UI2.addText(UI2.txtDebug,"Linea: "+printLine+". DECLARACION EN LUGAR INCORRECTO"+"\n"); errores.add("Linea: "+printLine+" DECLARACION EN LUGAR INCORRECTO.");};	  
 		  | bloque_sentencias;
 
 sentencia_declarativa : sentencia_declarativa_datos {estructuras.add(lexAn.getLineNumber()+". sentencia declarativa de datos\n");}
@@ -51,6 +53,7 @@ sentencia_declarativa : sentencia_declarativa_datos {estructuras.add(lexAn.getLi
 					  | sentencia_declarativa_matrix {estructuras.add(printLine+". sentencia declarativa de matrices\n");}
 					  | sentencia_declarativa_conversion {estructuras.add(lexAn.getLineNumber()+". sentencia declarativa de conversion de tipos\n");}
 					  | sentencia_declarativa sentencia_declarativa_conversion {estructuras.add(lexAn.getLineNumber()+". sentencia declarativade conversion de tipos\n");};
+					  
 					  
 
 
@@ -165,7 +168,7 @@ lista_variables :IDENTIFICADOR  {$$.obj=new ArrayList<Token>();
 													  
 				| error{UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". ERROR LISTA DEVARIABLES"+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR LISTA DEVARIABLES");};
 		  
-inicio_IF: IF cond {Terceto bFalse = new TercetoBFalse(tercetos.get(tercetos.size()-1));
+inicio_IF: IF cond {Terceto bFalse = new TercetoBFalse(tercetos.get(tercetos.size()-1)); //Terceto comparacion
 							System.out.println("Tamaño del ARREGLO TERCETO EN IF CONDICION: "+tercetos.size());
 							System.out.println("mostraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                             tercetos.add(bFalse);
@@ -213,12 +216,13 @@ inicio_For: FOR '(' asig_for cond_for variable DECREMENTO')' bloque_sentencias  
 			| FOR '(' error ')' { System.out.println("tFOR ERROR");};
 
 asig_for:  IDENTIFICADOR operador_asignacion expresion ';' { assignValue((Element)$1.obj,(Element)$3.obj);
-						    Terceto initFor = new TercetoAsignacion((Element)$1.obj,(Element)$3.obj); 
+						    Terceto initFor = new TercetoAsignacion(lexAn.getSymbolTable().getToken(((Element)$1.obj).getLexema()),(Element)$3.obj); 
 							tercetos.add(initFor);
-						    initFor.setPosition(tercetos.size());
+						    initFor.setPosition(tercetos.size()-1);
 							stack.push(tercetos.get(tercetos.size()-1)); 
 							//System.out.println("terceto inicio"+stack.peek().toString());
-							if ( !((Element)$1.obj).getTypeVariable().equals("integer") ){
+							
+							if ( !lexAn.getSymbolTable().getToken(((Element)val_peek(3).obj).getLexema()).getTypeVariable().equals("integer") ){
 								UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". ERROR EN LIMITES DE ITERACION FOR: TIPO INCORRECTO. Debe ser integer"+"\n");
 								errores.add("Linea: "+lexAn.getLineNumber()+"ERROR EN LIMITES DE ITERACION FOR: TIPO INCORRECTO. Debe ser integer");
 							}
@@ -227,14 +231,28 @@ asig_for:  IDENTIFICADOR operador_asignacion expresion ';' { assignValue((Elemen
 							
 			//| error {System.out.println("==================ASIG FOR====== FOR asignacion");};
 
-cond_for: expresion comparador expresion ';' {Terceto comp = new TercetoComparador((Token)$2.obj,(Element)$1.obj,(Element) $3.obj); //ANDA
-											  tercetos.add(comp);																				
-											  comp.setPosition(tercetos.size());
-											  //System.out.println("==================COND FOR==========El tamaño del arreglo TERCETO en CONDICION DEL FOR es: "+tercetos.size());
-											  Terceto bFalse = new TercetoBFalse(tercetos.get(tercetos.size()-1));
-											  tercetos.add(bFalse);
-											  bFalse.setPosition(tercetos.size());
-											  stack.push(bFalse);};
+cond_for: expresion comparador expresion ';' {
+												if(  !((Element)$1.obj).getTypeVariable().equals(((Element) $3.obj).getTypeVariable()) ){
+														String typeResult = operationMatrix.getTypeOperation( ((Element)$1.obj).getTypeVariable() , ((Element) $3.obj).getTypeVariable() );
+														Terceto conversion;
+														if (typeResult.equals(((Element)$1.obj).getTypeVariable())) {
+															conversion = new TercetoConversion(((Element)$3.obj), typeResult);
+														} else {
+																conversion = new TercetoConversion(((Element)$1.obj), typeResult);
+															}
+														tercetos.add(conversion);
+														(conversion).setPosition(tercetos.size());
+												}
+												Terceto comp = new TercetoComparador((Token)$2.obj,(Element)$1.obj,(Element) $3.obj); //ANDA
+												comp.setTypeVariable(operationTypeVariable((Element)$1.obj,(Element) $3.obj));
+												
+												tercetos.add(comp);																				
+												comp.setPosition(tercetos.size());
+												//System.out.println("==================COND FOR==========El tamaño del arreglo TERCETO en CONDICION DEL FOR es: "+tercetos.size());
+												Terceto bFalse = new TercetoBFalse(tercetos.get(tercetos.size()-1));
+												tercetos.add(bFalse);
+												bFalse.setPosition(tercetos.size());
+												stack.push(bFalse);};
 					
 		 // | error{System.out.println("==================ASIG FOR====== FOR asignacion");};
 
@@ -303,7 +321,19 @@ asignacion : variable operador_asignacion expresion ';'{
            | variable operador_asignacion error {UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". ERROR DE ASIGNACION"+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR DE ASIGNACION\n");};
 			
 
-cond :  '(' expresion comparador expresion ')' {$$.obj = new TercetoComparador((Token)$3.obj,(Element)$4.obj,(Element) $2.obj); //ANDA
+cond :  '(' expresion comparador expresion ')' {	if(  !((Element)$2.obj).getTypeVariable().equals(((Element) $4.obj).getTypeVariable()) ){
+														String typeResult = operationMatrix.getTypeOperation( ((Element)$2.obj).getTypeVariable() , ((Element) $4.obj).getTypeVariable() );
+														Terceto conversion;
+														if (typeResult.equals(((Element)$2.obj).getTypeVariable())) {
+															conversion = new TercetoConversion(((Element)$4.obj), typeResult);
+														} else {
+																conversion = new TercetoConversion(((Element)$2.obj), typeResult);
+															}
+														tercetos.add(conversion);
+														(conversion).setPosition(tercetos.size());
+													}
+													$$.obj = new TercetoComparador((Token)$3.obj,(Element)$4.obj,(Element) $2.obj); //ANDA
+													((Element)$$.obj).setTypeVariable(operationTypeVariable((Element)$2.obj,(Element) $4.obj));
                                                     tercetos.add((Terceto)$$.obj);
                                                     ((Terceto)$$.obj).setPosition(tercetos.size());
 													System.out.println("El tamaño del arreglo TERCETO en CONDICION es: "+tercetos.size());
@@ -356,8 +386,6 @@ expresion : termino {$$.obj = $1.obj;}
 												tercetos.add(conversion);
 												(conversion).setPosition(tercetos.size());
 											}
-		  
-		  
 										$$.obj = new TercetoResta((Element)$1.obj,(Element) $3.obj); //ANDA
 		                                ((Element)$$.obj).setTypeVariable(operationTypeVariable((Element)$1.obj,(Element) $3.obj));
                                          tercetos.add((Terceto)$$.obj);
@@ -471,6 +499,7 @@ private Stack<Terceto> stack;
 private AssignMatrix convertionMatrix;
 private DivisionMatrix divisionMatrix;
 private OperationMatrix operationMatrix;
+private static AuxGenerator generator;
 
 private int annotation;
 
@@ -618,7 +647,7 @@ public void changeTokenMatrix (Token token, Object indexStart,Object rows, Objec
 	int newRows = (Integer) rows;
 	int newColumns = (Integer) columns;
 	System.out.println("Token matrix cambiado");
-	Token newToken = new Token (newTypeVariable, newLineNumber, newLexema, newIndexStart, newRows, newColumns, null);
+	Token newToken = new Token (newType, newLineNumber, newLexema, newIndexStart, newRows, newColumns, null);
 	newToken.setTypeVariable(newTypeVariable);
 	newToken.setUse("mat");
 	lexAn.getSymbolTable().addToken(token.getLexema(), newToken);
@@ -656,27 +685,67 @@ public void makeMatrix(Token ide ,Object rowIndex, Object columnIndex){
 															 System.out.println("makeMatrix, token de la tabla de simbolos"+lexAn.getSymbolTable().getToken(ide.getLexema()));
 															 int shift = columns-indexStart+1;
 															System.out.println("indexStart"+indexStart);
-															Terceto base=new TercetoBase((Token)ide);
+															
+															  Terceto base=new TercetoBase((Token)ide);
                                                               tercetos.add((Terceto)base);
 										                      ((Terceto)base).setPosition(tercetos.size());
-										                      Terceto resta= new TercetoResta(i1,indexStart);
+															  
+															  Terceto simpleResta = new TercetoSimple(indexStart);
+															  simpleResta.setTypeVariable("integer");
+															  tercetos.add((Terceto)simpleResta);
+										                      ((Terceto)simpleResta).setPosition(tercetos.size());
+															 
+															 Terceto simpleI1 = new TercetoSimple(i1);
+															  simpleI1.setTypeVariable("integer");
+															  tercetos.add((Terceto)simpleI1);
+										                      ((Terceto)simpleI1).setPosition(tercetos.size());
+										                     
+															 Terceto resta= new TercetoResta(simpleI1,simpleResta);
+										                      resta.setTypeVariable("integer");
 										                      tercetos.add((Terceto)resta);
 										                      ((Terceto)resta).setPosition(tercetos.size());
-										                      Terceto multi=new TercetoMultiplicacion((Terceto)resta,shift);
+															 
+															 Terceto simpleMult  = new TercetoSimple(shift);
+															  simpleMult.setTypeVariable("integer");
+															  tercetos.add((Terceto)simpleMult);
+										                      ((Terceto)simpleMult).setPosition(tercetos.size());
+										                     
+															 Terceto multi=new TercetoMultiplicacion((Terceto)resta,simpleMult);
+										                      multi.setTypeVariable("integer");
 										                      tercetos.add((Terceto)multi);
 										                      ((Terceto)multi).setPosition(tercetos.size());
 															  //TokenMatrix auxIde = lexAn.getSymbolTable().getToken(ide.getLexema())
 															 // int indexStart = lexAn.getSymbolTable().getToken(ide.getLexema()).getIndexStart(); 
-															  Terceto resta1= new TercetoResta(i2,indexStart);
-										                      tercetos.add((Terceto)resta1);
+										                      
+															  Terceto simpleI2 = new TercetoSimple(i2);
+															  simpleI2.setTypeVariable("integer");	
+															  tercetos.add((Terceto)simpleI2);
+										                      ((Terceto)simpleI2).setPosition(tercetos.size());
+															  
+															 Terceto resta1= new TercetoResta(simpleI2,simpleResta);
+															 resta1.setTypeVariable("integer");
+															 tercetos.add((Terceto)resta1);
 										                      ((Terceto)resta1).setPosition(tercetos.size());
+															  
 										                      Terceto suma = new TercetoSuma((Terceto)resta1,(Terceto)multi);
-										                      Terceto multi1=new TercetoMultiplicacion((Terceto)suma,bytes);
-										                      tercetos.add((Terceto)multi1);
+															  suma.setTypeVariable("integer");
+															  tercetos.add((Terceto)suma);
+										                      ((Terceto)suma).setPosition(tercetos.size());
+															  
+															  Terceto simpleBytes = new TercetoSimple(bytes);
+															  simpleBytes.setTypeVariable("integer");
+															  tercetos.add((Terceto)simpleBytes);
+										                      ((Terceto)simpleBytes).setPosition(tercetos.size());
+															  
+										                      Terceto multi1=new TercetoMultiplicacion((Terceto)suma,simpleBytes);										                      
+										                      multi1.setTypeVariable("integer");tercetos.add((Terceto)multi1);
 										                      ((Terceto)multi1).setPosition(tercetos.size());
+															  
 										                      Terceto suma1= new TercetoSuma(base,(Terceto)multi1);
+										                      suma1.setTypeVariable("integer");
 										                      tercetos.add((Terceto)suma1);
 										                      ((Terceto)suma1).setPosition(tercetos.size());
+															  
 										                      Terceto ref= new TercetoReferencia(suma1);
 										                      tercetos.add((Terceto)ref);
 										                      ((Terceto)ref).setPosition(tercetos.size());
@@ -720,9 +789,14 @@ public void initMatrix (ArrayList<Token> listaValores,Object indexStart, Token i
 					System.out.println("indice del arreglo del elemento a recuperar:"+i+" Elemento recuperado"+listaValores.get(i));
 					makeMatrix(ide, rowi, columnj);
 					System.out.println("columns en for decolumnas"+columnj);
-					TercetoAsignacion assign = new TercetoAsignacion(listaValores.get(i), tercetos.size()-1);
+					Terceto simpleAssign  = new TercetoSimple(tercetos.size()-1);
+					simpleAssign.setTypeVariable("integer");
+					TercetoAsignacion assign = new TercetoAsignacion(listaValores.get(i), simpleAssign);
+					assign.setTypeVariable("integer");
 					System.out.println("aall muuundoooooooooo 0000000000000000000000 terceto asignacion creado"+assign);
 					tercetos.remove(tercetos.size()-1);
+					tercetos.add(simpleAssign);
+					simpleAssign.setPosition(tercetos.size());
 					tercetos.add(assign);
 					assign.setPosition(tercetos.size());
 				}
@@ -862,6 +936,7 @@ public Parser(String sourcePath) {
 	convertionMatrix = new AssignMatrix();
 	operationMatrix = new OperationMatrix();
 	divisionMatrix = new DivisionMatrix();
+	generator = new AuxGenerator();
 
 }
 	

@@ -12,9 +12,17 @@ public class TercetoSimple extends Terceto{
 		this.position = (Integer) first;
 	}
 
+	
+	@Override
+	public String getOperando() {
+		// TODO Auto-generated method stub
+		return "_"+first;
+	}
+
+
 	@Override
 	public String toString(){
-		return "("+operator+","+"["+((Integer) first).intValue()+"]"+")";
+		return "(["+((Integer) first).intValue()+"])";
 	};
 	
 	@Override
@@ -25,7 +33,7 @@ public class TercetoSimple extends Terceto{
 
 	@Override
 	public String getAssembler() {
-		// TODO Auto-generated method stub
+		System.out.println("==========================================getAssembler  terceto"+this);
 		return null;
 	}
 }

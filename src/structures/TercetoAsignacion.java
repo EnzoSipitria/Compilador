@@ -25,9 +25,12 @@ public class TercetoAsignacion extends Terceto{
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         String op1 = ((Element) this.first).getOperando();
         String op2 = ((Element) this.second).getOperando();
-        String ins = new String();
+        System.out.println("=>operando first assembler"+op1);
+        System.out.println("=>operando second assembler"+second);
+        String ins = this+"\n";
         boolean op2EsVar = (op2.charAt(0) == '_') || (op2.charAt(0) == '@');
-        if (this.typeVariable.equals("integer")) {
+        System.out.println("==========================================getAssembler  terceto"+this);
+        if (((Element) this.first).getTypeVariable().equals("integer")) {
             if (op2EsVar) {
                 ins += "MOV BX, " + op2 + "\n";
                 ins += "MOV " + op1 + ", BX\n";

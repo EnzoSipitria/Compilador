@@ -17,6 +17,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Set;
+import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.border.TitledBorder;
 
+import assembler.Assembler;
 import parser.Parser;
 import structures.Terceto;
 
@@ -48,12 +51,14 @@ public class UI2 extends JFrame {
 	private JButton btnSaveFile;
 	private JButton btnLoadFile;
 	private JTextArea txtTokenList;
-
+	private Assembler assembler;
+	
 	public static JTextArea txtSymbolsTable;
 	public static JTextArea txtReservedWords;
 	public JTextArea txtTercetos;
 	public static JTextArea txtConsole;
 	public static JTextArea txtDebug;
+	
 
 	public UI2() {
 		setStyle();
@@ -243,9 +248,23 @@ public class UI2 extends JFrame {
 				addText(txtSymbolsTable,parser.getLexicalAnalizer().getSymbolTable().toString());
 				addText(txtDebug, "ERRORES LEXICOS: "+"\n");
 				addText(txtDebug,parser.getLexicalAnalizer().viewErrors());
-				addText(txtTokenList, parser.getLexicalAnalizer().viewTokenList());
+//				addText(txtTokenList, parser.getLexicalAnalizer().viewTokenList());
 				viewEstructuras();	
 				viewTercetos();
+				assembler = new Assembler(parser.getTercetos(),parser.getLexicalAnalizer().getSymbolTable());
+				addText(txtTokenList, assembler.getCodigo());
+				addText(txtSymbolsTable,parser.getLexicalAnalizer().getSymbolTable().toString());
+				
+				/**
+				 * pedir lista de tercetos tecorrerla y por cadaelemento generar el codigo assembler 
+				 * 
+				 */
+				
+//				Set<String> keys = parser.getLexicalAnalizer().getSymbolTable().getTokenList().keySet();
+//				for (String string : keys) {
+//					addText(txtDebug,string+"\n");
+//				}
+				
 			}
 		});
 
