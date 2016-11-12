@@ -16,10 +16,24 @@ public class TercetoComparador extends Terceto{
 	}
 
 	@Override
-	public String getAssembler() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	 public String getAssembler() {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //return "CMP " + param1.getOperando() + ", " + param2.getOperando() + "\n";
+        String op1 =((Element)this.first).getOperando();
+        String op2 =((Element)this.second).getOperando();
+        String ins;
+        if (this.typeVariable.equals("integer")) {
+            ins = "MOV CX, " + op2 + "\n";
+            ins += "CMP " + op1 + ", CX\n";
+        } else {
+            ins = "FLD " + op1 + "\n";
+            ins += "FLD " + op2 + "\n";
+            ins += "FCOM \n";
+            ins += "FSTSW AX \n";//paso los valores del copro al proc
+            ins += "SAHF \n";//cargo los valores
+        }
+        return (ins);
+    }
 
 
 	

@@ -33,8 +33,22 @@ public class TercetoBFalse extends Terceto {
 
 	@Override
 	public String getAssembler() {
-		// TODO Auto-generated method stub
-		return null;
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String comparator = (String) ((Terceto)this.first).getOperator();
+        String label = ((Element)this.second).getAssembler().replace(":", ""); // ver si esto va 
+        String jump = new String();
+       if(comparator.equals(">="))
+                jump = "JL";
+       if(comparator.equals("<="))
+                jump = "JG";
+       if(comparator.equals(">"))
+    	   jump = "JLE";
+       if(comparator.equals("<"))
+                jump = "JGE";
+       if(comparator.equals("="))
+                jump = "JNE";
+       if(comparator.equals("!=")) //
+                jump = "JE";
+        return jump ;
 	}
-
 }

@@ -17,9 +17,13 @@ public class TercetoConversion extends Terceto {
 
 	@Override
 	public String getAssembler() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		String op1 =((Element)this.first).getOperando();
+		String instruccion = new String();
+        instruccion += "FILD " + op1 + "\n";
+        instruccion += "FSTP " + getAux() + "\n";
+        return instruccion;
+    } 
 
 
 }

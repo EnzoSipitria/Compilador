@@ -21,10 +21,25 @@ public class TercetoAsignacion extends Terceto{
 	}
 
 	@Override
-	public String getAssembler() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String getAssembler(){
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String op1 = ((Element) this.first).getOperando();
+        String op2 = ((Element) this.second).getOperando();
+        String ins = new String();
+        boolean op2EsVar = (op2.charAt(0) == '_') || (op2.charAt(0) == '@');
+        if (this.typeVariable.equals("integer")) {
+            if (op2EsVar) {
+                ins += "MOV BX, " + op2 + "\n";
+                ins += "MOV " + op1 + ", BX\n";
+            } else {
+                ins = "MOV " + op1 + ", " + op2 + "\n";
+            }
+        } else {
+            ins += "FLD " + op2 + "\n";
+            ins += "FSTP " + op1 + "\n";
+        }
+        return ins;
+    }
 	
 	
 

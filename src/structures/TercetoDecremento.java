@@ -20,8 +20,22 @@ public class TercetoDecremento extends Terceto{
 
 	@Override
 	public String getAssembler() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		 String op1 =((Element)this.first).getOperando();
+       /// String op2 = param2.getOperando(); no va por que no tenemos segundo operando
+        String operacion = new String();
+
+        if (this.typeVariable.equals("integer")) {
+            operacion += "MOV BX, " + op1 + "\n";
+            operacion += "SUB BX, " + 1 + "\n";
+            operacion += "MOV " + getAux() + ", BX \n";
+        } else {
+            operacion += "FLD " + op1 + "\n";
+            operacion += "FSUB " + 1 + "\n";
+            operacion += "FSTP " + getAux() + "\n";
+        }
+
+        return operacion;
+    }
 
 }

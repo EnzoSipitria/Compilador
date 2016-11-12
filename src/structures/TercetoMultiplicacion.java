@@ -16,9 +16,23 @@ public class TercetoMultiplicacion extends Terceto {
 	}
 
 	@Override
-	public String getAssembler() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	 public String getAssembler(){
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String op1 = ((Element)this.first).getOperando();
+        String op2 = ((Element)this.second).getOperando();
+        String operacion = new String();
+
+        if (this.typeVariable.equals("integer")) {
+            operacion += "MOV AX, " + op1 + "\n";
+            operacion += "MOV DX, 0\n";
+            operacion += "IMUL AX, " + op2 + "\n";
+            operacion += "MOV " + getAux() + ", AX \n";
+        } else {
+            operacion += "FLD " + op1 + "\n";
+            operacion += "FMUL " + op2 + "\n";
+            operacion += "FSTP " + getAux() + "\n";
+        }
+        return operacion;
+    }
 
 }
