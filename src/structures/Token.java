@@ -134,6 +134,23 @@ public class Token extends Element{
 	public void setColumns(int columns) {
 		this.columns = columns;
 	}
+
+	@Override
+	public String getAssembler() {
+        if (this.type.equals("Identificador")) {
+            if (this.lexema.substring(0, 1).equals("@")) {
+                return this.lexema;
+            }
+            return this.getOperando();
+        }
+//        if (this.type.equals("integer") || this.type.equals("Float")) {
+//            return generadorAssembler.getIdConst(this);
+//        }
+//        if (this.type.equals("Cadena")) {// no va 
+//            return "_" + this.lexema;
+//        }
+        return "notexistintheproyect";
+    }	
 	
 	
 }

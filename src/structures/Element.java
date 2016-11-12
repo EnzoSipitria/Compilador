@@ -10,6 +10,7 @@ public abstract class Element {
 	public abstract String getLexema(); 
 	public abstract int getPosition();
 	public abstract String getOperando();
+	public abstract String getAssembler();
 	
 	public Object getValue() {
 //		System.out.println("valoren clase token "+ value);

@@ -31,4 +31,10 @@ public class TercetoBFalse extends Terceto {
 		return null;
 	}
 
+	@Override
+	public String getAssembler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

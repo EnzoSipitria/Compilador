@@ -22,4 +22,10 @@ public class TercetoSimple extends Terceto{
 		// TODO Auto-generated method stub
 		return "["+String.valueOf(this.position)+"]";
 	}
+
+	@Override
+	public String getAssembler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

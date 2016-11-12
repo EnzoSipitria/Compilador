@@ -12,7 +12,8 @@ public abstract class Terceto extends Element{
 //	};
 
 	
-	
+	public abstract String getAssembler();
+
 	public String toString(){
 	return "("+operator+","+first+","+second+")";
 };

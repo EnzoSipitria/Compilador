@@ -6,9 +6,9 @@ public class AuxGenerator {
 	private int counter;
 	
 	
-	public AuxGenerator(String name, int counter) {
-		this.name = name;
-		this.counter = counter;
+	public AuxGenerator() {
+		this.name = "Aux";
+		this.counter = 1;
 	}
 	
 	public String getName() {
@@ -26,8 +26,8 @@ public class AuxGenerator {
 		return counter;
 	}
 	
-	public void setCounter(int counter) {
-		this.counter = counter;
+	public void setCounter() {
+		this.counter++;
 	}
 
 

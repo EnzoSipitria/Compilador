@@ -19,6 +19,12 @@ public class TercetoAsignacion extends Terceto{
 	public String toString() {
 		return  "("+operator+","+((Element) first).getLexema()+","+second+")";
 	}
+
+	@Override
+	public String getAssembler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 

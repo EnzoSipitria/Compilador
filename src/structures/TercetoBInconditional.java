@@ -22,4 +22,10 @@ public class TercetoBInconditional extends Terceto {
 		return null;
 	}
 
+	@Override
+	public String getAssembler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

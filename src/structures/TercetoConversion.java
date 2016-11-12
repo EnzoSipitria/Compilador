@@ -15,5 +15,11 @@ public class TercetoConversion extends Terceto {
 		return "["+String.valueOf(this.position)+"]";
 	}
 
+	@Override
+	public String getAssembler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

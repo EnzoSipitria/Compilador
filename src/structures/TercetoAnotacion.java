@@ -19,4 +19,10 @@ public class TercetoAnotacion extends Terceto {
 		return  "("+operator+","+first+")";
 	}
 
+	@Override
+	public String getAssembler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
