@@ -20,7 +20,7 @@ public class TercetoConversion extends Terceto {
 		System.out.println("==========================================getAssembler  terceto"+this);
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 		String op1 =((Element)this.first).getOperando();
-		String instruccion =this+"\n";
+		String instruccion ="";
         instruccion += "FILD " + op1 + "\n";
         instruccion += "FSTP " + getAux() + "\n";
         return instruccion;

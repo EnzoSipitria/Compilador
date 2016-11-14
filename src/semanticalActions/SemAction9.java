@@ -22,7 +22,9 @@ public class SemAction9 extends SemanticalAction{
 		} else {
 			int numberLine = lexicalAnalyzer.getTokenList().get(lexicalAnalyzer.getTokenList().size()-1).getLineNumber();
 			token = new Token("CADENA",lexicalAnalyzer.getLexema(),numberLine);
+			System.out.println("=AS9 "+lexicalAnalyzer.getLexema()+" token generado"+token);
 			lexicalAnalyzer.getSymbolTable().addToken(lexicalAnalyzer.getLexema(),token); 
+			System.out.println(lexicalAnalyzer.getSymbolTable().getToken(lexicalAnalyzer.getLexema()));
 			return token;
 		}
 	}

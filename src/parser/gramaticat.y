@@ -9,6 +9,7 @@ import structures.TercetoAsignacion;
 import structures.TercetoComparador;
 import structures.TercetoConversion;
 import structures.TercetoDivision;
+import structures.TercetoPrint;
 import matrix.AssignMatrix;
 import matrix.DivisionMatrix;
 import matrix.OperationMatrix;
@@ -272,7 +273,14 @@ sentencia_ejecutable : inicio_IF {estructuras.add(numberLine.pop()+". sentencia 
 		
 					 | variable DECREMENTO ';'{estructuras.add(lexAn.getLineNumber()+". variable  decremento\n");}
 					 
-					 | PRINT '(' CADENA ')' ';' {estructuras.add( printLine+". print\n");}
+					 | PRINT '(' CADENA ')' ';' {
+												 System.out.println("===CADENA "+ (Element)$3.obj+" palabra reservada "+(Token)$1.obj);
+												 Token token = lexAn.getSymbolTable().getToken((((Token)$3.obj).getLexema()));
+												 Terceto cadena = new TercetoPrint(token);
+												 tercetos.add(cadena);
+												 cadena.setPosition(tercetos.size());
+												 estructuras.add( printLine+". print\n");
+												}
 
 					 | PRINT error ';'{UI2.addText(UI2.txtDebug,"Linea: "+printLine+". ERROR EN PRINT "+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR EN PRINT");}  
 
@@ -746,7 +754,7 @@ public void makeMatrix(Token ide ,Object rowIndex, Object columnIndex){
 										                      tercetos.add((Terceto)suma1);
 										                      ((Terceto)suma1).setPosition(tercetos.size());
 															  
-										                      Terceto ref= new TercetoReferencia(suma1);
+										                      Terceto ref= new TercetoReferencia(suma1,ide.getLexema());
 										                      tercetos.add((Terceto)ref);
 										                      ((Terceto)ref).setPosition(tercetos.size());
 										                      Terceto simple = new TercetoSimple(tercetos.size()+1);
@@ -824,9 +832,9 @@ private int yylex() {
 		}
 		if (type.equals("CADENA"))
 		{
-			yylval = new ParserVal (token.getLineNumber());
-			printLine = yylval.ival;
-			yylval = new ParserVal(token.getLexema());
+			//yylval = new ParserVal (token.getLineNumber());
+			printLine = token.getLineNumber();
+			//yylval = new ParserVal(token.getLexema());
 			return CADENA;
 		}
 		if (type.equals("ANOT0")){

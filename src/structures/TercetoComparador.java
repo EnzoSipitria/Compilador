@@ -21,7 +21,7 @@ public class TercetoComparador extends Terceto{
         //return "CMP " + param1.getOperando() + ", " + param2.getOperando() + "\n";
         String op1 =((Element)this.first).getOperando();
         String op2 =((Element)this.second).getOperando();
-        String ins=this+"\n";
+        String ins="";
         System.out.println("==========================================getAssembler  terceto"+this);
         System.out.println("Tipo del terceto comparador: "+this.typeVariable);
         if (this.typeVariable.equals("integer")) {

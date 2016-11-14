@@ -30,6 +30,14 @@ public class AuxGenerator {
 		this.counter++;
 	}
 
+	public void initCounter() {
+		this.counter=1;
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
 
 
 }

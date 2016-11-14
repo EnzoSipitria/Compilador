@@ -30,6 +30,10 @@ public class Assembler {
 	}
 
 
+    public void initAuxGenerator(){
+    	generator.initCounter();
+    }
+    
 	public void setListaTerceto(ArrayList<Terceto> listaTerceto) {
 		this.listaTerceto = listaTerceto;
 	}
@@ -79,14 +83,19 @@ public class Assembler {
 	                } else {
 	                    declaration += token.getAssembler() + " DD ?\n"; //  flotantes = 8 bytes
 	                } 
-	        	    if (token.getType().equals("CADENA")) {  
-	        	    	String name = "cadena" + numCad;
-	        	    	token.setLexema(name);
-	        	    	declaration += token.getAssembler() + " DB " + token.getLexema() + ", 0\n";
-	        	    	numCad++;
-	        	    }
+        	    	System.out.println("<<LEXEMA TOKEN >>"+token.getType()+","+token);
         		}else{
         			System.out.println("El token sin tipo es: "+token);
+        		}
+        		
+	            if (token.getType().equals("CADENA")) {  
+	        	    	String name = token.getLexema().substring(1, token.getLexema().length()-1);
+	        	    	name = name.replaceAll(" ", "");
+	        	    	System.out.println("<<>TENGO LA CADENA: >>"+name);
+//	        	    	token.setLexema(name);
+	        	    	declaration += name + " DB " + token.getLexema() + ", 0\n";
+	        	    	numCad++;
+	        	    
         		}
         }
         return declaration;   
@@ -122,7 +131,6 @@ public class Assembler {
         	symbolTable.addToken(terceto.getAux(), token);
             instrucciones += terceto.getAssembler();
         }
-
         Assemblercode += getDeclarations(); // Va despues de generar las intrucciones porque se incluyen las @aux# en la TS
         Assemblercode += instrucciones;
         Assemblercode += "invoke ExitProcess, 0\n";
@@ -130,4 +138,7 @@ public class Assembler {
         
         return Assemblercode;
     }
+
+
+
 }

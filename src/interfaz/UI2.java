@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Set;
 import java.util.Vector;
@@ -31,6 +32,7 @@ import javax.swing.border.TitledBorder;
 
 import assembler.Assembler;
 import parser.Parser;
+import structures.AuxGenerator;
 import structures.Terceto;
 
 import javax.swing.JTextField;
@@ -244,6 +246,7 @@ public class UI2 extends JFrame {
 					tabBottom.setSelectedIndex(1);
 					tabRight.setSelectedIndex(2);	
 				} 
+				
 				btnCompile.setEnabled(false);
 				addText(txtSymbolsTable,parser.getLexicalAnalizer().getSymbolTable().toString());
 				addText(txtDebug, "ERRORES LEXICOS: "+"\n");
@@ -252,13 +255,16 @@ public class UI2 extends JFrame {
 				viewEstructuras();	
 				viewTercetos();
 				assembler = new Assembler(parser.getTercetos(),parser.getLexicalAnalizer().getSymbolTable());
-				addText(txtTokenList, assembler.getCodigo());
+//				addText(txtTokenList, assembler.getCodigo());
+				assembler.initAuxGenerator();// esto reinicia el contador del aux generator cada vez que se compila
 				addText(txtSymbolsTable,parser.getLexicalAnalizer().getSymbolTable().toString());
 				
 				/**
 				 * pedir lista de tercetos tecorrerla y por cadaelemento generar el codigo assembler 
 				 * 
 				 */
+				System.out.println("Voy a escribir el codigo assembler"+"\n");
+				writeAssemblerFile(assembler.getCodigo());
 				
 //				Set<String> keys = parser.getLexicalAnalizer().getSymbolTable().getTokenList().keySet();
 //				for (String string : keys) {
@@ -383,7 +389,21 @@ public class UI2 extends JFrame {
 
 	}
 
+	public static void writeAssemblerFile(String code){
+		FileWriter out = null;
+		BufferedWriter bufferwriter = null;
+		System.out.println(file.getAbsolutePath());
+		try {
+			out = new FileWriter("D:\\Compartida Virtual\\Workspace\\Compilador\\assembler.txt");
+			bufferwriter = new BufferedWriter(out);
+			bufferwriter.write(code);
+			bufferwriter.close();
 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	public static void addText(JTextArea write,String text){
 		write.append(text);
 		write.repaint();

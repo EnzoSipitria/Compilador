@@ -28,7 +28,7 @@ public class TercetoSuma extends Terceto {
         String op1 = ((Element) this.first).getOperando();
         String op2 = ((Element) this.second).getOperando();
         
-        String operacion = this+"\n";
+        String operacion = "";
         System.out.println("==========================================getAssembler  terceto"+this);
         if (this.typeVariable.equals("integer")) {
             operacion += "MOV BX, " + op1 + "\n";

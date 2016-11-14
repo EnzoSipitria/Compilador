@@ -23,7 +23,7 @@ public class TercetoDecremento extends Terceto{
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 		 String op1 =((Element)this.first).getOperando();
        /// String op2 = param2.getOperando(); no va por que no tenemos segundo operando
-        String operacion = this+"\n";
+        String operacion = "";
         System.out.println("==========================================getAssembler  terceto"+this);
 
         if (((Element) this.first).getTypeVariable().equals("integer")) {

@@ -27,7 +27,7 @@ public class TercetoAsignacion extends Terceto{
         String op2 = ((Element) this.second).getOperando();
         System.out.println("=>operando first assembler"+op1);
         System.out.println("=>operando second assembler"+second);
-        String ins = this+"\n";
+        String ins ="";
         boolean op2EsVar = (op2.charAt(0) == '_') || (op2.charAt(0) == '@');
         System.out.println("==========================================getAssembler  terceto"+this);
         if (((Element) this.first).getTypeVariable().equals("integer")) {
