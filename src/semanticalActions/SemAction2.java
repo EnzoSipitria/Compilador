@@ -13,7 +13,7 @@ public class SemAction2 extends SemanticalAction{
 
 	@Override
 	public Token execute(LexicalAnalyzer lexicalAnalyzer, char character) {
-		System.out.println("ACCION SEMANTICA 2");
+		//System.out.println("ACCION SEMANTICA 2");
 		Token token = null;
 		//se "devuelve" el ultimo caracter leido, y se procede a controlar si el token es uno válido
 		lexicalAnalyzer.setIndexLine(lexicalAnalyzer.getIndexLine()-1);
@@ -26,7 +26,7 @@ public class SemAction2 extends SemanticalAction{
 				return new Token("IDENTIFICADOR",lexema,lexicalAnalyzer.getLineNumber());
 			} else {
 				token = new Token("IDENTIFICADOR",lexema,lexicalAnalyzer.getLineNumber());
-				System.out.println("Lexema en as2: "+lexema);
+				//System.out.println("Lexema en as2: "+lexema);
 				lexicalAnalyzer.getSymbolTable().addToken(lexema, token);
 				return token;
 			}

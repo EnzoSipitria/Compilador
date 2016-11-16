@@ -10,7 +10,7 @@ public class TercetoReferencia extends Terceto {
     
     //puede ser que haya que cambiar este método en algun caso
     public String toString(){
-		System.out.println("Terceto Referencia");
+		//System.out.println("Terceto Referencia");
 		return "("+operator+","+first+","+second+")";
 	};
 	
@@ -23,7 +23,7 @@ public class TercetoReferencia extends Terceto {
 
 	@Override
 	public String getAssembler() {
-		System.out.println("==========================================getAssembler  terceto"+this);
+		//System.out.println("==========================================getAssembler  terceto"+this);
 		return null;
 	}
 

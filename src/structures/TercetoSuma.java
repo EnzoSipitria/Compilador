@@ -12,7 +12,7 @@ public class TercetoSuma extends Terceto {
 
 	@Override
 	public String toString(){
-		System.out.println("TO STRING TERCETO SUMA");
+		//System.out.println("TO STRING TERCETO SUMA");
 		return "("+operator+","+((Element) first).getLexema()+","+((Element) second).getLexema()+")";
 	};
 	
@@ -29,7 +29,7 @@ public class TercetoSuma extends Terceto {
         String op2 = ((Element) this.second).getOperando();
         
         String operacion = "";
-        System.out.println("==========================================getAssembler  terceto"+this);
+        //System.out.println("==========================================getAssembler  terceto"+this);
         if (this.typeVariable.equals("integer")) {
             operacion += "MOV BX, " + op1 + "\n";
             operacion += "ADD BX, " + op2 + "\n";

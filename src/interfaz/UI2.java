@@ -166,7 +166,7 @@ public class UI2 extends JFrame {
 				chooser.showOpenDialog(null);
 				file = chooser.getSelectedFile();
 
-				System.out.println("Path:"+txtPath.getText());
+//				System.out.println("Path:"+txtPath.getText());
 				if(file!=null){
 					pathFile = file.getAbsolutePath();
 					txtPath.setText(pathFile);
@@ -263,7 +263,7 @@ public class UI2 extends JFrame {
 				 * pedir lista de tercetos tecorrerla y por cadaelemento generar el codigo assembler 
 				 * 
 				 */
-				System.out.println("Voy a escribir el codigo assembler"+"\n");
+//				System.out.println("Voy a escribir el codigo assembler"+"\n");
 				writeAssemblerFile(assembler.getCodigo());
 				
 //				Set<String> keys = parser.getLexicalAnalizer().getSymbolTable().getTokenList().keySet();
@@ -370,9 +370,9 @@ public class UI2 extends JFrame {
 		BufferedReader buffercodigo=new BufferedReader(fileReader);
 		try {
 			while(buffercodigo.ready()){
-				System.out.println("while reAady");
+//				System.out.println("while reAady");
 				line = buffercodigo.readLine();
-				System.out.println("linea: "+line);
+//				System.out.println("linea: "+line);
 				text=line+ "\n";
 				sourceCodeEditor.setText(sourceCodeEditor.getText()+text);
 				sourceCodeEditor.repaint();
@@ -392,7 +392,7 @@ public class UI2 extends JFrame {
 	public static void writeAssemblerFile(String code){
 		FileWriter out = null;
 		BufferedWriter bufferwriter = null;
-		System.out.println(file.getAbsolutePath());
+//		System.out.println(file.getAbsolutePath());
 		try {
 			out = new FileWriter("D:\\Compartida Virtual\\Workspace\\Compilador\\assembler.txt");
 			bufferwriter = new BufferedWriter(out);

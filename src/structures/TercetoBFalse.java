@@ -16,11 +16,11 @@ public class TercetoBFalse extends Terceto {
 		this.operator = "BF";
 		this.first    = first;
 		this.position = 0;
-		System.out.println("Ejecutando constructor de BFALSE");
+		//System.out.println("Ejecutando constructor de BFALSE");
 	}
 	
 	public String toString(){
-		System.out.println("TO STRING TERCETO FALSE");
+		//System.out.println("TO STRING TERCETO FALSE");
 		return "("+operator+","+((Element) first).getLexema()+","+((Element) second).getLexema()+")";
 	};
 	
@@ -33,23 +33,25 @@ public class TercetoBFalse extends Terceto {
 
 	@Override
 	public String getAssembler() {
-		System.out.println("==========================================getAssembler  terceto"+this);
+		//System.out.println("==========================================getAssembler  terceto"+this);
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         String comparator = (String) ((Terceto)this.first).getOperator();
-//        String label = ((Element)this.second).getAssembler().replace(":", ""); // ver si esto va 
+        String label = "label"+((Element)this.second).getPosition();
+        //System.out.println("LABEL TERCETO BFALSE"+((Element)this.second).getPosition());
+//        		((Element)this.second).getAssembler().replace(":", ""); // ver si esto va 
         String jump = "";
        if(comparator.equals(">="))
-                jump = "JL"+"\n";
+                jump = "JL";
        if(comparator.equals("<="))
-                jump = "JG"+"\n";
+                jump = "JG";
        if(comparator.equals(">"))
-    	   jump = "JLE"+"\n";
+    	   jump = "JLE";
        if(comparator.equals("<"))
-                jump = "JGE"+"\n";
+                jump = "JGE";
        if(comparator.equals("="))
-                jump = "JNE"+"\n";
+                jump = "JNE";
        if(comparator.equals("!=")) //
-                jump = "JE"+"\n";
-        return jump ;
+                jump = "JE";
+        return jump+" "+label+"\n" ;
 	}
 }

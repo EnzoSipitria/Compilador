@@ -72,6 +72,7 @@ public class Assembler {
         declaration += "_msjDC DB \"Error: Division por cero\", 0\n";
         Set<String> keys = symbolTable.getTokenList().keySet();
         int numCad = 0;
+        System.out.println("====GET DECLARATIONS=====");
         for (String key : keys) {
         		Token token= symbolTable.getToken(key);
         		System.out.println("Tipo del token: "+token);
@@ -83,20 +84,28 @@ public class Assembler {
 	                } else {
 	                    declaration += token.getAssembler() + " DD ?\n"; //  flotantes = 8 bytes
 	                } 
-        	    	System.out.println("<<LEXEMA TOKEN >>"+token.getType()+","+token);
+//        	    	System.out.println("<<LEXEMA TOKEN >>"+token.getType()+","+token);
         		}else{
-        			System.out.println("El token sin tipo es: "+token);
+//        			System.out.println("El token sin tipo es: "+token);
         		}
         		
 	            if (token.getType().equals("CADENA")) {  
 	        	    	String name = token.getLexema().substring(1, token.getLexema().length()-1);
 	        	    	name = name.replaceAll(" ", "");
-	        	    	System.out.println("<<>TENGO LA CADENA: >>"+name);
 //	        	    	token.setLexema(name);
 	        	    	declaration += name + " DB " + token.getLexema() + ", 0\n";
 	        	    	numCad++;
 	        	    
         		}
+	            if (token.getType().equals("DECREMENTO")) {  
+        	    	String name = token.getLexema().substring(1, token.getLexema().length()-1);
+        	    	name = name.replaceAll(" ", "");
+//        	    	token.setLexema(name);
+        	    	declaration += name + " DW " + token.getLexema() + ", 0\n";
+        	    	numCad++;
+        	    
+    		}
+	            
         }
         return declaration;   
     }
@@ -123,9 +132,9 @@ public class Assembler {
 //        instrucciones += getcontrolindex();
         instrucciones += getDivCero();
         instrucciones += "start:\n";
-        System.out.println("starttttttttttttttttttt");
+        System.out.println("=====getCOdigo===========");
         for (Terceto terceto : listaTerceto) {
-        	System.out.println("====GetCodigo===="+terceto);
+        	System.out.println("==>"+terceto);
         	terceto.setAux("@"+generator.getName());
         	Token token = new Token("IDENTIFICADOR", terceto.getAux(), 0, 0, terceto.getTypeVariable());
         	symbolTable.addToken(terceto.getAux(), token);

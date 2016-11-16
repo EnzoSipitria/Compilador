@@ -186,6 +186,7 @@ cuerpo_IF : bloque_sentencias  ENDIF {Terceto bFalse = stack.pop();
 		  | bloque_sentencias  {	Terceto bInconditional = new TercetoBInconditional();
 									tercetos.add(bInconditional); 
 									bInconditional.setPosition((Integer)tercetos.size());
+									bInconditional.setHasLabel(true);
 									Terceto bFalse = stack.pop();
 									Terceto simple = new TercetoSimple((Integer)tercetos.size()+1);
 									System.out.println("El tamaño del arreglo TERCETO en CUERPO_IF SIMPLE es: "+tercetos.size());
@@ -195,6 +196,7 @@ cuerpo_IF : bloque_sentencias  ENDIF {Terceto bFalse = stack.pop();
 																System.out.println("El tamaño del arreglo TERCETO en CUERPO_IF FINCONDICIONAL es: "+tercetos.size());
 								                               Terceto simple = new TercetoSimple((Integer)tercetos.size());
 								                               bInconditional.setFirst(simple);
+															   bInconditional.setHasLabel(true);
 															   System.out.println("Finalizando el terceto Incondicional");}';';
 
 
@@ -203,15 +205,18 @@ inicio_For: FOR '(' asig_for cond_for variable DECREMENTO')' bloque_sentencias  
 														            	Terceto varUpdate = new TercetoDecremento((Token)$5.obj);
 																		tercetos.add(varUpdate);
 																		varUpdate.setPosition(tercetos.size());
+																		varUpdate.setTypeVariable("integer");
 																		
 																		Terceto bInconditional = new TercetoBInconditional();
 																		tercetos.add(bInconditional);
 																		bInconditional.setPosition(tercetos.size());
+																		bInconditional.setHasLabel(true);
 																		Terceto bFalse = stack.pop();	
 																		Terceto simple = new TercetoSimple(tercetos.size()+1);
 																		bFalse.setSecond(simple);
-																		simple = stack.pop();				
-																		simple.setPosition(simple.getPosition()+1);
+																		simple = stack.pop();
+																		//se cambio la linea siguiente como la posicion del simple para que no falle laposicion a  la uqe se debe volver en el, salto incondicional
+																		simple.setPosition(simple.getPosition());
 																		bInconditional.setFirst(simple);
 																					}
 			| FOR '(' error ')' { System.out.println("tFOR ERROR");};
@@ -219,8 +224,8 @@ inicio_For: FOR '(' asig_for cond_for variable DECREMENTO')' bloque_sentencias  
 asig_for:  IDENTIFICADOR operador_asignacion expresion ';' { assignValue((Element)$1.obj,(Element)$3.obj);
 						    Terceto initFor = new TercetoAsignacion(lexAn.getSymbolTable().getToken(((Element)$1.obj).getLexema()),(Element)$3.obj); 
 							tercetos.add(initFor);
-						    initFor.setPosition(tercetos.size()-1);
-							stack.push(tercetos.get(tercetos.size()-1)); 
+						    initFor.setPosition(tercetos.size());
+							//stack.push(tercetos.get(tercetos.size()-1)); 
 							//System.out.println("terceto inicio"+stack.peek().toString());
 							
 							if ( !lexAn.getSymbolTable().getToken(((Element)val_peek(3).obj).getLexema()).getTypeVariable().equals("integer") ){
@@ -249,6 +254,8 @@ cond_for: expresion comparador expresion ';' {
 												
 												tercetos.add(comp);																				
 												comp.setPosition(tercetos.size());
+												comp.setHasLabel(true);
+												stack.push(tercetos.get(tercetos.size()-1));
 												//System.out.println("==================COND FOR==========El tamaño del arreglo TERCETO en CONDICION DEL FOR es: "+tercetos.size());
 												Terceto bFalse = new TercetoBFalse(tercetos.get(tercetos.size()-1));
 												tercetos.add(bFalse);
@@ -344,6 +351,7 @@ cond :  '(' expresion comparador expresion ')' {	if(  !((Element)$2.obj).getType
 													((Element)$$.obj).setTypeVariable(operationTypeVariable((Element)$2.obj,(Element) $4.obj));
                                                     tercetos.add((Terceto)$$.obj);
                                                     ((Terceto)$$.obj).setPosition(tercetos.size());
+													((Element)$$.obj).setHasLabel(true);
 													System.out.println("El tamaño del arreglo TERCETO en CONDICION es: "+tercetos.size());
                                                     }
 	  | '('error')'{UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". Columna: "+lexAn.getIndexLine()+" ERROR EN CONDICION"+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR EN CONDICION");}

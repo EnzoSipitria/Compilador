@@ -140,7 +140,7 @@ public class LexicalAnalyzer {
 						line = sourceCode.readLine()+"\n";
 						indexLine = 0;
 						lineNumber++;
-						System.out.println("linea de codigo: "+line);
+						//System.out.println("linea de codigo: "+line);
 					}
 					else {
 						return null;
@@ -155,8 +155,8 @@ public class LexicalAnalyzer {
 			}
 			char character = line.charAt(indexLine);
 			int column = findColumn(character);
-			System.out.println("columna: "+column);
-			System.out.println("character: "+character);
+//			System.out.println("columna: "+column);
+//			System.out.println("character: "+character);
 			//llamado a ACCION SEMANTICA indicada en la matriz de acciones semanticas
 			token = ((SemanticalAction)semanticalActions.getElem(currentState, column)).execute(this, character);
 			indexLine++;

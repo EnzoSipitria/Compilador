@@ -6,7 +6,14 @@ public abstract class Element {
 	protected Object value;
 	protected String typeVariable = null;//TIPO DE VALOR integer float
 	protected String use;
+	protected boolean hasLabel= false;
 	
+	public boolean isHasLabel() {
+		return hasLabel;
+	}
+	public void setHasLabel(boolean hasLabel) {
+		this.hasLabel = hasLabel;
+	}
 	public abstract String getLexema(); 
 	public abstract int getPosition();
 	public abstract String getOperando();

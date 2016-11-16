@@ -15,15 +15,15 @@ public class SemAction8 extends SemanticalAction {
 
 	@Override
 	public Token execute(LexicalAnalyzer lexicalAnalyzer, char character) {
-		System.out.println("ACCION SEMANTICA 8");
+	//	System.out.println("ACCION SEMANTICA 8");
 		Token token = null;
-		System.out.println("lexema AS8"+lexicalAnalyzer.getLexema());
+		//System.out.println("lexema AS8"+lexicalAnalyzer.getLexema());
 		lexicalAnalyzer.setIndexLine(lexicalAnalyzer.getIndexLine()-1);
 		if(lexicalAnalyzer.getLexema().length()>=4){
 				String cadena=lexicalAnalyzer.getLexema().substring(0, 4);
-				System.out.println(cadena+".");
+				//System.out.println(cadena+".");
 				if (cadena.equals("&&@1") ){
-					System.out.println("cadena en anotacion 1"+cadena);
+					//System.out.println("cadena en anotacion 1"+cadena);
 					token = new Token("ANOT1", cadena, lexicalAnalyzer.getLineNumber(),1);
 					//String.valueOf(cadena.charAt(3)) para retornarel valor del token 0,1
 					//lexicalAnalyzer.getSymbolTable().addToken(cadena, token);
@@ -34,7 +34,7 @@ public class SemAction8 extends SemanticalAction {
 					//lexicalAnalyzer.getSymbolTable().addToken(cadena, token);
 					return token;
 				}
-				System.out.println("no retorno ningun token - AS8");
+				//System.out.println("no retorno ningun token - AS8");
 		}
 		
 		return null;		

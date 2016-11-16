@@ -17,7 +17,7 @@ public class SemAction6 extends SemanticalAction{
 	public Token execute(LexicalAnalyzer lexicalAnalyzer, char character) {
 		Token token = null;
 		
-		System.out.println("ACCION SEMANTICA 6");
+		//System.out.println("ACCION SEMANTICA 6");
 		lexicalAnalyzer.setIndexLine(lexicalAnalyzer.getIndexLine()-1);
 
 		String prefix = lexicalAnalyzer.getLexema().substring(0,2);

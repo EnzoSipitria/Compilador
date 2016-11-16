@@ -34,6 +34,8 @@ public class DivisionMatrix extends Matrix {
 			for (int j = 0; j < columns; j++) {
 				matrix[k][j] = "float";
 			}
+			//agregado para pruebas de divisiones por 0, entre enteros 
+			matrix[0][0]= "integer";
 		}
 
 	}

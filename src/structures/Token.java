@@ -54,7 +54,7 @@ public class Token extends Element{
 		this.lineNumber=lineNumber;
 		this.type=type;
 		this.value = value;
-		System.out.println("constructor de token"+indexStart);
+		//System.out.println("constructor de token"+indexStart);
 		this.indexStart = indexStart;
 		this.rows = rows;
 		this.columns = columns;

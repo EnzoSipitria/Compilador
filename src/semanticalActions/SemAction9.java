@@ -13,7 +13,7 @@ public class SemAction9 extends SemanticalAction{
 
 	@Override
 	public Token execute(LexicalAnalyzer lexicalAnalyzer, char character) {
-		System.out.println("ACCION SEMANTICA 9");
+		//System.out.println("ACCION SEMANTICA 9");
 		Token token = null;
 		lexicalAnalyzer.setLexema(character);
 		if (lexicalAnalyzer.getSymbolTable().containsSymbol(lexicalAnalyzer.getLexema())) {
@@ -22,9 +22,9 @@ public class SemAction9 extends SemanticalAction{
 		} else {
 			int numberLine = lexicalAnalyzer.getTokenList().get(lexicalAnalyzer.getTokenList().size()-1).getLineNumber();
 			token = new Token("CADENA",lexicalAnalyzer.getLexema(),numberLine);
-			System.out.println("=AS9 "+lexicalAnalyzer.getLexema()+" token generado"+token);
+			//System.out.println("=AS9 "+lexicalAnalyzer.getLexema()+" token generado"+token);
 			lexicalAnalyzer.getSymbolTable().addToken(lexicalAnalyzer.getLexema(),token); 
-			System.out.println(lexicalAnalyzer.getSymbolTable().getToken(lexicalAnalyzer.getLexema()));
+			//System.out.println(lexicalAnalyzer.getSymbolTable().getToken(lexicalAnalyzer.getLexema()));
 			return token;
 		}
 	}

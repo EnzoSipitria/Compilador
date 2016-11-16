@@ -14,12 +14,12 @@ public class SemAction5 extends SemanticalAction{
 
 	@Override
 	public Token execute(LexicalAnalyzer lexicalAnalyzer, char character) {
-		System.out.println("ACCION SEMANTICA 5");
+		//System.out.println("ACCION SEMANTICA 5");
 		Token token = null;
 		lexicalAnalyzer.setLexema(character);
 		String lexema = lexicalAnalyzer.getLexema();
 		if (lexema.equals("<=")) {
-			System.out.println("Agrego menor igual: "+lexicalAnalyzer.getLexema());
+			//System.out.println("Agrego menor igual: "+lexicalAnalyzer.getLexema());
 			token = new Token("MENORIGUAL", lexema, lexicalAnalyzer.getLineNumber());
 			//lexicalAnalyzer.getSymbolTable().addToken("MENORIGUAL", token);
 			return token;

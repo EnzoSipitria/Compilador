@@ -16,9 +16,9 @@ public class SemActionError4 extends SemanticalAction {
 		/*
 		 * controla que en el estado inicial avance con la lectura de caracteres
 		 */
-		System.out.println("ACCION SEMANTICA error 4");
-		System.out.println("CARACTERRRRRRRRRRRRRRRR: "+lexicalAnalyzer.getLexema());
-		System.out.println();
+		//System.out.println("ACCION SEMANTICA error 4");
+		//System.out.println("CARACTERRRRRRRRRRRRRRRR: "+lexicalAnalyzer.getLexema());
+		//System.out.println();
 		String numberLine = String.valueOf(lexicalAnalyzer.getLineNumber());
 		lexicalAnalyzer.addErrors("Linea: "+numberLine+"caracter invalido:"+lexicalAnalyzer.getIndexLine()+".  ERROR: Caracter inválido."+character+"\n");
 		return null;

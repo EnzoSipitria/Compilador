@@ -483,7 +483,7 @@ final static String yyrule[] = {
 "operador_asignacion : ASIGNACION",
 };
 
-//#line 494 "gramaticat.y"
+//#line 502 "gramaticat.y"
 
 /**
 *
@@ -1298,9 +1298,12 @@ break;
 case 37:
 //#line 186 "gramaticat.y"
 {	Terceto bInconditional = new TercetoBInconditional();
+									System.out.println("==== gramatica172====");
 									tercetos.add(bInconditional); 
 									bInconditional.setPosition((Integer)tercetos.size());
+									bInconditional.setHasLabel(true);
 									Terceto bFalse = stack.pop();
+									System.out.println("tercetos size"+tercetos.size());
 									Terceto simple = new TercetoSimple((Integer)tercetos.size()+1);
 									System.out.println("El tamaño del arreglo TERCETO en CUERPO_IF SIMPLE es: "+tercetos.size());
 									stack.push(bInconditional);
@@ -1308,42 +1311,47 @@ case 37:
                                      }
 break;
 case 38:
-//#line 194 "gramaticat.y"
+//#line 195 "gramaticat.y"
 {Terceto bInconditional = stack.pop();
+System.out.println("==== gramatica195====");
 																System.out.println("El tamaño del arreglo TERCETO en CUERPO_IF FINCONDICIONAL es: "+tercetos.size());
 								                               Terceto simple = new TercetoSimple((Integer)tercetos.size());
 								                               bInconditional.setFirst(simple);
+															   bInconditional.setHasLabel(true);
 															   System.out.println("Finalizando el terceto Incondicional");}
 break;
 case 40:
-//#line 202 "gramaticat.y"
+//#line 204 "gramaticat.y"
 {estructuras.add(numberLine.pop()+". sentencia ejecutable for\n");
 														            	Terceto varUpdate = new TercetoDecremento((Token)val_peek(3).obj);
 																		tercetos.add(varUpdate);
 																		varUpdate.setPosition(tercetos.size());
+																		varUpdate.setTypeVariable("integer");
 																		
 																		Terceto bInconditional = new TercetoBInconditional();
 																		tercetos.add(bInconditional);
 																		bInconditional.setPosition(tercetos.size());
+																		bInconditional.setHasLabel(true);
 																		Terceto bFalse = stack.pop();	
 																		Terceto simple = new TercetoSimple(tercetos.size()+1);
 																		bFalse.setSecond(simple);
-																		simple = stack.pop();				
-																		simple.setPosition(simple.getPosition()+1);
+																		simple = stack.pop();
+																		/*se cambio la linea siguiente como la posicion del simple para que no falle laposicion a  la uqe se debe volver en el, salto incondicional*/
+																		simple.setPosition(simple.getPosition());
 																		bInconditional.setFirst(simple);
 																					}
 break;
 case 41:
-//#line 217 "gramaticat.y"
+//#line 222 "gramaticat.y"
 { System.out.println("tFOR ERROR");}
 break;
 case 42:
-//#line 219 "gramaticat.y"
+//#line 224 "gramaticat.y"
 { assignValue((Element)val_peek(3).obj,(Element)val_peek(1).obj);
 						    Terceto initFor = new TercetoAsignacion(lexAn.getSymbolTable().getToken(((Element)val_peek(3).obj).getLexema()),(Element)val_peek(1).obj); 
 							tercetos.add(initFor);
-						    initFor.setPosition(tercetos.size()-1);
-							stack.push(tercetos.get(tercetos.size()-1)); 
+						    initFor.setPosition(tercetos.size());
+							/*stack.push(tercetos.get(tercetos.size()-1)); */
 							/*System.out.println("terceto inicio"+stack.peek().toString());*/
 							
 							if ( !lexAn.getSymbolTable().getToken(((Element)val_peek(3).obj).getLexema()).getTypeVariable().equals("integer") ){
@@ -1354,7 +1362,7 @@ case 42:
 							}
 break;
 case 43:
-//#line 235 "gramaticat.y"
+//#line 240 "gramaticat.y"
 {
 												if(  !((Element)val_peek(3).obj).getTypeVariable().equals(((Element) val_peek(1).obj).getTypeVariable()) ){
 														String typeResult = operationMatrix.getTypeOperation( ((Element)val_peek(3).obj).getTypeVariable() , ((Element) val_peek(1).obj).getTypeVariable() );
@@ -1372,6 +1380,8 @@ case 43:
 												
 												tercetos.add(comp);																				
 												comp.setPosition(tercetos.size());
+												comp.setHasLabel(true);
+												stack.push(tercetos.get(tercetos.size()-1));
 												/*System.out.println("==================COND FOR==========El tamaño del arreglo TERCETO en CONDICION DEL FOR es: "+tercetos.size());*/
 												Terceto bFalse = new TercetoBFalse(tercetos.get(tercetos.size()-1));
 												tercetos.add(bFalse);
@@ -1379,21 +1389,21 @@ case 43:
 												stack.push(bFalse);}
 break;
 case 44:
-//#line 264 "gramaticat.y"
+//#line 271 "gramaticat.y"
 {estructuras.add(numberLine.pop()+". sentencia ejecutable if\n");}
 break;
 case 46:
-//#line 272 "gramaticat.y"
+//#line 279 "gramaticat.y"
 {estructuras.add(lexAn.getLineNumber()+". asignacion\n");}
 break;
 case 47:
-//#line 274 "gramaticat.y"
+//#line 281 "gramaticat.y"
 {estructuras.add(lexAn.getLineNumber()+". variable  decremento\n");}
 break;
 case 48:
-//#line 276 "gramaticat.y"
+//#line 283 "gramaticat.y"
 {
-												// System.out.println("===CADENA "+ (Element)val_peek(2).obj+" palabra reservada "+(Token)val_peek(4).obj);
+												 System.out.println("===CADENA "+ (Element)val_peek(2).obj+" palabra reservada "+(Token)val_peek(4).obj);
 												 Token token = lexAn.getSymbolTable().getToken((((Token)val_peek(2).obj).getLexema()));
 												 Terceto cadena = new TercetoPrint(token);
 												 tercetos.add(cadena);
@@ -1402,15 +1412,15 @@ case 48:
 												}
 break;
 case 49:
-//#line 285 "gramaticat.y"
+//#line 292 "gramaticat.y"
 {UI2.addText(UI2.txtDebug,"Linea: "+printLine+". ERROR EN PRINT "+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR EN PRINT");}
 break;
 case 50:
-//#line 287 "gramaticat.y"
+//#line 294 "gramaticat.y"
 {UI2.addText(UI2.txtDebug,"Linea: "+printLine+". ERROR EN PRINT FALTA \n"); errores.add("Linea: "+printLine+"ERROR EN PRINT FALTA ;");}
 break;
 case 51:
-//#line 291 "gramaticat.y"
+//#line 298 "gramaticat.y"
 { 
 														if(((Element)val_peek(3).obj).getTypeVariable()!=null){
 															String leftType = ((Element)val_peek(3).obj).getTypeVariable();
@@ -1449,15 +1459,15 @@ case 51:
 													}
 break;
 case 52:
-//#line 328 "gramaticat.y"
+//#line 335 "gramaticat.y"
 {UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". ERROR DE OPERADOR ASIGNACION"+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR DE OPERADOR ASIGNACION\n");}
 break;
 case 53:
-//#line 329 "gramaticat.y"
+//#line 336 "gramaticat.y"
 {UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". ERROR DE ASIGNACION"+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR DE ASIGNACION\n");}
 break;
 case 54:
-//#line 332 "gramaticat.y"
+//#line 339 "gramaticat.y"
 {	if(  !((Element)val_peek(3).obj).getTypeVariable().equals(((Element) val_peek(1).obj).getTypeVariable()) ){
 														String typeResult = operationMatrix.getTypeOperation( ((Element)val_peek(3).obj).getTypeVariable() , ((Element) val_peek(1).obj).getTypeVariable() );
 														Terceto conversion;
@@ -1473,23 +1483,24 @@ case 54:
 													((Element)yyval.obj).setTypeVariable(operationTypeVariable((Element)val_peek(3).obj,(Element) val_peek(1).obj));
                                                     tercetos.add((Terceto)yyval.obj);
                                                     ((Terceto)yyval.obj).setPosition(tercetos.size());
+													((Element)yyval.obj).setHasLabel(true);
 													System.out.println("El tamaño del arreglo TERCETO en CONDICION es: "+tercetos.size());
                                                     }
 break;
 case 55:
-//#line 349 "gramaticat.y"
+//#line 357 "gramaticat.y"
 {UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". Columna: "+lexAn.getIndexLine()+" ERROR EN CONDICION"+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR EN CONDICION");}
 break;
 case 56:
-//#line 351 "gramaticat.y"
+//#line 359 "gramaticat.y"
 {UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". ERROR EN IF paren2"+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR EN CONDICION");}
 break;
 case 62:
-//#line 364 "gramaticat.y"
+//#line 372 "gramaticat.y"
 {yyval.obj = val_peek(0).obj;}
 break;
 case 63:
-//#line 366 "gramaticat.y"
+//#line 374 "gramaticat.y"
 {    		if(  !((Element)val_peek(2).obj).getTypeVariable().equals(((Element) val_peek(0).obj).getTypeVariable()) ){
 												String typeResult = operationMatrix.getTypeOperation( ((Element)val_peek(2).obj).getTypeVariable() , ((Element) val_peek(0).obj).getTypeVariable() );
 												Terceto conversion;
@@ -1511,7 +1522,7 @@ case 63:
                                         /*Estructuras.add("Linea "+analizador.NLineas+": Expresion");*/}
 break;
 case 64:
-//#line 386 "gramaticat.y"
+//#line 394 "gramaticat.y"
 {     	if(  !((Element)val_peek(2).obj).getTypeVariable().equals(((Element) val_peek(0).obj).getTypeVariable()) ){
 												String typeResult = operationMatrix.getTypeOperation( ((Element)val_peek(2).obj).getTypeVariable() , ((Element) val_peek(0).obj).getTypeVariable() );
 												Terceto conversion;
@@ -1530,11 +1541,11 @@ case 64:
 										System.out.println("El tamaño del arreglo TERCETO en RESTA es: "+tercetos.size());}
 break;
 case 65:
-//#line 404 "gramaticat.y"
+//#line 412 "gramaticat.y"
 {yyval.obj = val_peek(0).obj;}
 break;
 case 66:
-//#line 406 "gramaticat.y"
+//#line 414 "gramaticat.y"
 {yyval.obj = new TercetoDecremento((Element)val_peek(1).obj);
 								System.out.println("ANTES de setear la posicion en terceto decremento");
                                tercetos.add((Terceto)yyval.obj);
@@ -1542,7 +1553,7 @@ case 66:
 							   System.out.println("posicion terceto decremento: "+tercetos.size());}
 break;
 case 67:
-//#line 412 "gramaticat.y"
+//#line 420 "gramaticat.y"
 { 			if(  !((Element)val_peek(2).obj).getTypeVariable().equals(((Element) val_peek(0).obj).getTypeVariable()) ){
 												String typeResult = operationMatrix.getTypeOperation( ((Element)val_peek(2).obj).getTypeVariable() , ((Element) val_peek(0).obj).getTypeVariable() );
 												Terceto conversion;
@@ -1564,7 +1575,7 @@ case 67:
 							 }
 break;
 case 68:
-//#line 432 "gramaticat.y"
+//#line 440 "gramaticat.y"
 {
 									
 											String typeResult = divisionTypeVariable( (Element)val_peek(2).obj , (Element) val_peek(0).obj );
@@ -1588,24 +1599,24 @@ case 68:
 							  System.out.println(" posicion terceto division: "+tercetos.size());}
 break;
 case 69:
-//#line 455 "gramaticat.y"
+//#line 463 "gramaticat.y"
 {yyval.obj = val_peek(0).obj;}
 break;
 case 70:
-//#line 457 "gramaticat.y"
+//#line 465 "gramaticat.y"
 {yyval.obj = val_peek(0).obj;}
 break;
 case 71:
-//#line 459 "gramaticat.y"
+//#line 467 "gramaticat.y"
 {yyval.obj = lexAn.getSymbolTable().getToken(((Token)val_peek(0).obj).getLexema()); /*ANDA*/
 						System.out.println("Probando CTEINTEGER: "+lexAn.getSymbolTable().getToken(((Token)val_peek(0).obj).getLexema()));}
 break;
 case 72:
-//#line 462 "gramaticat.y"
+//#line 470 "gramaticat.y"
 {yyval.obj = lexAn.getSymbolTable().getToken(((Token)val_peek(0).obj).getLexema());}
 break;
 case 73:
-//#line 464 "gramaticat.y"
+//#line 472 "gramaticat.y"
 { 
                            if (controlVarNotDeclared(((Token)val_peek(0).obj))){
 								UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". Variable ["+((Token)val_peek(0).obj).getLexema()+"] no declarada");
@@ -1615,7 +1626,7 @@ case 73:
 									}
 break;
 case 75:
-//#line 473 "gramaticat.y"
+//#line 481 "gramaticat.y"
 {yyval.obj = lexAn.getSymbolTable().getToken(((Token)val_peek(6).obj).getLexema()); 
 																/*makeMatrix(Token ide ,Object rowIndex, Object columnIndex);*/
 	                                                             makeMatrix((Token)val_peek(6).obj,((Token)val_peek(4).obj).getValue(),((Token)val_peek(1).obj).getValue());
@@ -1624,7 +1635,7 @@ case 75:
 																	errores.add("Linea: "+lexAn.getLineNumber()+"Variable matriz con limites de tipo erroneos");
 																}
 break;
-//#line 1550 "Parser.java"
+//#line 1558 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
