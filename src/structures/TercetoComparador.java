@@ -39,7 +39,8 @@ public class TercetoComparador extends Terceto{
 		if (isHasLabel()){
 			label = "label"+this.position+": ";
 		}
-        return label+ins;
+        return ins;// sacamos el label xq el terceto este no lo debe gnerar, se tiene que generar con el terceto label
+//        return label+ins;
     }
 
 

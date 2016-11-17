@@ -33,7 +33,7 @@ public class TercetoSimple extends Terceto{
 
 	@Override
 	public String getAssembler() {
-		System.out.println("==========================================getAssembler  terceto"+this);
+		//System.out.println("==========================================getAssembler  terceto"+this);
 		return null;
 	}
 }

@@ -8,6 +8,7 @@ import structures.Terceto;
 import structures.TercetoAsignacion;
 import structures.TercetoComparador;
 import structures.TercetoConversion;
+import structures.TercetoLabel;
 import structures.TercetoDivision;
 import structures.TercetoPrint;
 import matrix.AssignMatrix;
@@ -186,22 +187,26 @@ cuerpo_IF : bloque_sentencias  ENDIF {Terceto bFalse = stack.pop();
 		  | bloque_sentencias  {	Terceto bInconditional = new TercetoBInconditional();
 									tercetos.add(bInconditional); 
 									bInconditional.setPosition((Integer)tercetos.size());
+									tercetos.add(new TercetoLabel((Integer)tercetos.size()+2,(Integer)tercetos.size()+1));//+2 xq si y creo que anda
 									bInconditional.setHasLabel(true);
 									Terceto bFalse = stack.pop();
 									Terceto simple = new TercetoSimple((Integer)tercetos.size()+1);
-									System.out.println("El tamaño del arreglo TERCETO en CUERPO_IF SIMPLE es: "+tercetos.size());
+									System.out.println("El tamaÃ±o del arreglo TERCETO en CUERPO_IF SIMPLE es: "+tercetos.size());
 									stack.push(bInconditional);
-									bFalse.setSecond(simple);//Set linea donde termina el then
+									bFalse.setSecond(simple);/*Set linea donde termina el then*/
                                      } ELSE bloque_sentencias ENDIF {Terceto bInconditional = stack.pop();
 																System.out.println("El tamaño del arreglo TERCETO en CUERPO_IF FINCONDICIONAL es: "+tercetos.size());
-								                               Terceto simple = new TercetoSimple((Integer)tercetos.size());
+								                               Terceto simple = new TercetoSimple((Integer)tercetos.size()+1);
 								                               bInconditional.setFirst(simple);
 															   bInconditional.setHasLabel(true);
+															   tercetos.add(new TercetoLabel((Integer)tercetos.size()+1,(Integer)tercetos.size()+1));
 															   System.out.println("Finalizando el terceto Incondicional");}';';
 
 
 
-inicio_For: FOR '(' asig_for cond_for variable DECREMENTO')' bloque_sentencias  {estructuras.add(numberLine.pop()+". sentencia ejecutable for\n");
+inicio_For: FOR '(' asig_for cond_for variable DECREMENTO')' bloque_sentencias  {
+																		System.out.println("====== INICIO FOR ======= ");
+																		estructuras.add(numberLine.pop()+". sentencia ejecutable for\n");
 														            	Terceto varUpdate = new TercetoDecremento((Token)$5.obj);
 																		tercetos.add(varUpdate);
 																		varUpdate.setPosition(tercetos.size());
@@ -212,6 +217,8 @@ inicio_For: FOR '(' asig_for cond_for variable DECREMENTO')' bloque_sentencias  
 																		bInconditional.setPosition(tercetos.size());
 																		bInconditional.setHasLabel(true);
 																		Terceto bFalse = stack.pop();	
+																		System.out.println("terceto size "+tercetos.size());
+																		tercetos.add(new TercetoLabel((Integer)tercetos.size()+2,(Integer)tercetos.size()+1));
 																		Terceto simple = new TercetoSimple(tercetos.size()+1);
 																		bFalse.setSecond(simple);
 																		simple = stack.pop();
@@ -238,6 +245,9 @@ asig_for:  IDENTIFICADOR operador_asignacion expresion ';' { assignValue((Elemen
 			//| error {System.out.println("==================ASIG FOR====== FOR asignacion");};
 
 cond_for: expresion comparador expresion ';' {
+												System.out.println("=== COND FOR ==== ");
+												System.out.println("terceto size "+tercetos.size());
+												tercetos.add(new TercetoLabel((Integer)tercetos.size()+2,(Integer)tercetos.size()+1));
 												if(  !((Element)$1.obj).getTypeVariable().equals(((Element) $3.obj).getTypeVariable()) ){
 														String typeResult = operationMatrix.getTypeOperation( ((Element)$1.obj).getTypeVariable() , ((Element) $3.obj).getTypeVariable() );
 														Terceto conversion;
@@ -296,10 +306,11 @@ sentencia_ejecutable : inicio_IF {estructuras.add(numberLine.pop()+". sentencia 
 
 
 asignacion : variable operador_asignacion expresion ';'{ 
+														System.out.println("==ASIGNACION==");
 														if(((Element)$1.obj).getTypeVariable()!=null){
 															String leftType = ((Element)$1.obj).getTypeVariable();
 															String rightType = ((Element)$3.obj).getTypeVariable();
-															System.out.println("el la expresion es del tipo en la asigancion"+ (Element)$3.obj);
+															System.out.println("la expresion a asignar es"+ (Element)$3.obj);
 															
 															if ( ((Element)$3.obj).getUse() != null && ((Element)$3.obj).getUse().equals("mat"))
                                                             {
@@ -310,21 +321,23 @@ asignacion : variable operador_asignacion expresion ';'{
 																((Terceto)$$.obj).setPosition((Integer)tercetos.size()); 
 
                                                             }
-															
+															System.out.println("accept Operation"+convertionMatrix.acceptOperation(leftType,rightType));
 															if (convertionMatrix.acceptOperation(leftType,rightType)){	
 																if(  !((Element)$1.obj).getTypeVariable().equals(((Element) $3.obj).getTypeVariable()) ){
+																	System.out.println("tipos distintos creacion terceto conversion");
 																	String typeResult = convertionMatrix.getTypeOperation( ((Element)$1.obj).getTypeVariable() , ((Element) $3.obj).getTypeVariable() );
 																	Terceto conversion = new TercetoConversion(((Element)$3.obj), typeResult);
 																	tercetos.add(conversion);
+																	System.out.println("Terceto conv"+conversion);
 																	(conversion).setPosition(tercetos.size());
 																}
 																Token T1 =lexAn.getSymbolTable().getToken((((Element)$1.obj).getLexema()));
 																$$.obj = new TercetoAsignacion(T1,(Element)$3.obj);
-																((Element)$3.obj).setTypeVariable(assignTypeVariable(((Element)$1.obj),((Element)$3.obj)));
+																//((Element)$3.obj).setTypeVariable(assignTypeVariable(((Element)$1.obj),((Element)$3.obj)));
 																assignValue(T1,(Element)$3.obj);
 																tercetos.add((Terceto)$$.obj);
 																((Terceto)$$.obj).setPosition((Integer)tercetos.size());                                                      
-																System.out.println("El tipo del TERCETO en ASIGNACION es: "+((Element)$3.obj).getTypeVariable());
+																System.out.println("El tipo del TERCETO en ASIGNACION es: "+((Element)$1.obj).getTypeVariable()+":="+((Element)$3.obj).getTypeVariable());
 															} else {
 																UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". ERROR tipos incompatibles\n"); 
 																errores.add("Linea: "+lexAn.getLineNumber()+"ERROR tipos incompatibles\n");			

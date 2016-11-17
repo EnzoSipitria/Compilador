@@ -21,7 +21,7 @@ public class TercetoMultiplicacion extends Terceto {
         String op1 = ((Element)this.first).getOperando();
         String op2 = ((Element)this.second).getOperando();
         String operacion = "";
-        System.out.println("==========================================getAssembler  op1"+op1);
+       // System.out.println("==========================================getAssembler  op1"+op1);
         if (this.typeVariable.equals("integer")) {
             operacion += "MOV AX, " + op1 + "\n";
             operacion += "MOV DX, 0\n";

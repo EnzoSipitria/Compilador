@@ -12,7 +12,7 @@ public class TercetoBInconditional extends Terceto {
 
 	public String toString(){
 		//System.out.println("TO STRING TERCETO INCONDICIONAL");
-		return "("+operator+","+((Element) first).getLexema()+")";
+		return "("+operator+","+((Element) first)+")";
 	};
 	
 	
@@ -34,7 +34,8 @@ public class TercetoBInconditional extends Terceto {
 			int position = this.position+1;
 			labelsalto = "label"+position+": ";
 		}
-		return jump+labelsalto;
+		return jump;
+//		return jump+labelsalto;
 	}
 
 }

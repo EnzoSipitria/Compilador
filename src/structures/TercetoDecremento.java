@@ -24,7 +24,7 @@ public class TercetoDecremento extends Terceto{
 		 String op1 =((Element)this.first).getOperando();
        /// String op2 = param2.getOperando(); no va por que no tenemos segundo operando
         String operacion = "";
-        System.out.println("==========================================getAssembler  terceto"+this);
+       // System.out.println("==========================================getAssembler  terceto"+this);
 
         if (((Element) this.first).getTypeVariable().equals("integer")) {
             operacion += "MOV BX, " + op1 + "\n";

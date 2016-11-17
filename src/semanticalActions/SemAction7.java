@@ -12,7 +12,7 @@ public class SemAction7 extends SemanticalAction{
 
 	@Override
 	public Token execute(LexicalAnalyzer lexicalAnalyzer, char character) {
-		System.out.println("ACCION SEMANTICA 7");
+		//System.out.println("ACCION SEMANTICA 7");
 		// TODO Auto-generated method stub
 		return null;
 	}

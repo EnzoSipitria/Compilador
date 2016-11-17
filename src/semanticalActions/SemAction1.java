@@ -12,7 +12,7 @@ public class SemAction1 extends SemanticalAction{
 
 	@Override
 	public Token execute(LexicalAnalyzer lexicalAnalyzer, char character){
-		System.out.println("ACCION SEMANTICA 1");
+		//System.out.println("ACCION SEMANTICA 1");
 		lexicalAnalyzer.setLexema(character);
 		return null;
 

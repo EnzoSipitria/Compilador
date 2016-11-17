@@ -14,7 +14,7 @@ public class TercetoLabel extends Terceto {
 	@Override
 	public String getAssembler() {
 		
-		return "labelGENERADO"+this.first+": ";
+		return "label"+this.first+": ";
 	}
 
 	@Override

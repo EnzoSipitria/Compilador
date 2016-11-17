@@ -251,13 +251,13 @@ public class UI2 extends JFrame {
 				addText(txtSymbolsTable,parser.getLexicalAnalizer().getSymbolTable().toString());
 				addText(txtDebug, "ERRORES LEXICOS: "+"\n");
 				addText(txtDebug,parser.getLexicalAnalizer().viewErrors());
-//				addText(txtTokenList, parser.getLexicalAnalizer().viewTokenList());
+				addText(txtTokenList, parser.getLexicalAnalizer().viewTokenList());
 				viewEstructuras();	
 				viewTercetos();
 				assembler = new Assembler(parser.getTercetos(),parser.getLexicalAnalizer().getSymbolTable());
 //				addText(txtTokenList, assembler.getCodigo());
 				assembler.initAuxGenerator();// esto reinicia el contador del aux generator cada vez que se compila
-				addText(txtSymbolsTable,parser.getLexicalAnalizer().getSymbolTable().toString());
+				//addText(txtSymbolsTable,parser.getLexicalAnalizer().getSymbolTable().toString());
 				
 				/**
 				 * pedir lista de tercetos tecorrerla y por cadaelemento generar el codigo assembler 

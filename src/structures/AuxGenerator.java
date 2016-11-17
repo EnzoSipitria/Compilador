@@ -14,7 +14,7 @@ public class AuxGenerator {
 	public String getName() {
 		int counter=this.counter;
 		this.counter++;
-		System.out.println("====AUXGENERATOR===="+name+counter);
+		//System.out.println("====AUXGENERATOR===="+name+counter);
 		return name+counter;
 	}
 	

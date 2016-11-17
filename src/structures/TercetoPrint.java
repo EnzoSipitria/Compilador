@@ -23,6 +23,8 @@ public class TercetoPrint extends Terceto {
         
         String name = cadena.substring(2, cadena.length()-1);
     	name = name.replaceAll(" ", "");
+    	name = name.substring(0, Math.min(15, name.length()));
+    	
     	
         return "invoke MessageBox, NULL, addr " +name+ ", addr " +name+ ", MB_OK\n";
 

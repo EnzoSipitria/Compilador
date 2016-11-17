@@ -22,7 +22,7 @@ public class TercetoResta extends Terceto {
         String op1 = ((Element) this.first).getOperando();
         String op2 = ((Element) this.second).getOperando();
         String operacion = "";
-        System.out.println("==========================================getAssembler  terceto"+this);
+       // System.out.println("==========================================getAssembler  terceto"+this);
         if (typeVariable.equals("integer")){
             operacion += "MOV BX, " + op1 + "\n";
             operacion += "SUB BX, " + op2 + "\n";

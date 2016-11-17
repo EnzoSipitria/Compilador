@@ -21,7 +21,7 @@ public class TercetoBFalse extends Terceto {
 	
 	public String toString(){
 		//System.out.println("TO STRING TERCETO FALSE");
-		return "("+operator+","+((Element) first).getLexema()+","+((Element) second).getLexema()+")";
+		return "("+operator+","+((Element) first).getLexema()+","+((Element) second)+")";
 	};
 	
 	
@@ -52,6 +52,7 @@ public class TercetoBFalse extends Terceto {
                 jump = "JNE";
        if(comparator.equals("!=")) //
                 jump = "JE";
+//       return jump+"AA";
         return jump+" "+label+"\n" ;
 	}
 }

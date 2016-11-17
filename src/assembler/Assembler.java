@@ -75,7 +75,7 @@ public class Assembler {
         System.out.println("====GET DECLARATIONS=====");
         for (String key : keys) {
         		Token token= symbolTable.getToken(key);
-        		System.out.println("Tipo del token: "+token);
+        		//System.out.println("Tipo del token: "+token);
         		if(token.getTypeVariable() != null){
 	                if (token.getTypeVariable().equals("integer")) {
 //	                	System.out.println("token en get declarations"+token);
@@ -92,6 +92,7 @@ public class Assembler {
 	            if (token.getType().equals("CADENA")) {  
 	        	    	String name = token.getLexema().substring(1, token.getLexema().length()-1);
 	        	    	name = name.replaceAll(" ", "");
+	        	    	name = name.substring(0, Math.min(15, name.length()));
 //	        	    	token.setLexema(name);
 	        	    	declaration += name + " DB " + token.getLexema() + ", 0\n";
 	        	    	numCad++;
@@ -124,28 +125,30 @@ public class Assembler {
     }
 
     public String getCodigo() {
-        String Assemblercode = new String();
-        Assemblercode += getheadlines();
-        String instrucciones = new String();
+    	String Assemblercode = new String();
+    	Assemblercode += getheadlines();
+    	String instrucciones = new String();
 
-        instrucciones += ".code\n";
-//        instrucciones += getcontrolindex();
-        instrucciones += getDivCero();
-        instrucciones += "start:\n";
-        System.out.println("=====getCOdigo===========");
-        for (Terceto terceto : listaTerceto) {
-        	System.out.println("==>"+terceto);
-        	terceto.setAux("@"+generator.getName());
-        	Token token = new Token("IDENTIFICADOR", terceto.getAux(), 0, 0, terceto.getTypeVariable());
-        	symbolTable.addToken(terceto.getAux(), token);
-            instrucciones += terceto.getAssembler();
-        }
-        Assemblercode += getDeclarations(); // Va despues de generar las intrucciones porque se incluyen las @aux# en la TS
-        Assemblercode += instrucciones;
-        Assemblercode += "invoke ExitProcess, 0\n";
-        Assemblercode += "end start";
-        
-        return Assemblercode;
+    	instrucciones += ".code\n";
+    	//        instrucciones += getcontrolindex();
+    	instrucciones += getDivCero();
+    	instrucciones += "start:\n";
+    	System.out.println("=====getCOdigo===========");
+    	for (Terceto terceto : listaTerceto) {
+    		System.out.println("==>"+terceto);
+    		if (!terceto.getOperator().equals("label")){
+    			terceto.setAux("@"+generator.getName());
+    			Token token = new Token("IDENTIFICADOR", terceto.getAux(), 0, 0, terceto.getTypeVariable());
+    			symbolTable.addToken(terceto.getAux(), token);
+    		}
+    		instrucciones += terceto.getAssembler();
+    	}
+    	Assemblercode += getDeclarations(); // Va despues de generar las intrucciones porque se incluyen las @aux# en la TS
+    	Assemblercode += instrucciones;
+    	Assemblercode += "invoke ExitProcess, 0\n";
+    	Assemblercode += "end start";
+
+    	return Assemblercode;
     }
 
 
