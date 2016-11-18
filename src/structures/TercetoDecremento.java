@@ -5,6 +5,7 @@ public class TercetoDecremento extends Terceto{
 	public TercetoDecremento (Object first){
 		this.operator = "--";
 		this.first = first;
+		this.classType = "Terceto";
 	}
 	
 	@Override

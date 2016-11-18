@@ -2,7 +2,6 @@ package structures;
 
 public abstract class Terceto extends Element{
 
-	protected Object operator;
 	protected Object first;
 	protected Object second;
 	protected String aux;

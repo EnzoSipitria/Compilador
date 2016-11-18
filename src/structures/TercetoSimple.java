@@ -10,6 +10,9 @@ public class TercetoSimple extends Terceto{
 	public TercetoSimple(Object first){
 		this.first = first;
 		this.position = (Integer) first;
+		this.classType = "Terceto";
+		this.operator = "simple";
+		this.use = "UNDEFINIED";
 	}
 
 	
@@ -33,7 +36,13 @@ public class TercetoSimple extends Terceto{
 
 	@Override
 	public String getAssembler() {
+		String codigo = "MOV "+this.aux+", "+this.first+"\n";
 		//System.out.println("==========================================getAssembler  terceto"+this);
-		return null;
+		return codigo;
 	}
+	
+	public void setUse(String use){
+		this.use = use;
+	}
+	
 }

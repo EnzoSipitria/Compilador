@@ -5,6 +5,7 @@ public class TercetoBase extends Terceto {
 	public TercetoBase(Object first){
 		this.operator="^";
 		this.first=first;
+		this.classType = "Terceto";
 	}
 	
 	
@@ -20,7 +21,8 @@ public class TercetoBase extends Terceto {
 
 	@Override
 	public String getAssembler() {
+		String codigo = "MOV "+this.aux+", "+0+"\n";
 		//System.out.println("==========================================getAssembler  terceto"+this);
-		return null;
+		return codigo;
 	}
 }

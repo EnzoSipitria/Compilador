@@ -7,6 +7,7 @@ public class TercetoBInconditional extends Terceto {
 	public TercetoBInconditional() {
 		this.operator = "BI";
 		this.position=0;
+		this.classType = "Terceto";
 		// TODO Auto-generated constructor stub
 	}
 

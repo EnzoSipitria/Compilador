@@ -7,7 +7,15 @@ public abstract class Element {
 	protected String typeVariable = null;//TIPO DE VALOR integer float
 	protected String use;
 	protected boolean hasLabel= false;
+	protected String classType;
+	protected Object operator;
 	
+	public String getClassType() {
+		return classType;
+	}
+	public void setClass(String classType) {
+		this.classType = classType;
+	}
 	public boolean isHasLabel() {
 		return hasLabel;
 	}
@@ -39,5 +47,13 @@ public abstract class Element {
 	}
 	public void setUse(String use) {
 		this.use = use;
+	}
+	
+	public Object getOperator() {
+		return operator;
+	}
+	
+	public void setOperator(Object operator) {
+		this.operator = operator;
 	}
 }

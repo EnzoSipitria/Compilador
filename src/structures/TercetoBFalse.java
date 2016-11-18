@@ -16,6 +16,7 @@ public class TercetoBFalse extends Terceto {
 		this.operator = "BF";
 		this.first    = first;
 		this.position = 0;
+		this.classType = "Terceto";
 		//System.out.println("Ejecutando constructor de BFALSE");
 	}
 	

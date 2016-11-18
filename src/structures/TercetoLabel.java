@@ -8,6 +8,7 @@ public class TercetoLabel extends Terceto {
 		this.operator = "label";
 		this.first = first;
 		this.position = (Integer) Position;//-1 para la posicion xq viene con un +2
+		this.classType = "Terceto";
 	}
 	
 	

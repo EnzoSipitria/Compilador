@@ -8,6 +8,7 @@ public class TercetoPrint extends Terceto {
 		this.first    = first;
 		//this.second   = second;
 		this.position = 0;
+		this.classType = "Terceto";
 	}
 
 	@Override

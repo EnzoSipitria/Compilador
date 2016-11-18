@@ -8,14 +8,15 @@ public class TercetoSuma extends Terceto {
 		this.first    = first;
 		this.second   = second;
 		this.position = 0;
+		this.classType = "Terceto";
 	}
 
 	@Override
 	public String toString(){
 		//System.out.println("TO STRING TERCETO SUMA");
-		return "("+operator+","+((Element) first).getLexema()+","+((Element) second).getLexema()+")";
+		return "("+operator+","+((Element) first).getLexema()+" .,. "+((Element) second).getLexema()+")";
 	};
-	
+
 	@Override
 	public String getLexema() {
 		// TODO Auto-generated method stub
@@ -24,32 +25,159 @@ public class TercetoSuma extends Terceto {
 
 	@Override
 	public String getAssembler() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        String op1 = ((Element) this.first).getOperando();
-        String op2 = ((Element) this.second).getOperando();
-        
-        String operacion = "";
-        //System.out.println("==========================================getAssembler  terceto"+this);
-        if (this.typeVariable.equals("integer")) {
-            operacion += "MOV BX, " + op1 + "\n";
-            operacion += "ADD BX, " + op2 + "\n";
-            operacion += "MOV " + getAux() + ", BX \n";
-        } else {
-            operacion += "FLD " + op1 + "\n";
-            operacion += "FADD " + op2 + "\n";
-            operacion += "FST " + getAux() + "\n";//guardo copia
-//            operacion += "FABS \n";//Factor Comun trata overflow suma no tener en cuenta lo dejo para entender mas del tema 
-//            operacion += "FCOM __MAX\n";//comparo con val inm
-//            operacion += "FSTSW AX \n";//paso los valores del copro al proc
-//            operacion += "SAHF \n";//cargo los valores
-//            operacion += "JA _overflow_suma \n";//si flag G->overflow
-//            operacion += "FCOM __MIN\n";
-//            operacion += "FSTSW AX\n";
-//            operacion += "SAHF\n";
-//            operacion += "JB _overflow_suma\n";
-        }
-        return operacion;
-    }
+		System.out.println("===terceto suma===");
+		System.out.println("====terceto"+this);
+		String Codigo= new String();
+		Element op1 = (Element) this.first;
+		Element op2 = (Element) this.second;
+		if ((op1.getClassType().equals("Terceto")) && (op2.getClassType().equals("Terceto"))){
+			boolean Arreglo1 = (((Element)op1).getOperator().equals(">^"));
+			boolean Arreglo2 = (((Element)op2).getOperator().equals(">^"));
+			if ((Arreglo1) && (Arreglo2)){ //CONTROLO SI LOS TERCETOS SON ARREGLOS
+				if( this.typeVariable.equals("integer")){
+					Codigo+="MOV "+"EBX" +", " + "dword ptr ["+((Terceto) op1).getAux()+"]"+"\n";
+					Codigo +="ADD " + "EBX" + ", " + "dword ptr ["+((Terceto) op2).getAux()+"]"+"\n";
+					Codigo+= "MOV " + getAux() + ", EBX" +"\n";}
+				else {
+					Codigo += "FLD " + "dword ptr ["+((Terceto) op1).getAux()+"]" + "\n";
+					Codigo += "FADD " + "dword ptr ["+((Terceto) op2).getAux()+"]" + "\n";
+					Codigo += "FST " + getAux() + "\n";//guardo copia  
 
+				}
+
+			}   
+			else  if (Arreglo1){
+
+				if( this.typeVariable.equals("integer")){
+					Codigo+="MOV "+"EBX" +", " + "dword ptr ["+((Terceto) op1).getAux()+"]"+"\n";
+					Codigo +="ADD " + "EBX" + ", " + op2.getOperando() +"\n";
+					Codigo+= "MOV " + getAux() + ", EBX" +"\n";}
+				else {
+					Codigo += "FLD " + "dword ptr ["+((Terceto) op1).getAux()+"]" + "\n";
+					Codigo += "FADD " + op2.getOperando() + "\n";
+					Codigo += "FST " + getAux() + "\n";//guardo copia  
+
+				}
+
+
+			}   
+			else if (Arreglo2)  { 
+				if( this.typeVariable.equals("integer")){
+					Codigo +="MOV " + "EBX" + ", " + "dword ptr ["+((Terceto) op2).getAux()+"]"+"\n";
+					Codigo +="ADD " + "EBX"+ ", " + op1.getOperando() +"\n";
+					Codigo+= "MOV " + getAux() + ", EBX" +"\n";}
+				else {
+					Codigo += "FLD " + op1.getOperando() + "\n";
+					Codigo += "FADD " + "dword ptr ["+((Terceto) op2).getAux()+"]" + "\n";
+					Codigo += "FST " + getAux() + "\n";//guardo copia  
+
+				}
+			}else 
+				if( this.typeVariable.equals("integer")){
+
+					Codigo +="MOV " + "BX"+ ", " + op1.getOperando()+"\n";       
+					Codigo +="ADD " + "BX" + ", " + op2.getOperando()+"\n";
+					Codigo+= "MOV " + getAux() + ", BX" +"\n";
+				}
+				else 
+				{
+					Codigo += "FLD " + op1.getOperando() + "\n";
+					Codigo += "FADD " + op2.getOperando() + "\n";
+					Codigo += "FST " + getAux() + "\n";//guardo copia 	
+				}
+
+		}else 
+			//if (op1.getClassType().equals("Terceto")){
+			if( this.typeVariable.equals("integer")){
+
+				Codigo +="MOV " + "BX"+ ", " + op1.getOperando()+"\n";       
+				Codigo +="ADD " + "BX" + ", " + op2.getOperando()+"\n";
+				Codigo+= "MOV " + getAux() + ", BX" +"\n";
+			}
+			else 
+			{
+				Codigo += "FLD " + op1.getOperando() + "\n";
+				Codigo += "FADD " + op2.getOperando() + "\n";
+				Codigo += "FST " + getAux() + "\n";//guardo copia 	
+			}
+
+		//	}//cierra if de classType
+
+		return Codigo;
+
+
+
+	}
+
+
+	/*
+	 *@Override
+	public String getAssembler() {
+        String Codigo= new String();
+        Element op1 = (Element) this.first;
+        Element op2 = (Element) this.second;
+        //Token aux = new Token("Vacio","");
+        if ((op1.getClassType().equals("Terceto")) && (op2.getClassType().equals("Terceto"))){
+            boolean Arreglo1 = (((Terceto)op1).getOperator().equals(">^"));
+            boolean Arreglo2 = (((Terceto)op2).getOperator().equals(">^"));
+            if ((Arreglo1) && (Arreglo2)){ //CONTROLO SI LOS TERCETOS SON ARREGLOS
+                if( this.typeVariable.equals("integer")){
+                Codigo+="MOV "+"EBX" +", " + "dword ptr ["+((Terceto) op1).getAux()+"]"+"\n";
+                Codigo +="ADD " + "EBX" + ", " + "dword ptr ["+((Terceto) op2).getAux()+"]"+"\n";
+                Codigo+= "MOV " + getAux() + ", EBX" +"\n";}
+                else {
+                    Codigo += "FLD " + "dword ptr ["+((Terceto) op1).getAux()+"]" + "\n";
+                     Codigo += "FADD " + "dword ptr ["+((Terceto) op2).getAux()+"]" + "\n";
+                     Codigo += "FST " + getAux() + "\n";//guardo copia  
+
+                }
+
+            }   
+           else  if (Arreglo1){
+
+            if( this.typeVariable.equals("integer")){
+                    Codigo+="MOV "+"EBX" +", " + "dword ptr ["+((Terceto) op1).getAux()+"]"+"\n";
+                    Codigo +="ADD " + "EBX" + ", " + op2.getOperando() +"\n";
+                    Codigo+= "MOV " + getAux() + ", EBX" +"\n";}
+                    else {
+                        Codigo += "FLD " + "dword ptr ["+((Terceto) op1).getAux()+"]" + "\n";
+                     Codigo += "FADD " + op2.getOperando() + "\n";
+                     Codigo += "FST " + getAux() + "\n";//guardo copia  
+
+                    }
+
+
+                 }   
+                 else if (Arreglo2)  { 
+                    if( this.typeVariable.equals("integer")){
+                        Codigo +="MOV " + "EBX" + ", " + "dword ptr ["+((Terceto) op2).getAux()+"]"+"\n";
+                        Codigo +="ADD " + "EBX"+ ", " + op1.getOperando() +"\n";
+                         Codigo+= "MOV " + getAux() + ", EBX" +"\n";}
+                   else {
+                    Codigo += "FLD " + op1.getOperando() + "\n";
+                     Codigo += "FADD " + "dword ptr ["+((Terceto) op2).getAux()+"]" + "\n";
+                     Codigo += "FST " + getAux() + "\n";//guardo copia  
+
+                   }
+                     } 
+            }
+                else 
+                  {
+                     if( this.typeVariable.equals("integer")){
+
+                        Codigo +="MOV " + "BX"+ ", " + op1.getOperando()+"\n";       
+                        Codigo +="ADD " + "BX" + ", " + op2.getOperando()+"\n";
+                        Codigo+= "MOV " + getAux() + ", BX" +"\n";
+                    }
+                    else 
+                    {
+                     Codigo += "FLD " + op1.getOperando() + "\n";
+                     Codigo += "FADD " + op2.getOperando() + "\n";
+                     Codigo += "FST " + getAux() + "\n";//guardo copia 	
+                    }
+                  }
+
+        return Codigo;
+    }*/ 
 }
 

@@ -20,6 +20,8 @@ public class Token extends Element{
 		this.indexStart = 0;
 		this.rows = 0;
 		this.columns = 0;
+		this.classType = "Token";
+		this.operator = "T";
 		
 	}
 
@@ -33,6 +35,9 @@ public class Token extends Element{
 		this.indexStart = 0;
 		this.rows = 0;
 		this.columns = 0;
+		this.classType = "Token";
+		this.operator = "T";
+		
 	}
 	
 	public Token(String type,String lexema, int lineNumber,Object value,String typeVariable) {
@@ -42,10 +47,12 @@ public class Token extends Element{
 		this.typeVariable=typeVariable;
 		this.value = value;
 		this.use=null;
-		System.err.println("constructor de token sin index start");
+		//System.err.println("constructor de token sin index start");
 		this.indexStart = 0;
 		this.rows = 0;
 		this.columns = 0;
+		this.classType = "Token";
+		this.operator = "T";
 		
 	}
 	
@@ -58,15 +65,26 @@ public class Token extends Element{
 		this.indexStart = indexStart;
 		this.rows = rows;
 		this.columns = columns;
+		this.classType = "Token";
+		this.operator = "T";
+		
+		
 		
 	}
 	
 	
-	
+	/**
+	 * se agrego el if para controlar que no sean constantes y en ese caso se retorna la constante con un guion bajo delante
+	 * 
+	 * 
+	 */
 	@Override
 	public String getOperando() {
+		if (this.getType().equals("INTEGER") || this.getType().equals("FLOAT") ){
 		// TODO Auto-generated method stub
-		return "_"+this.lexema;
+		return "_"+String.valueOf(this.value);	
+		}
+		return "_"+this.lexema;		
 	}
 
 	@Override
@@ -100,7 +118,7 @@ public class Token extends Element{
 		
 	@Override
 	public String toString() {
-		return String.valueOf(lineNumber)+". "+lexema+" - "+type+" - "+typeVariable+" - "+use+" - is"+indexStart;
+		return String.valueOf(lineNumber)+". "+lexema+" - "+type+" - "+typeVariable+" - "+use+" - ope"+operator;
 	}
 
 	@Override
@@ -140,8 +158,10 @@ public class Token extends Element{
 		System.out.println("==========================================getAssembler  terceto"+this);
         if (this.type.equals("IDENTIFICADOR") || this.type.equals("INTEGER") || this.type.equals("FLOAT") || this.type.equals("CADENA")) {
             if (this.lexema.substring(0, 1).equals("@")) {
+                System.out.println("return lexema"+this.lexema);
                 return this.lexema;
             }
+            System.out.println("return get operando"+getOperando());
             return this.getOperando();
         }
 //        if (this.type.equals("integer") || this.type.equals("Float")) {

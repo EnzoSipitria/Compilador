@@ -33,7 +33,7 @@ import javax.swing.border.TitledBorder;
 import assembler.Assembler;
 import parser.Parser;
 import structures.AuxGenerator;
-import structures.Terceto;
+import structures.Element;
 
 import javax.swing.JTextField;
 import javax.swing.GroupLayout;
@@ -256,7 +256,7 @@ public class UI2 extends JFrame {
 				viewTercetos();
 				assembler = new Assembler(parser.getTercetos(),parser.getLexicalAnalizer().getSymbolTable());
 //				addText(txtTokenList, assembler.getCodigo());
-				assembler.initAuxGenerator();// esto reinicia el contador del aux generator cada vez que se compila
+				// esto reinicia el contador del aux generator cada vez que se compila
 				//addText(txtSymbolsTable,parser.getLexicalAnalizer().getSymbolTable().toString());
 				
 				/**
@@ -336,7 +336,7 @@ public class UI2 extends JFrame {
 
 	private void viewTercetos() {
 		txtTercetos.setText("");
-		for (Terceto terceto: parser.getTercetos()){
+		for (Element terceto: parser.getTercetos()){
 			addText(txtTercetos, terceto.getPosition()+". "+terceto.toString()+"\n");
 		}
 	}
@@ -394,7 +394,9 @@ public class UI2 extends JFrame {
 		BufferedWriter bufferwriter = null;
 //		System.out.println(file.getAbsolutePath());
 		try {
-			out = new FileWriter("D:\\Compartida Virtual\\Workspace\\Compilador\\assembler.txt");
+			
+			out = new FileWriter(file.getPath()+"assembler.txt");
+			System.out.println(file.getPath()+"assembler.txt");
 			bufferwriter = new BufferedWriter(out);
 			bufferwriter.write(code);
 			bufferwriter.close();

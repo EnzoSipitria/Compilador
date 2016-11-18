@@ -7,6 +7,7 @@ public class TercetoConversion extends Terceto {
 		this.first    = first;
 		this.second   = second; // second guardara el tipo de la conversion del elemento
 		this.position = 0;
+		this.classType = "Terceto";
 	}
 
 	@Override
