@@ -17,6 +17,62 @@ public class TercetoMultiplicacion extends Terceto {
 	}
 
 	@Override
+	public String getAssembler() {
+		System.out.println("===TERCETO MULTIPLICACION getAssembler() ===");
+
+		Element operando1 = (Element) this.first;
+		Element operando2 = (Element) this.second;
+
+		System.out.println("terceto "+operando1+" + "+operando2+" variable auxiliar"+this.getAux());
+		String codigo = "";
+
+		if (this.typeVariable.equals("integer")){
+			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
+
+				codigo += "sentencias assembler para los dos operando de matrices";
+
+			}
+			else
+				if (operando1.getOperator().equals(">^")) {
+					codigo += "sentencias assembler para elementos de matriz cuando el primer operando es una matriz";
+				}
+				else 
+					if  (operando2.getOperator().equals(">^")) {
+						codigo += "sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
+					} 
+					else{
+						codigo += "MOV AX, " + operando1.getOperando() + "\n";
+						codigo += "MOV DX, 0\n";   
+						codigo += "IMUL AX, " + operando2.getOperando() + "\n";
+						codigo += "MOV " + getAux() + ", AX \n";
+					} 
+		}
+		else if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
+
+			codigo += "sentencias assembler para los dos operando de matrices";
+
+		}
+		else 
+			if (operando1.getOperator().equals(">^")) {
+				codigo += "sentencias assembler para elementos de matriz cuando el primer operando es una matriz";
+			}
+			else 
+				if  (operando2.getOperator().equals(">^")) {
+					codigo += "sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
+				} 
+				else { 
+					codigo += "FLD " + operando1.getOperando() + "\n";
+					codigo += "FMUL " + operando2.getOperando() + "\n";
+					codigo += "FSTP " + getAux() + "\n";//guardo copia 	
+				}
+
+		return codigo;
+	}
+
+
+
+}
+/*@Override
 	public String getAssembler(){
 		System.out.println("===terceto multiplicacion===");
 		System.out.println("====terceto"+this);
@@ -102,3 +158,4 @@ public class TercetoMultiplicacion extends Terceto {
 	}
 
 }
+ */

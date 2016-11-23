@@ -19,6 +19,63 @@ public class TercetoResta extends Terceto {
 
 	@Override
 	public String getAssembler() {
+		System.out.println("===TERCETO RESTA getAssembler() ===");
+
+		Element operando1 = (Element) this.first;
+		Element operando2 = (Element) this.second;
+
+		System.out.println("terceto "+operando1+" + "+operando2+" variable auxiliar"+this.getAux());
+		String codigo = "";
+
+		if (this.typeVariable.equals("integer")){
+			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
+
+				codigo += "sentencias assembler para los dos operando de matrices";
+
+			}
+			else
+				if (operando1.getOperator().equals(">^")) {
+					codigo += "sentencias assembler para elementos de matriz cuando el primer operando es una matriz";
+				}
+				else 
+					if  (operando2.getOperator().equals(">^")) {
+						codigo += "sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
+					} 
+					else{
+						codigo +="MOV " + "BX"+ ", " + operando1.getOperando()+"\n";       
+						codigo +="SUB " + "BX" + ", " + operando2.getOperando()+"\n";
+						codigo+= "MOV " + this.getAux() + ", BX" +"\n";
+					} 
+		}
+		else   // if this.typeVariable.equals("integer") => rama por float 
+			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
+
+				codigo += "sentencias assembler para los dos operando de matrices";
+
+			}
+			else if (operando1.getOperator().equals(">^")) {
+				codigo += "sentencias assembler para elementos de matriz cuando el primer operando es una matriz";
+			}
+			else if  (operando2.getOperator().equals(">^")) {
+				codigo += "sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
+			} 
+			else{
+
+				codigo += "FLD " + operando1.getOperando() + "\n";
+				codigo += "FSUB " + operando2.getOperando() + "\n";
+				codigo += "FST " + this.getAux() + "\n";//guardo copia 	
+			}
+
+		return codigo;
+	}
+
+
+
+}	
+
+/*	
+	@Override
+	public String getAssembler() {
 		System.out.println("===terceto resta===");
 		System.out.println("====terceto"+this);
 		//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -98,4 +155,4 @@ public class TercetoResta extends Terceto {
 		return Codigo;
 	}
 
-}
+}*/

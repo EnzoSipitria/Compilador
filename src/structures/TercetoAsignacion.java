@@ -1,3 +1,4 @@
+
 package structures;
 
 public class TercetoAsignacion extends Terceto{
@@ -8,19 +9,42 @@ public class TercetoAsignacion extends Terceto{
 		this.second   = second;
 		this.position = 0;
 		this.classType = "Terceto";
+		System.out.println("terceto asignacion created");
+		System.out.println("first"+this.first);
+		System.out.println("second"+this.second);
 	}
+
+
+
+	@Override
+	public void setPosition(int position) {
+		System.out.println("position seteada en tereceto"+position);
+		this.position = position;
+	}
+
+
+
+	@Override
+	public void setUse(String use) {
+		// TODO Auto-generated method stub
+		super.setUse(use);
+	}
+
+
 
 	@Override
 	public String getLexema() {
 		// TODO Auto-generated method stub
+
 		return "["+String.valueOf(this.position)+"]";
 	}
 
-	
-	
+
+
 	@Override
 	public void setTypeVariable(String typeVariable) {
 		// TODO Auto-generated method stub
+		System.out.println("type variable seteado"+typeVariable);
 		this.typeVariable=typeVariable;
 	}
 
@@ -29,19 +53,55 @@ public class TercetoAsignacion extends Terceto{
 		return  "("+operator+","+((Element) first).getLexema()+","+((Element)second).getLexema()+")";
 	}
 
+	@Override
+	public String getAssembler() {
+		System.out.println("=== TERCETO ASIGNACION getAssembler() ===");
+		Element variable = (Element) this.first; 
+		Element expresion = (Element) this.second;
+		System.out.println("terceto "+variable+" := "+expresion+" variable auxiliar must be null:"+typeVariable);
+		String codigo = "";
+		//		if (this.typeVariable == null) {this.typeVariable="integer"; System.out.println("tipo cambiado");}
 
 
-	/**
-	 * 
-	 * TODO: Acomodar IF (terceto) para que quede mas comprensible, yno se repita tanto codigo
-	 * 
-	 * posible problema: cuando vengan 2 elementos que sean 1 terceto y 1 token...
-	 * 
-	 */
 
+		if (this.typeVariable.equals("integer")){
+			if (expresion.getOperator().equals(">^")){
+
+				codigo += "MOV EBX, " +  "dword ptr ["+expresion.getOperando()+"]"+"\n"; //o aca habria que cargarlo a BX por ser enteros de 2 bytes
+				codigo += "MOV "+variable.getOperando()+", BX\n";//aca puede ser que sea EBX en lugar de BX
+
+			}else {
+				codigo += "MOV BX, " + expresion.getOperando() + "\n";
+				codigo += "MOV " + variable.getOperando() + ", BX\n";
+			}
+			} 
+		else{ // if this.typeVariable.equals("integer") => rama por float
+			if (expresion.getOperator().equals(">^")){
+				codigo += "sentencias assembler para elementos de matriz ";
+			}else{
+				codigo += "FLD " + expresion.getOperando() + "\n";
+				codigo += "FSTP " + variable.getOperando() + "\n";
+			}
+		}
+
+		return codigo;
+	}
+
+
+
+}
+
+/**
+ * 
+ * TODO: Acomodar IF (terceto) para que quede mas comprensible, yno se repita tanto codigo
+ * 
+ * posible problema: cuando vengan 2 elementos que sean 1 terceto y 1 token...
+ * 
+ */
+/*
 	@Override
 	public String getAssembler(){
-		
+
 		System.out.println("===terceto asignacion===");
 		System.out.println("====terceto"+this);
 		String Codigo= "";
@@ -170,9 +230,9 @@ public class TercetoAsignacion extends Terceto{
 
 
 				}   
-				
-				
-				
+
+
+
 			}else if(op2.getClassType().equals("Terceto")){
 				System.out.println("HOLA SOY LA MATRIZ QUE ACABO DE TOCAR EN ARREGLO 2");
 				boolean arreglo2 = (((Element)op2).getOperator().equals(">^"));
@@ -226,7 +286,7 @@ public class TercetoAsignacion extends Terceto{
 //					Codigo += "FLD " + ope2 + "\n";
 //					Codigo += "FSTP " + ope1 + "\n";
 //				}
-			
+
 
 
 
@@ -253,3 +313,4 @@ public class TercetoAsignacion extends Terceto{
 		return Codigo;
 	}
 }
+ */
