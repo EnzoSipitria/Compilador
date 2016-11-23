@@ -110,7 +110,7 @@ public class UI2 extends JFrame {
 		txtReservedWords.setEditable(false);
 
 		/*
-		 * ocultar esta pestaña
+		 * ocultar esta pestaÃ±a
 		 */
 		txtTokenList = new JTextArea();
         txtTokenList.setEditable(false); 
@@ -295,7 +295,7 @@ public class UI2 extends JFrame {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(tabRight, GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE))
 						.addComponent(tabBottom, GroupLayout.DEFAULT_SIZE, 1158, Short.MAX_VALUE))
-					.addGap(96))
+					.addGap(10))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
