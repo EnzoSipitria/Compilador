@@ -25,6 +25,16 @@ public class Assembler {
 
     }
  
+    /**
+     *  consideraciones:
+ cuanto trabajamos con matrices y sus puenteros usar el registro en su maximo EBX por ejemplo
+ despues trabajar con bx  solo en todos los tercetos involucrados
+ por ejemplo:
+  Codigo+="MOV "+"EBX" +", " + "dword ptr ["+Op1.getAux()+"]"+"\n"; // aca siempre se trabaja con registros de 32 se ve q al usar el dword aumenta el tamaño del manejo de direccionnes a 32 
+                    Codigo +="ADD " + "BX" + ", " + op2.getOperando() +"\n";// aca siempre q trabajemos con @aux's trabajar con registros de 16 lo hace bien hasta ahora lo q  probe funco 
+                     Codigo+= "MOV" + getaux() + "BX" +"\n"
+     * 
+     */
     
     public ArrayList<Terceto> getListaTerceto() {
 		return listaTerceto;
@@ -141,8 +151,16 @@ public class Assembler {
    	return null;
    }
 
+   private String getIndexControl() {
+       String str = "";
+       str += "_indexcontrol:\n";
+       str += "invoke MessageBox, NULL, addr _msjIC, addr _msjIC, MB_OK\n";///// hacer un mensajer de error como el dividido en el getheadlines
+       str += "invoke ExitProcess, 0\n";
+       return str;
+   }
+   
     private String getDivCero() {
-        String str = new String();
+        String str = "";
         str += "_division_cero:\n";
         str += "invoke MessageBox, NULL, addr _msjDC, addr _msjDC, MB_OK\n";
         str += "invoke ExitProcess, 0\n";
@@ -150,6 +168,11 @@ public class Assembler {
     }
 
     public String getCodigo() {
+    	System.out.println("LISTA DE TERCETOS");
+    	for (int i = 0; i < listaTerceto.size(); i++) {
+    		System.out.println(listaTerceto.get(i));
+			
+		}
     	String Assemblercode = new String();
     	Assemblercode += getheadlines();
     	String instrucciones = new String();
@@ -157,6 +180,7 @@ public class Assembler {
     	instrucciones += ".code\n";
     	//        instrucciones += getcontrolindex();
     	instrucciones += getDivCero();
+    	instrucciones += getIndexControl();
     	instrucciones += "start:\n";
     	System.out.println("=====getCOdigo===========");
     	
@@ -164,10 +188,10 @@ public class Assembler {
     	for (Terceto terceto : listaTerceto) {
     		System.out.println("====================================================>"+terceto);
     		
-    		System.out.println("get USE"+ terceto.getUse());
-    		System.out.println("CONDICION EVALUADORA: "+(!terceto.getOperator().equals("label") && (terceto.getOperator().equals("simple") )));
-
-    		if(!terceto.getOperator().equals("label")){
+//    		System.out.println("get USE");
+    		System.out.println("CONDICION EVALUADORA: "+terceto.getOperator()+"   typeVariable"+terceto.getTypeVariable());
+    		
+    		if(operators.contains(terceto.getOperator())){
     			System.out.println("=TTTTTTTTT=============== aux generada "+generator.control());
 				terceto.setAux("@"+generator.getName());
 				Token token = new Token("IDENTIFICADOR", terceto.getAux(), 0, 0, terceto.getTypeVariable());
@@ -201,7 +225,7 @@ public class Assembler {
 		operators.add("-");
 		operators.add("*");
 		operators.add("/");
-		operators.add(":=");
+		//operators.add(":=");
 		operators.add("BF");
 		operators.add("BI");
 		operators.add(">");
@@ -212,6 +236,8 @@ public class Assembler {
 		operators.add("--");
 		operators.add(">^");
 		operators.add("conv");
+		operators.add("^");
+		operators.add("simple");
 		
 		
 	}
