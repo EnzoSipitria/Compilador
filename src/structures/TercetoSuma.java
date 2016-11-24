@@ -36,16 +36,24 @@ public class TercetoSuma extends Terceto {
 		if (this.typeVariable.equals("integer")){
 			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
 
-				codigo += "sentencias assembler para los dos operando de matrices";
-
+				codigo += "---------------------------------------sentencias assembler para los dos operando de matrices";
+				codigo+="MOV "+"EBX" +", " + "dword ptr ["+operando1.getOperando()+"]"+"\n";
+				codigo +="ADD " + "EBX" + ", " + "dword ptr ["+operando2.getOperando()+"]"+"\n";
+				codigo+= "MOV " + getAux() + ", BX" +"\n";
 			}
 			else
 				if (operando1.getOperator().equals(">^")) {
 					codigo += "sentencias assembler para elementos de matriz cuando el primer operando es una matriz";
+					codigo+="MOV "+"EBX" +", " + "dword ptr ["+operando1.getOperando()+"]"+"\n";
+					codigo +="ADD "+"EBX"+", "+operando2.getOperando()+"\n";
+					codigo+= "MOV " + getAux() + ", BX" +"\n";
 				}
 				else 
 					if  (operando2.getOperator().equals(">^")) {
-						codigo += "sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
+						codigo += "------------------------sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
+						codigo+="MOV "+"EBX"+", "+"dword ptr ["+operando2.getOperando()+"]"+"\n";
+						codigo +="ADD "+"EBX"+", "+operando1.getOperando()+"\n";
+						codigo+= "MOV " + getAux() + ", BX" +"\n";
 					} 
 					else{
 

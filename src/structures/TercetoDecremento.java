@@ -30,11 +30,11 @@ public class TercetoDecremento extends Terceto{
         if (((Element) this.first).getTypeVariable().equals("integer")) {
             operacion += "MOV BX, " + op1 + "\n";
             operacion += "SUB BX, " + 1 + "\n";
-            operacion += "MOV " + getAux() + ", BX \n";
+            operacion += "MOV " + op1 + ", BX \n";
         } else {
             operacion += "FLD " + op1 + "\n";
             operacion += "FSUB " + 1 + "\n";
-            operacion += "FSTP " + getAux() + "\n";
+            operacion += "FSTP " + op1 + "\n";
         }
 
         return operacion;

@@ -231,6 +231,7 @@ inicio_For: FOR '(' asig_for cond_for variable DECREMENTO')' bloque_sentencias  
 asig_for:  IDENTIFICADOR operador_asignacion expresion ';' { assignValue((Element)$1.obj,(Element)$3.obj);
 						    Terceto initFor = new TercetoAsignacion(lexAn.getSymbolTable().getToken(((Element)$1.obj).getLexema()),(Element)$3.obj); 
 							tercetos.add(initFor);
+							initFor.setTypeVariable("integer")
 						    initFor.setPosition(tercetos.size());
 							//stack.push(tercetos.get(tercetos.size()-1)); 
 							//System.out.println("terceto inicio"+stack.peek().toString());
@@ -866,8 +867,8 @@ public void initMatrix (ArrayList<Token> listaValores,Object indexStart, Token i
 					Terceto simpleAssign  = new TercetoSimple(tercetos.size()-1);
 					simpleAssign.setTypeVariable("integer");
 					//OLD: simpleAssign, NEW tercetos.get(tercetos.size()-2)aca cambiamos el segundo parametro del token asignacion para que cuando incializamos al matriz aparezca correctamente
-					
-					TercetoAsignacion assign = new TercetoAsignacion(tercetos.get(tercetos.size()-2),listaValores.get(i));
+					//aca era -2 antes
+					TercetoAsignacion assign = new TercetoAsignacion(tercetos.get(tercetos.size()-1),listaValores.get(i));
 					assign.setTypeVariable("integer");
 					System.out.println("aall muuundoooooooooo 0000000000000000000000 terceto asignacion creado"+assign);
 					//tercetos.remove(tercetos.size()-1);

@@ -9,6 +9,7 @@ public abstract class Element {
 	protected boolean hasLabel= false;
 	protected String classType;
 	protected Object operator;
+	protected String aux;
 	
 	public String getClassType() {
 		return classType;

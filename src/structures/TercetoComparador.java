@@ -23,8 +23,8 @@ public class TercetoComparador extends Terceto{
 		Element op2 = (Element) this.second;
 		//        Token aux = new Token("Vacio","");
 		if ((op1.getClassType().equals("Terceto")) && (op2.getClassType().equals("Terceto"))){
-			boolean Arreglo1 = (((Terceto)op1).getOperando().equals(">^"));
-			boolean Arreglo2 = (((Terceto)op2).getOperando().equals(">^"));
+			boolean Arreglo1 = (((Element)op1).getOperando().equals(">^"));
+			boolean Arreglo2 = (((Element)op2).getOperando().equals(">^"));
 			if ((Arreglo1) && (Arreglo2)){ //CONTROLO SI LOS TERCETOS SON ARREGLOS
 				String ope1 =((Element)this.first).getOperando();
 				String ope2 =((Element)this.second).getOperando();

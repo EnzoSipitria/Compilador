@@ -78,6 +78,14 @@ public class Token extends Element{
 	 * 
 	 * 
 	 */
+	public String getAux(){
+		return this.aux;
+	}
+	
+	public void setAux(String aux) {
+		this.aux=aux;
+	}
+	
 	@Override
 	public String getOperando() {
 		if (this.getType().equals("INTEGER") || this.getType().equals("FLOAT") ){

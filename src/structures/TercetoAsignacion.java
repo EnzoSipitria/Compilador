@@ -70,14 +70,19 @@ public class TercetoAsignacion extends Terceto{
 				codigo += "MOV EBX, " +  "dword ptr ["+expresion.getOperando()+"]"+"\n"; //o aca habria que cargarlo a BX por ser enteros de 2 bytes
 				codigo += "MOV "+variable.getOperando()+", BX\n";//aca puede ser que sea EBX en lugar de BX
 
-			}else {
-				codigo += "MOV BX, " + expresion.getOperando() + "\n";
-				codigo += "MOV " + variable.getOperando() + ", BX\n";
-			}
-			} 
+			}else 
+				if (variable.getOperator().equals(">^")){
+					codigo += "sentencias assembler para elementos de matriz ";
+					codigo += "MOV EBX, " + expresion.getOperando() + "\n";
+					codigo += "MOV dword ptr ["+variable.getOperando()+"], EBX\n";	
+				}else{
+					codigo += "MOV BX, " + expresion.getOperando() + "\n";
+					codigo += "MOV " + variable.getOperando() + ", BX\n";
+				}
+		}	 
 		else{ // if this.typeVariable.equals("integer") => rama por float
 			if (expresion.getOperator().equals(">^")){
-				codigo += "sentencias assembler para elementos de matriz ";
+				codigo += "sentencias float para matrices" ;
 			}else{
 				codigo += "FLD " + expresion.getOperando() + "\n";
 				codigo += "FSTP " + variable.getOperando() + "\n";

@@ -19,7 +19,7 @@ public class TercetoSimple extends Terceto{
 	@Override
 	public String getOperando() {
 		// TODO Auto-generated method stub
-		return "_"+first;
+		return this.aux;
 	}
 
 
@@ -36,7 +36,7 @@ public class TercetoSimple extends Terceto{
 
 	@Override
 	public String getAssembler() {
-		String codigo = "MOV "+this.aux+", "+this.first+"\n";
+		String codigo = "MOV "+getAux()+", "+this.first+"\n";
 		//System.out.println("==========================================getAssembler  terceto"+this);
 		return codigo;
 	}

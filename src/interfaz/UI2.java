@@ -89,6 +89,7 @@ public class UI2 extends JFrame {
 		tabBottom.addTab("Debug", null, tabDebug, null);
 		tabBottom.addTab("Console", null, tabConsole, null);
 
+		JTabbedPane tabSourceCode = new JTabbedPane(JTabbedPane.TOP);
 
 		sourceCodeEditor = new JTextArea();
 		sourceCodeEditor.setBounds(0, 0, 833, 457);
@@ -99,7 +100,6 @@ public class UI2 extends JFrame {
 		TextLineNumber sourceLineNumber = new TextLineNumber(sourceCodeEditor);
 		scrollSourceCode.setRowHeaderView(sourceLineNumber);
 		
-
 		tabRight = new JTabbedPane(JTabbedPane.TOP);
 
 		txtSymbolsTable = new JTextArea();

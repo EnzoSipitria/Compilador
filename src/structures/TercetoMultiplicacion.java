@@ -28,17 +28,29 @@ public class TercetoMultiplicacion extends Terceto {
 
 		if (this.typeVariable.equals("integer")){
 			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
-
 				codigo += "sentencias assembler para los dos operando de matrices";
+				codigo+="MOV "+"EAX" +", " + "dword ptr ["+((Terceto) operando1).getAux()+"]"+"\n";
+				codigo += "MOV DX, 0\n";
+				codigo += "IMUL EAX, " + "dword ptr ["+((Terceto) operando2).getAux()+"]"+ "\n";
+				codigo+= "MOV" + getAux() + "AX" +"\n";
 
 			}
 			else
 				if (operando1.getOperator().equals(">^")) {
 					codigo += "sentencias assembler para elementos de matriz cuando el primer operando es una matriz";
+					codigo+="MOV "+"EAX" +", " + "dword ptr ["+((Terceto) operando1).getAux()+"]"+"\n";
+					codigo += "MOV DX, 0\n";
+					codigo += "IMUL AX, "+((Terceto) operando2).getAux()+"\n";
+					codigo+= "MOV" + getAux() + "AX" +"\n";
 				}
 				else 
 					if  (operando2.getOperator().equals(">^")) {
 						codigo += "sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
+						codigo+="MOV "+"AX" +", "+((Terceto) operando1).getAux()+"\n";
+						codigo += "MOV DX, 0\n";
+						codigo += "IMUL EAX, " + "dword ptr ["+((Terceto) operando2).getAux()+"]"+ "\n";
+						codigo+= "MOV" + getAux() + "AX" +"\n";
+					
 					} 
 					else{
 						codigo += "MOV AX, " + operando1.getOperando() + "\n";

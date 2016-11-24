@@ -24,22 +24,29 @@ public class TercetoResta extends Terceto {
 		Element operando1 = (Element) this.first;
 		Element operando2 = (Element) this.second;
 
-		System.out.println("terceto "+operando1+" + "+operando2+" variable auxiliar"+this.getAux());
+		System.out.println("terceto "+operando1+" - "+operando2+" variable auxiliar"+this.getAux());
 		String codigo = "";
 
 		if (this.typeVariable.equals("integer")){
 			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
-
 				codigo += "sentencias assembler para los dos operando de matrices";
-
+				codigo+="MOV "+"EBX" +", " + "dword ptr ["+((Terceto) operando1).getAux()+"]"+"\n";
+				codigo +="SUB " + "EBX" + ", " + "dword ptr ["+((Terceto) operando2).getAux()+"]"+"\n";
+				codigo+= "MOV " + getAux() + ", BX" +"\n";
 			}
 			else
 				if (operando1.getOperator().equals(">^")) {
 					codigo += "sentencias assembler para elementos de matriz cuando el primer operando es una matriz";
+					codigo+="MOV "+"EBX" +", " + "dword ptr ["+((Terceto) operando1).getAux()+"]"+"\n";
+					codigo +="SUB "+"EBX"+", "+((Terceto) operando2).getAux()+"\n";
+					codigo+= "MOV " + getAux() + ", BX" +"\n";
 				}
 				else 
 					if  (operando2.getOperator().equals(">^")) {
 						codigo += "sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
+						codigo+="MOV "+"EBX"+", "+"dword ptr ["+((Terceto) operando2).getAux()+"]"+"\n";
+						codigo +="SUB "+"EBX"+", "+((Terceto) operando1).getAux()+"\n";
+						codigo+= "MOV " + getAux() + ", BX" +"\n";
 					} 
 					else{
 						codigo +="MOV " + "BX"+ ", " + operando1.getOperando()+"\n";       

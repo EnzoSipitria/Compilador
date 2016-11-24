@@ -4,7 +4,8 @@ public abstract class Terceto extends Element{
 
 	protected Object first;
 	protected Object second;
-	protected String aux;
+	protected int number = 0;
+	
 	
 //	public String toString(){
 //		return "("+operator+","+((Element) first).getLexema()+","+((Element) second).getLexema()+")";
@@ -73,6 +74,10 @@ public abstract class Terceto extends Element{
 
 	public void setPosition(int position) {
 		this.position = position;
+	}
+
+	public void setNumber(int value) {
+		this.number=value;
 	}
 	
 	

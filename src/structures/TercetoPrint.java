@@ -20,16 +20,17 @@ public class TercetoPrint extends Terceto {
 	@Override
 	public String getAssembler() {
 		
-        String cadena = ((Token)first).getAssembler();
-        
-        String name = cadena.substring(2, cadena.length()-1);
-    	name = name.replaceAll(" ", "");
-    	name = name.substring(0, Math.min(15, name.length()));
-    	
-    	
-        return "invoke MessageBox, NULL, addr " +name+ ", addr " +name+ ", MB_OK\n";
+		return "invoke MessageBox, NULL, addr " +getAux()+ ", addr " +getAux()+ ", MB_OK\n";
 
 	}
+//        String cadena = ((Token)first).getAssembler();
+        
+//        String name = cadena.substring(2, cadena.length()-1);
+//    	name = name.replaceAll(" ", "");
+//    	name = name.substring(0, Math.min(15, name.length()));
+    	
+    	
+
 
 
 
