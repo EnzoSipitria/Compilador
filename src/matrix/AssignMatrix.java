@@ -66,8 +66,10 @@ public class AssignMatrix extends Matrix {
 	 * @param right
 	 */
 	public void addConvertion(String left, String right){
-		if (matrix[findColumn(left)][findColumn(right)] == null){
-			matrix[findColumn(left)][findColumn(right)]=right;
+		System.out.println("Matrix Assign= Left: "+left+" right: "+right);
+		if (matrix[findColumn(right)][findColumn(left)] == null){
+			System.out.println("resultado de la condicion"+matrix[findColumn(right)][findColumn(left)]);
+			matrix[findColumn(right)][findColumn(left)]=right;
 		}			
 	}
 

@@ -18,14 +18,13 @@ public class TercetoConversion extends Terceto {
 
 	@Override
 	public String getAssembler() {
-		//System.out.println("==========================================getAssembler  terceto"+this);
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-		String op1 =((Element)this.first).getOperando();
+		Element operando1 =((Element)this.first);
 		String instruccion ="";
-		
+		System.out.println(operando1+": este fue el operando 1 de la conversion");
+		//aca generar sentencias assembler para control de perdida de informacion
 		//solamente la conversion, la cuenta en le siguiente paso
-        instruccion += "FILD " + op1 + "\n";
-//        instruccion += "FSTP " + getAux() + "\n";
+        instruccion += "FILD " + operando1.getOperando() + "\n";
+        instruccion += "FSTP " + getAux() + "\n";
         return instruccion;
     } 
 

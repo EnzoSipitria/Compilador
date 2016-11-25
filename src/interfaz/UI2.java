@@ -395,8 +395,8 @@ public class UI2 extends JFrame {
 //		System.out.println(file.getAbsolutePath());
 		try {
 			
-			out = new FileWriter(file.getPath()+"assembler.txt");
-			System.out.println(file.getPath()+"assembler.txt");
+			out = new FileWriter("assembler.asm");
+			System.out.println("assembler.txt");
 			bufferwriter = new BufferedWriter(out);
 			bufferwriter.write(code);
 			bufferwriter.close();

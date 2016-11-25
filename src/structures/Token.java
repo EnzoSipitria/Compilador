@@ -1,16 +1,16 @@
 package structures;
 
 public class Token extends Element{
-	
+
 	private String lexema;
 	private int lineNumber;
 	private String type; // tipo de token IDENTIFICADOR LITERAL ANOTACION etc
 	private int indexStart;
 	private int rows;
 	private int columns;
-	
 
-	
+
+
 	public Token(String type,String lexema, int lineNumber) {
 		this.lexema=lexema;
 		this.lineNumber=lineNumber;
@@ -22,7 +22,7 @@ public class Token extends Element{
 		this.columns = 0;
 		this.classType = "Token";
 		this.operator = "T";
-		
+
 	}
 
 	public Token(String type,String lexema, int lineNumber,Object value) {
@@ -37,9 +37,9 @@ public class Token extends Element{
 		this.columns = 0;
 		this.classType = "Token";
 		this.operator = "T";
-		
+
 	}
-	
+
 	public Token(String type,String lexema, int lineNumber,Object value,String typeVariable) {
 		this.lexema=lexema;
 		this.lineNumber=lineNumber;
@@ -53,9 +53,9 @@ public class Token extends Element{
 		this.columns = 0;
 		this.classType = "Token";
 		this.operator = "T";
-		
+
 	}
-	
+
 	public Token(String type, int lineNumber, String lexema, int indexStart, int rows, int columns, Object value) {
 		this.lexema=lexema;
 		this.lineNumber=lineNumber;
@@ -67,12 +67,12 @@ public class Token extends Element{
 		this.columns = columns;
 		this.classType = "Token";
 		this.operator = "T";
-		
-		
-		
+
+
+
 	}
-	
-	
+
+
 	/**
 	 * se agrego el if para controlar que no sean constantes y en ese caso se retorna la constante con un guion bajo delante
 	 * 
@@ -81,16 +81,18 @@ public class Token extends Element{
 	public String getAux(){
 		return this.aux;
 	}
-	
+
 	public void setAux(String aux) {
 		this.aux=aux;
 	}
-	
+
 	@Override
 	public String getOperando() {
-		if (this.getType().equals("INTEGER") || this.getType().equals("FLOAT") ){
-		// TODO Auto-generated method stub
-		return "_"+String.valueOf(this.value);	
+		if (this.getType().equals("INTEGER")){
+			// TODO Auto-generated method stub
+			return "_"+String.valueOf(this.value);	
+		}else if (this.getType().equals("FLOAT")){
+			return this.aux;
 		}
 		return "_"+this.lexema;		
 	}
@@ -123,7 +125,7 @@ public class Token extends Element{
 	public int getLineNumber() {
 		return lineNumber;
 	}
-		
+
 	@Override
 	public String toString() {
 		return String.valueOf(lineNumber)+". "+lexema+" - "+type+" - "+typeVariable+" - "+use+" - ope"+operator;
@@ -136,7 +138,7 @@ public class Token extends Element{
 	}
 
 	//Esto pertenece los token de matrices
-	
+
 	public int getIndexStart() {
 		return indexStart;
 	}
@@ -164,22 +166,22 @@ public class Token extends Element{
 	@Override
 	public String getAssembler() {
 		System.out.println("==========================================getAssembler  terceto"+this);
-        if (this.type.equals("IDENTIFICADOR") || this.type.equals("INTEGER") || this.type.equals("FLOAT") || this.type.equals("CADENA")) {
-            if (this.lexema.substring(0, 1).equals("@")) {
-                System.out.println("return lexema"+this.lexema);
-                return this.lexema;
-            }
-            System.out.println("return get operando"+getOperando());
-            return this.getOperando();
-        }
-//        if (this.type.equals("integer") || this.type.equals("Float")) {
-//            return generadorAssembler.getIdConst(this);
-//        }
-//        if (this.type.equals("Cadena")) {// no va 
-//            return "_" + this.lexema;
-//        }
-        return "notexistintheproyect";
-    }	
-	
-	
+		if (this.type.equals("IDENTIFICADOR") || this.type.equals("INTEGER") || this.type.equals("FLOAT") || this.type.equals("CADENA")) {
+			if (this.lexema.substring(0, 1).equals("@")) {
+				System.out.println("return lexema"+this.lexema);
+				return this.lexema;
+			}
+			System.out.println("return get operando"+getOperando());
+			return this.getOperando();
+		}
+		//        if (this.type.equals("integer") || this.type.equals("Float")) {
+		//            return generadorAssembler.getIdConst(this);
+		//        }
+		//        if (this.type.equals("Cadena")) {// no va 
+		//            return "_" + this.lexema;
+		//        }
+		return "notexistintheproyect";
+	}	
+
+
 }

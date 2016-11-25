@@ -12,6 +12,37 @@ import structures.Element;
 import structures.Terceto;
 import structures.Token;
 
+
+
+/**
+ * cosas para hacer:
+ *  
+ *  Revisar operaciones con flotantes{
+ *  									suma
+ *  									resta
+ *  									multiplicacion
+ *  									division
+ *  									conversiones
+ *  									comparaciones
+ *  								}
+ *  
+ *  cambiar el tipo en la inicializacion de auxiliares (terceto referencia para las direcciones de la matriz)
+ *  
+ *  control de perdida de informacion
+ *  
+ *  agregar matrices assembler
+ *  
+ *  agregar if errores compilacion no generar assembler
+ * 
+ *  agregar al informe donde estan las palabras reservadas
+ *  
+ *  revisar informe
+ * 
+ * 
+ *  
+ * @author Maxi
+ *
+ */
 public class Assembler {
 
 	private ArrayList<Terceto> listaTerceto;
@@ -122,7 +153,8 @@ public class Assembler {
 						declaration += token.getAssembler() + " DD "+size+" DUP(?)\n";
 					} else 
 						if (token.getType().equals("FLOAT")){
-							declaration += token.getAssembler() + " DD "+token.getValue()+"\n";
+//							token.setAux("_f"+generator.getName());
+							declaration += token.getAux() + " DD "+token.getValue()+"\n";
 						}else {declaration += token.getAssembler() + " DD ?\n";//  flotantes = 8 bytes
 						} 
 				} 
@@ -194,17 +226,26 @@ public class Assembler {
 
 		generateOperators();
 		for (Terceto terceto : listaTerceto) {
-			System.out.println("====================================================>"+terceto);
+//			System.out.println("====================================================>"+terceto);
 
 			//    		System.out.println("get USE");
-			System.out.println("CONDICION EVALUADORA: "+terceto.getOperator()+"   typeVariable"+terceto.getTypeVariable());
+			System.out.println("CONDICION EVALUADORA: "+terceto+"   typeVariable"+terceto.getTypeVariable());
 
 			if(operators.contains(terceto.getOperator())){
+				if (terceto.getOperator().equals("conv")){
+					if (((Element)terceto.getFirst()).getClassType().equals("Token")){
+					Token token = symbolTable.getToken(((Token) terceto.getFirst()).getLexema());
+					String aux = "_"+generator.getName();
+					token.setAux(aux);}
+				//	terceto.setAux(aux);}
+				}
 				System.out.println("=TTTTTTTTT=============== aux generada "+generator.control());
 				terceto.setAux("@"+generator.getName());
 				Token token = new Token("IDENTIFICADOR", terceto.getAux(), 0, 0, terceto.getTypeVariable());
 				symbolTable.addToken(terceto.getAux(), token);
+				
 			}
+			
 			if (terceto.getOperator().equals("print")){
 				Token token = symbolTable.getToken(((Token) terceto.getFirst()).getLexema());
 				String aux = "_"+generator.getName();
