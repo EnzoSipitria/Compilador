@@ -254,7 +254,17 @@ public class UI2 extends JFrame {
 				addText(txtTokenList, parser.getLexicalAnalizer().viewTokenList());
 				viewEstructuras();	
 				viewTercetos();
-				assembler = new Assembler(parser.getTercetos(),parser.getLexicalAnalizer().getSymbolTable());
+				System.out.println("ERRORES"+parser.getErrores().size());
+				if (parser.getErrores().size()!=0 || parser.getLexicalAnalizer().getErrors().size()!=0  ){
+					
+					JOptionPane.showMessageDialog(null, "Consulte Debug para detalle de errores", "ERRORES DE COMPILACION", JOptionPane.INFORMATION_MESSAGE);
+				
+				} else{
+					
+					assembler = new Assembler(parser.getTercetos(),parser.getLexicalAnalizer().getSymbolTable());
+					writeAssemblerFile(assembler.getCodigo());}
+				txtSymbolsTable.setText("");
+				addText(txtSymbolsTable,parser.getLexicalAnalizer().getSymbolTable().toString());
 //				addText(txtTokenList, assembler.getCodigo());
 				// esto reinicia el contador del aux generator cada vez que se compila
 				//addText(txtSymbolsTable,parser.getLexicalAnalizer().getSymbolTable().toString());
@@ -264,7 +274,6 @@ public class UI2 extends JFrame {
 				 * 
 				 */
 //				System.out.println("Voy a escribir el codigo assembler"+"\n");
-				writeAssemblerFile(assembler.getCodigo());
 				
 //				Set<String> keys = parser.getLexicalAnalizer().getSymbolTable().getTokenList().keySet();
 //				for (String string : keys) {

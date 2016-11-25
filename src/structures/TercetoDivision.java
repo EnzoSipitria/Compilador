@@ -88,6 +88,15 @@ public class TercetoDivision extends Terceto {
 				codigo += "sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
 			} 
 			else { 
+                codigo += "FLD " + operando2.getOperando() + "\n";
+                codigo += "FTST\n";
+                codigo += "XOR BX, BX\n"; //set eax to 0 
+                codigo += "FSTSW AX \n";//paso los valores del copro al proc
+                codigo += "SAHF \n";//cargo los valores
+                codigo += "JE _division_cero\n";
+                codigo += "FLD " + operando1.getOperando() + "\n";
+                codigo += "FDIVR \n"; // o "FDIV ST, ST(1)\n";
+                codigo += "FSTP " + getAux() + "\n";
 
 			}
 

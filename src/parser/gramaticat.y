@@ -526,9 +526,10 @@ valor_matrix : IDENTIFICADOR '[' expresion ']' '['expresion']' {System.out.print
 																 System.out.println("ultimos tercetos "+tercetos.size()+" agregados"+tercetos.get(tercetos.size()-2));
 																 //tercetos.get(tercetos.size()-1).setUse("mat");
 																 $$.obj = tercetos.get(tercetos.size()-1);
-																 if ( !((Element)$3.obj).getTypeVariable().equals("integer") || !((Element)$6.obj).getTypeVariable().equals("integer") )
+																 if ( !((Element)$3.obj).getTypeVariable().equals("integer") || !((Element)$6.obj).getTypeVariable().equals("integer") ){
 																	UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". Variable ["+((Token)$1.obj).getLexema()+"] con limites no enteros");
 																	errores.add("Linea: "+lexAn.getLineNumber()+"Variable matriz con limites de tipo erroneos");
+																	}
 																}; 		
 
 

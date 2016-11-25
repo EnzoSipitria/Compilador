@@ -248,6 +248,14 @@ public class LexicalAnalyzer {
 		}
 		return values;
 	}
+
+	public ArrayList<String> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(ArrayList<String> errors) {
+		this.errors = errors;
+	}
 	
 
 	}

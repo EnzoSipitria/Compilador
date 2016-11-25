@@ -1691,9 +1691,10 @@ case 75:
 																 System.out.println("ultimos tercetos "+tercetos.size()+" agregados"+tercetos.get(tercetos.size()-2));
 																 /*tercetos.get(tercetos.size()-1).setUse("mat");*/
 																 yyval.obj = tercetos.get(tercetos.size()-1);
-																 if ( !((Element)val_peek(4).obj).getTypeVariable().equals("integer") || !((Element)val_peek(1).obj).getTypeVariable().equals("integer") )
+																 if ( !((Element)val_peek(4).obj).getTypeVariable().equals("integer") || !((Element)val_peek(1).obj).getTypeVariable().equals("integer") ){
 																	UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". Variable ["+((Token)val_peek(6).obj).getLexema()+"] con limites no enteros");
 																	errores.add("Linea: "+lexAn.getLineNumber()+"Variable matriz con limites de tipo erroneos");
+																	}
 																}
 break;
 //#line 1622 "Parser.java"

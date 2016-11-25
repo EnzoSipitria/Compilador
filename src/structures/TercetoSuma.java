@@ -37,23 +37,27 @@ public class TercetoSuma extends Terceto {
 			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
 
 				codigo += "---------------------------------------sentencias assembler para los dos operando de matrices";
-				codigo+="MOV "+"EBX" +", " + "dword ptr ["+operando1.getOperando()+"]"+"\n";
-				codigo +="ADD " + "EBX" + ", " + "dword ptr ["+operando2.getOperando()+"]"+"\n";
-				codigo+= "MOV " + getAux() + ", BX" +"\n";
+				codigo += "MOV EAX, "+operando1.getOperando()+"\n";
+				codigo += "MOV BX, [EAX]\n";
+				codigo += "MOV EAX, "+operando2.getOperando()+"\n";
+				codigo += "ADD BX, [EAX]\n";
+				codigo += "MOV "+getAux()+", BX\n";
 			}
 			else
 				if (operando1.getOperator().equals(">^")) {
 					codigo += "sentencias assembler para elementos de matriz cuando el primer operando es una matriz";
-					codigo+="MOV "+"EBX" +", " + "dword ptr ["+operando1.getOperando()+"]"+"\n";
-					codigo +="ADD "+"EBX"+", "+operando2.getOperando()+"\n";
-					codigo+= "MOV " + getAux() + ", BX" +"\n";
+					codigo += "MOV EAX, "+operando1.getOperando()+"\n";
+					codigo += "MOV BX, [EAX]\n";
+					codigo += "ADD BX, "+operando2.getOperando()+"\n";
+					codigo += "MOV "+getAux()+", BX\n";
 				}
 				else 
 					if  (operando2.getOperator().equals(">^")) {
 						codigo += "------------------------sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
-						codigo+="MOV "+"EBX"+", "+"dword ptr ["+operando2.getOperando()+"]"+"\n";
-						codigo +="ADD "+"EBX"+", "+operando1.getOperando()+"\n";
-						codigo+= "MOV " + getAux() + ", BX" +"\n";
+						codigo += "MOV EAX, "+operando2.getOperando()+"\n";
+						codigo += "MOV BX, [EAX]\n";
+						codigo += "ADD BX, "+operando1.getOperando()+"\n";
+						codigo += "MOV "+getAux()+", BX\n";
 					} 
 					else{
 
@@ -65,14 +69,26 @@ public class TercetoSuma extends Terceto {
 		else // if this.typeVariable.equals("integer") => rama por float 
 			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
 
-				codigo += "sentencias assembler para los dos operando de matrices";
+				codigo += "MOV EAX, "+operando1.getOperando()+"\n";
+				codigo += "FLD [EAX]\n";
+				codigo += "MOV EAX, "+operando2.getOperando()+"\n";
+				codigo += "FADD [EAX]\n";
+				codigo += "FSTP "+getAux()+"\n";
 
 			}
 			else if (operando1.getOperator().equals(">^")) {
 				codigo += "sentencias assembler para elementos de matriz cuando el primer operando es una matriz";
+				codigo += "MOV EAX, "+operando1.getOperando()+"\n";
+				codigo += "FLD [EAX]\n";
+				codigo += "FADD "+operando2.getOperando()+"\n";
+				codigo += "FSTP "+getAux()+"\n";
 			}
 			else if  (operando2.getOperator().equals(">^")) {
 				codigo += "sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
+				codigo += "MOV EAX, "+operando2.getOperando()+"\n";
+				codigo += "FLD [EAX]\n";
+				codigo += "FADD "+operando1.getOperando()+"\n";
+				codigo += "FSTP "+getAux()+"\n";
 			} 
 			else { 
 				codigo += "FLD " + operando1.getOperando() + "\n";

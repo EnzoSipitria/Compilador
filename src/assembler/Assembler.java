@@ -17,22 +17,11 @@ import structures.Token;
 /**
  * cosas para hacer:
  *  
- *  Revisar operaciones con flotantes{
- *  									suma
- *  									resta
- *  									multiplicacion
- *  									division
- *  									conversiones
- *  									comparaciones
- *  								}
  *  
- *  cambiar el tipo en la inicializacion de auxiliares (terceto referencia para las direcciones de la matriz)
  *  
  *  control de perdida de informacion
  *  
  *  agregar matrices assembler
- *  
- *  agregar if errores compilacion no generar assembler
  * 
  *  agregar al informe donde estan las palabras reservadas
  *  
@@ -41,7 +30,18 @@ import structures.Token;
  * 
  *  
  * @author Maxi
+ *  cambiar el tipo en la inicializacion de auxiliares (terceto referencia para las direcciones de la matriz) AGREGADO
+ *  
+ *  Revisar operaciones con flotantes{
+ *  									suma
+ *  									resta
+ *  									multiplicacion
+ *  									division
+ *  									conversiones
+ *  									comparaciones
+ *  								} agregado
  *
+ *  agregar if errores compilacion no generar assembler agregado
  */
 public class Assembler {
 
@@ -117,11 +117,12 @@ public class Assembler {
 		//    	declaration += "__MAX DD  3.40282347e38\n";
 		declaration += "_msjDC DB \"Error: Division por cero\", 0\n";
 		declaration += "_msjIC DB \"Error: Indices fuera de rango\", 0\n";
+		declaration += "_msjCP DB \"Error: Conversion con Perdida de informacion\", 0\n";
 		Set<String> keys = symbolTable.getTokenList().keySet();
 		//int numCad = 0;
 		//    	System.out.println("TABLA DE SIMBOLOS");
 		//    	System.out.println(symbolTable.toString());
-		//    	System.out.println("====GET DECLARATIONS=====");
+		    	System.out.println("====GET DECLARATIONS=====");
 		int count = 0;
 		for (String key : keys) {
 			/**
@@ -132,7 +133,7 @@ public class Assembler {
 
 			count++;
 			Token token= symbolTable.getToken(key);
-			//    		System.out.println("===================== token"+ token);
+			    		System.out.println("===================== token"+ token);
 			if(token.getTypeVariable() != null){
 				if (token.getTypeVariable().equals("integer")) {
 
@@ -144,23 +145,18 @@ public class Assembler {
 							declaration += token.getAssembler() + " DW "+token.getValue()+"\n";
 						} else declaration += token.getAssembler() + " DW ?\n"; // entero = 2 bytes
 					}	                	
-					//	                	System.out.println("token en get declarations"+token);
-					//	                	System.out.println("declaration "+token.getAssembler() + " DW ?\n");
-					//declaration += token.getAssembler() + " DW ?\n"; // entero = 2 bytes
 				} else {
 					if (token.getUse() != null && token.getUse().equals("mat")){
 						int size = token.getRows()*token.getColumns();
 						declaration += token.getAssembler() + " DD "+size+" DUP(?)\n";
 					} else 
 						if (token.getType().equals("FLOAT")){
-//							token.setAux("_f"+generator.getName());
+							System.out.println("DECLARATIONS:float "+token.getAux()+"        token:"+token);
 							declaration += token.getAux() + " DD "+token.getValue()+"\n";
 						}else {declaration += token.getAssembler() + " DD ?\n";//  flotantes = 8 bytes
 						} 
 				} 
-				//        	    	System.out.println("<<LEXEMA TOKEN >>"+token.getType()+","+token);
 			}else{
-				//        			System.out.println("El token sin tipo es: "+token);
 			}
 
 			if (token.getType().equals("CADENA")/* && token.getTypeVariable().equals("cadena")*/) {  
@@ -206,7 +202,16 @@ public class Assembler {
 		str += "invoke ExitProcess, 0\n";
 		return str;
 	}
+	
+//	private String getConvCPerdida() {
+//		String str = "";
+//		str += "_conversionCPerdida:\n";
+//		str += "invoke MessageBox, NULL, addr _msjCP, addr _msjCP, MB_OK\n";
+//		str += "invoke ExitProcess, 0\n";
+//		return str;
+//	}
 
+	
 	public String getCodigo() {
 		System.out.println("LISTA DE TERCETOS");
 		for (int i = 0; i < listaTerceto.size(); i++) {
@@ -218,34 +223,81 @@ public class Assembler {
 		String instrucciones = new String();
 		generator.initCounter();
 		instrucciones += ".code\n";
-		//        instrucciones += getcontrolindex();
 		instrucciones += getDivCero();
 		instrucciones += getIndexControl();
+//		instrucciones += getConvCPerdida();
 		instrucciones += "start:\n";
 		System.out.println("=====getCOdigo===========");
 
 		generateOperators();
 		for (Terceto terceto : listaTerceto) {
-//			System.out.println("====================================================>"+terceto);
-
-			//    		System.out.println("get USE");
 			System.out.println("CONDICION EVALUADORA: "+terceto+"   typeVariable"+terceto.getTypeVariable());
 
 			if(operators.contains(terceto.getOperator())){
 				if (terceto.getOperator().equals("conv")){
 					if (((Element)terceto.getFirst()).getClassType().equals("Token")){
-					Token token = symbolTable.getToken(((Token) terceto.getFirst()).getLexema());
-					String aux = "_"+generator.getName();
-					token.setAux(aux);}
-				//	terceto.setAux(aux);}
+						Token token = symbolTable.getToken(((Token) terceto.getFirst()).getLexema());
+						String aux = "_"+generator.getName();
+						token.setAux(aux);}
 				}
 				System.out.println("=TTTTTTTTT=============== aux generada "+generator.control());
 				terceto.setAux("@"+generator.getName());
-				Token token = new Token("IDENTIFICADOR", terceto.getAux(), 0, 0, terceto.getTypeVariable());
-				symbolTable.addToken(terceto.getAux(), token);
 				
+				Token token = new Token("IDENTIFICADOR", terceto.getAux(), 0, 0, terceto.getTypeVariable());
+				if (terceto.getOperator().equals(">^")){
+					System.out.println("variabletype del terceto referencia cambiado a float"+terceto.getAux());
+					token.setTypeVariable("float");
+				}
+				if (terceto.getOperator().equals("conv")){
+					System.out.println("variable type del terceto conversion cambiado a second"+terceto.getSecond());
+					token.setTypeVariable((String)terceto.getSecond());
+					
+				}
+				symbolTable.addToken(terceto.getAux(), token);
+
 			}
-			
+
+			System.out.println("IF CONSTANTES===================================================================================");
+			if (!terceto.getOperator().equals("label") && !terceto.getOperator().equals("conv") && !terceto.getOperator().equals("simple") ){
+				if (terceto.getFirst()!=null && ((Element)terceto.getFirst()).getClassType().equals("Token")){
+					Token token = symbolTable.getToken(((Token) terceto.getFirst()).getLexema());
+					if (((Token)terceto.getFirst()).getType().equals("FLOAT")){
+						if (token.getAux()==null){
+							System.out.println("First terceto: "+terceto);
+							System.out.println("first: "+terceto.getFirst());
+							String aux = "_"+generator.getName();
+							System.out.println("AUXILIAR SETEADA first AL TOKEN"+aux);
+							token.setAux(aux);
+							((Token) terceto.getFirst()).setAux(aux);
+						}else {
+							System.out.println("First terceto: "+terceto);
+							System.out.println("first: "+terceto.getFirst());
+							System.out.println("token first"+token.getAux()+"    token: "+token);
+							((Token) terceto.getFirst()).setAux(token.getAux());
+						}
+
+					}
+				}
+				if (terceto.getSecond()!=null && ((Element)terceto.getSecond()).getClassType().equals("Token")){
+					if (((Token)terceto.getSecond()).getType().equals("FLOAT")){
+						Token token = symbolTable.getToken(((Token) terceto.getSecond()).getLexema());
+						if (token.getAux()==null){
+							System.out.println("Second terceto: "+terceto);
+							System.out.println("second: "+terceto.getSecond());
+							String aux = "_"+generator.getName();
+							System.out.println("AUXILIAR SETEADA second AL TOKEN"+aux);
+							token.setAux(aux);
+							((Token) terceto.getSecond()).setAux(aux);
+						}else {
+							System.out.println("Second terceto: "+terceto);
+							System.out.println("second: "+terceto.getSecond());
+							System.out.println("token Second"+token.getAux()+"    token: "+token);
+							((Token) terceto.getSecond()).setAux(token.getAux());
+						}
+
+					}
+				}
+			}
 			if (terceto.getOperator().equals("print")){
 				Token token = symbolTable.getToken(((Token) terceto.getFirst()).getLexema());
 				String aux = "_"+generator.getName();
