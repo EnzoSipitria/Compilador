@@ -8,8 +8,15 @@ public class Token extends Element{
 	private int indexStart;
 	private int rows;
 	private int columns;
+	private int currentRow;
+	private int currentColumn;
+	
 
-
+/**
+ *
+ * valor discernible para currentRow y currentColumn -1 ya que los indices nunca pueden ser negativos
+ * 
+ */
 
 	public Token(String type,String lexema, int lineNumber) {
 		this.lexema=lexema;
@@ -22,6 +29,8 @@ public class Token extends Element{
 		this.columns = 0;
 		this.classType = "Token";
 		this.operator = "T";
+		this.currentColumn=-1;
+		this.currentRow=-1;
 
 	}
 
@@ -37,6 +46,8 @@ public class Token extends Element{
 		this.columns = 0;
 		this.classType = "Token";
 		this.operator = "T";
+		this.currentColumn=-1;
+		this.currentRow=-1;
 
 	}
 
@@ -53,6 +64,8 @@ public class Token extends Element{
 		this.columns = 0;
 		this.classType = "Token";
 		this.operator = "T";
+		this.currentColumn=-1;
+		this.currentRow=-1;
 
 	}
 
@@ -67,9 +80,8 @@ public class Token extends Element{
 		this.columns = columns;
 		this.classType = "Token";
 		this.operator = "T";
-
-
-
+		this.currentColumn=-1;
+		this.currentRow=-1;
 	}
 
 
@@ -78,8 +90,27 @@ public class Token extends Element{
 	 * 
 	 * 
 	 */
+	
+	
+	
 	public String getAux(){
 		return this.aux;
+	}
+
+	public int getCurrentRow() {
+		return currentRow;
+	}
+	
+	public int getCurrentColumn() {
+		return currentColumn;
+	}
+
+	public void setCurrentRow(int currentRow) {
+		this.currentRow = currentRow;
+	}
+
+	public void setCurrentColumn(int currentColumn) {
+		this.currentColumn = currentColumn;
 	}
 
 	public void setAux(String aux) {

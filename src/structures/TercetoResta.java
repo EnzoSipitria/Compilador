@@ -57,20 +57,40 @@ public class TercetoResta extends Terceto {
 		else   // if this.typeVariable.equals("integer") => rama por float 
 			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
 
-				codigo += "sentencias assembler para los dos operando de matrices";
+				codigo += "MOV EDX, dword ptr ["+operando1.getOperando()+"]\n";
+				codigo += "MOV EBX, [EDX]\n";
+				codigo += "MOV _nourriturre, EBX\n";
+				codigo += "FLD _nourriturre\n";
+				codigo += "MOV EDX, dword ptr ["+operando2.getOperando()+"]\n";
+				codigo += "MOV EBX, [EDX]\n";
+				codigo += "MOV _nourriturre, EBX\n";
+				codigo += "FLD _nourriturre\n";
+				codigo += "FSUB\n";
+				codigo += "FSTP "+getAux()+"\n";
 
 			}
 			else if (operando1.getOperator().equals(">^")) {
-				codigo += "sentencias assembler para elementos de matriz cuando el primer operando es una matriz";
+				codigo += "MOV EDX, dword ptr ["+operando1.getOperando()+"]\n";
+				codigo += "MOV EBX, [EDX]\n";
+				codigo += "MOV _nourriturre, EBX\n";
+				codigo += "FLD _nourriturre\n";
+				codigo += "FSUB "+operando2.getOperando()+"\n";
+				codigo += "FSTP "+getAux()+"\n";
 			}
 			else if  (operando2.getOperator().equals(">^")) {
-				codigo += "sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
+				codigo += "FLD "+operando1.getOperando()+"\n";
+				codigo += "MOV EDX, dword ptr ["+operando2.getOperando()+"]\n";
+				codigo += "MOV EBX, [EDX]\n";
+				codigo += "MOV _nourriturre, EBX\n";
+				codigo += "FLD _nourriturre\n";
+				codigo += "FSUB \n";
+				codigo += "FSTP "+getAux()+"\n";
 			} 
 			else{
 
 				codigo += "FLD " + operando1.getOperando() + "\n";
 				codigo += "FSUB " + operando2.getOperando() + "\n";
-				codigo += "FST " + this.getAux() + "\n";//guardo copia 	
+				codigo += "FSTP " + this.getAux() + "\n";//guardo copia 	
 			}
 
 		return codigo;

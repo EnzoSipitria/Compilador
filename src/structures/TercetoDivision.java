@@ -20,81 +20,127 @@ public class TercetoDivision extends Terceto {
 	public String getAssembler() { 
 		System.out.println("===TERCETO DIVISION getAssembler() ===");
 
-		Element operando1 = (Element) this.first;
-		Element operando2 = (Element) this.second;
+		Element dividendo = (Element) this.first;
+		Element divisor = (Element) this.second;
 
-		System.out.println("terceto "+operando1+" + "+operando2+" variable auxiliar"+this.getAux());
-		String codigo = "";
+		System.out.println("terceto "+dividendo+" + "+divisor+" variable auxiliar"+this.getAux());
+		String codigo = ";division\n";
 
 		if (this.typeVariable.equals("integer")){
-			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
-					codigo += "---------------------------------------sentencias assembler para los dos operando de matrices";
+			if ( dividendo.getOperator().equals(">^") && (divisor.getOperator().equals(">^")) ){
+//					codigo += "---------------------------------------sentencias assembler para los dos operando de matrices";				
 					codigo += "XOR BX, BX \n"; //set eax to 0 
-	                codigo += "ADD EBX, " + "dword ptr ["+operando2.getOperando()+"]"+"\n";
-	                codigo += "JZ _division_cero\n";
-	                codigo += "MOV DX, 0\n";//Cargo la parte alta con cero, porque todos
-	                codigo += "MOV EAX, " + "dword ptr ["+operando1.getOperando()+"]"+"\n";		;//los enteros son de 16 bits no más
-	                codigo += "CWD\n";//copia el signo a DX
-	                codigo += "IDIV " + "dword ptr ["+operando2.getOperando()+"]"+ "\n";
+					codigo += "MOV EAX, "+divisor.getOperando()+"\n";
+					codigo += "ADD EBX, [EAX]\n";
+					codigo += "JZ _division_cero\n";
+					codigo += "MOV DX, 0\n";//Cargo la parte alta con cero, porque todos
+					codigo += "CWD\n";//copia el signo a DX
+					codigo += "MOV ECX, "+dividendo.getOperando()+"\n";
+					codigo += "MOV EAX, [ECX]\n"; 
+					codigo += "MOV ECX, "+divisor.getOperando()+"\n";
+					codigo += "MOV EBX, [ECX]\n";
+					codigo += "IDIV EBX\n";
 	                codigo += "MOV " + getAux() + ", AX\n";
 			}
 			else
-				if (operando1.getOperator().equals(">^")) {
-					codigo += "sentencias assembler para elementos de matriz cuando el primer operando es una matriz";
+				if (dividendo.getOperator().equals(">^")) {
+//					codigo += "sentencias assembler para elementos de matriz cuando el primer operando es una matriz";
 					codigo += "XOR BX, BX \n"; //set eax to 0 
-	                codigo += "ADD BX, " + operando2.getOperando() + "\n";
-	                codigo += "JZ _division_cero\n";
-	                codigo += "MOV DX, 0\n";//Cargo la parte alta con cero, porque todos
-	                codigo += "MOV AX, " + "dword ptr ["+operando1.getOperando()+"]"+"\n";//los enteros son de 16 bits no más
-	                codigo += "CWD\n";//copia el signo a DX
-	                codigo += "IDIV " +operando2.getOperando()+ "\n";
+					codigo += "ADD EBX, "+divisor.getOperando()+"\n";
+					codigo += "JZ _division_cero\n";
+					codigo += "MOV DX, 0\n";//Cargo la parte alta con cero, porque todos
+					codigo += "CWD\n";//copia el signo a DX
+					codigo += "MOV ECX, "+dividendo.getOperando()+"\n";
+					codigo += "MOV EAX, [ECX]\n"; 
+					codigo += "IDIV "+divisor.getOperando()+"\n";
 	                codigo += "MOV " + getAux() + ", AX\n";
 				}
 				else 
-					if  (operando2.getOperator().equals(">^")) {
-						codigo += "------------------------sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
-	                 	codigo += "XOR BX, BX \n"; //set eax to 0 
-	                 	codigo += "ADD BX, " +"dword ptr ["+operando2.getOperando()+"]"+"\n";
-	                 	codigo += "JZ _division_cero\n";
-	                 	codigo += "MOV DX, 0\n";//Cargo la parte alta con cero, porque todos
-	                 	codigo += "MOV AX, " +operando1.getOperando()+"\n";//los enteros son de 16 bits no más
-	                 	codigo += "CWD\n";//copia el signo a DX
-	                 	codigo += "IDIV " +  "dword ptr ["+operando2.getOperando()+"]"+"\n";
-	                 	codigo += "MOV " + getAux() + ", AX\n";
+					if  (divisor.getOperator().equals(">^")) {
+//						codigo += "------------------------sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
+						codigo += "XOR BX, BX \n"; //set eax to 0 
+						codigo += "MOV EAX, "+divisor.getOperando()+"\n";
+						codigo += "ADD EBX, [EAX]\n";
+						codigo += "JZ _division_cero\n";
+						codigo += "MOV DX, 0\n";//Cargo la parte alta con cero, porque todos
+						codigo += "MOV AX, "+dividendo.getOperando()+"\n";
+						codigo += "CWD\n";//copia el signo a DX
+						codigo += "MOV ECX, "+divisor.getOperando()+"\n";
+						codigo += "MOV EBX, [ECX]\n";
+						codigo += "IDIV EBX\n";
+		                codigo += "MOV " + getAux() + ", AX\n";
 					} 
 					else{
                         codigo += "XOR BX, BX \n"; //set eax to 0 
-                        codigo += "ADD BX, "+operando2.getOperando()+"\n";
+                        codigo += "ADD BX, "+divisor.getOperando()+"\n";
                         codigo += "JZ _division_cero\n";
                         codigo += "MOV DX, 0\n";//Cargo la parte alta con cero, porque todos
-                        codigo += "MOV AX, "+operando1.getOperando()+"\n";//los enteros son de 16 bits no más
+                        codigo += "MOV AX, "+dividendo.getOperando()+"\n";//los enteros son de 16 bits no más
                         codigo += "CWD\n";//copia el signo a DX
-                        codigo += "IDIV " +operando2.getOperando()+ "\n";
+                        codigo += "IDIV " +divisor.getOperando()+ "\n";
                         codigo += "MOV " + getAux() + ", AX\n";
 
 
 					}
 		} 
 		else // if this.typeVariable.equals("integer") => rama por float 
-			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
+			if ( dividendo.getOperator().equals(">^") && (divisor.getOperator().equals(">^")) ){
 
-				codigo += "sentencias assembler para los dos operando de matrices";
+				codigo += "MOV EDX, dword ptr ["+divisor.getOperando()+"]\n";
+				codigo += "MOV EBX, [EDX]\n";
+				codigo += "MOV _nourriturre, EBX\n";
+				codigo += "FLD _nourriturre\n";
+				codigo += "FTST\n";
+                codigo += "XOR BX, BX\n"; //set eax to 0 
+                codigo += "FSTSW AX \n";//paso los valores del copro al proc
+                codigo += "SAHF \n";//cargo los valores
+                codigo += "JE _division_cero\n";
+				codigo += "MOV EDX, dword ptr ["+dividendo.getOperando()+"]\n";
+				codigo += "MOV EBX, [EDX]\n";
+				codigo += "MOV _nourriturre, EBX\n";
+				codigo += "FLD _nourriturre\n";
+				codigo += "FDIVR \n"; // o "FDIV ST, ST(1)\n";
+	            codigo += "FSTP " + getAux() + "\n";
 
 			}
-			else if (operando1.getOperator().equals(">^")) {
-				codigo += "sentencias assembler para elementos de matriz cuando el primer operando es una matriz";
-			}
-			else if  (operando2.getOperator().equals(">^")) {
-				codigo += "sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
-			} 
-			else { 
-                codigo += "FLD " + operando2.getOperando() + "\n";
+			else if (dividendo.getOperator().equals(">^")) {
+				codigo += "FLD " + divisor.getOperando() + "\n";
                 codigo += "FTST\n";
                 codigo += "XOR BX, BX\n"; //set eax to 0 
                 codigo += "FSTSW AX \n";//paso los valores del copro al proc
                 codigo += "SAHF \n";//cargo los valores
                 codigo += "JE _division_cero\n";
-                codigo += "FLD " + operando1.getOperando() + "\n";
+                codigo += "MOV EDX, dword ptr ["+dividendo.getOperando()+"]\n";
+				codigo += "MOV EBX, [EDX]\n";
+				codigo += "MOV _nourriturre, EBX\n";
+				codigo += "FLD _nourriturre\n";
+				codigo += "FDIVR \n"; // o "FDIV ST, ST(1)\n";
+	            codigo += "FSTP " + getAux() + "\n";
+			}
+			else if  (divisor.getOperator().equals(">^")) {
+				codigo += "MOV EDX, dword ptr ["+divisor.getOperando()+"]\n";
+				codigo += "MOV EBX, [EDX]\n";
+				codigo += "MOV _nourriturre, EBX\n";
+				codigo += "FLD _nourriturre\n";
+				codigo += "FTST\n";
+                codigo += "XOR BX, BX\n"; //set eax to 0 
+                codigo += "FSTSW AX \n";//paso los valores del copro al proc
+                codigo += "SAHF \n";//cargo los valores
+                codigo += "JE _division_cero\n";
+                
+                codigo += "FLD " + dividendo.getOperando() + "\n";
+                codigo += "FDIVR \n"; // o "FDIV ST, ST(1)\n";
+	            codigo += "FSTP " + getAux() + "\n";
+				
+			} 
+			else { 
+                codigo += "FLD " + divisor.getOperando() + "\n";
+                codigo += "FTST\n";
+                codigo += "XOR BX, BX\n"; //set eax to 0 
+                codigo += "FSTSW AX \n";//paso los valores del copro al proc
+                codigo += "SAHF \n";//cargo los valores
+                codigo += "JE _division_cero\n";
+                codigo += "FLD " + dividendo.getOperando() + "\n";
                 codigo += "FDIVR \n"; // o "FDIV ST, ST(1)\n";
                 codigo += "FSTP " + getAux() + "\n";
 

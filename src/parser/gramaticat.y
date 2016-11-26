@@ -338,19 +338,35 @@ asignacion : variable operador_asignacion expresion ';'{System.out.println("==AS
 				(conversion).setPosition(tercetos.size());
 			}
 
-			Token T1 =lexAn.getSymbolTable().getToken((((Element)val_peek(3).obj).getLexema()));
+
+			Token T1 =lexAn.getSymbolTable().getToken((((Element)val_peek(3).obj).getLexema())); 
+
+			if ( ((Element)val_peek(3).obj).getUse() != null && ((Element)val_peek(3).obj).getUse().equals("mat"))
+			{
+				System.out.println("IF MATRIZ DEL LADO IZQUIERDO"+T1);
+				int currentRow = T1.getCurrentRow();
+				int currentColumn = T1.getCurrentColumn();
+				makeMatrix(((Token)val_peek(3).obj),currentRow,currentColumn);
+				
+			}
+			
 			if ( ((Element)val_peek(1).obj).getUse() != null && ((Element)val_peek(1).obj).getUse().equals("mat"))
 			{
+				Token matriz = lexAn.getSymbolTable().getToken(((Element)val_peek(1).obj).getLexema());
+				int currentRow = matriz.getCurrentRow();
+				int currentColumn = matriz.getCurrentColumn();
+				makeMatrix(((Token)val_peek(1).obj),currentRow,currentColumn);
 				yyval.obj = new TercetoAsignacion(T1,tercetos.get(tercetos.size()-1));
+				assignValue(T1,(Element)val_peek(3).obj);
 				/*System.out.print("Terceto que voy a eliminar: "+tercetos.get((tercetos.size()-1)));*/
 				/*tercetos.remove(tercetos.size()-1);*/
 				/*System.out.print("Terceto despues de eliminar: "+tercetos.get(tercetos.size()-1));*/
 				tercetos.add((Terceto)yyval.obj);
 				((Terceto) yyval.obj).setTypeVariable(typeResult);
 				((Terceto)yyval.obj).setPosition((Integer)tercetos.size()); 
+				System.out.println("Tipo variableMMMMMM asignacion "+typeResult+"El tipo del TERCETO en ASIGNACION es: "+((Terceto)yyval.obj).getTypeVariable()+":="+((Element)val_peek(1).obj).getTypeVariable());
 
 			}else {
-				//Token T1 =lexAn.getSymbolTable().getToken((((Element)val_peek(3).obj).getLexema()));
 				
 				System.out.println("expresion de la asignacion"+expresion);
 				yyval.obj = new TercetoAsignacion(T1,expresion);
@@ -517,18 +533,23 @@ variable : IDENTIFICADOR {
 							} else {$$.obj = lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()); // ANDA
 									System.out.println("Probando IDENTIFICADOR en regla de variable ident: "+lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()));}
 									}
-		 | valor_matrix;
+		 | valor_matrix{ $$.obj = $1.obj;};
 
 valor_matrix : IDENTIFICADOR '[' expresion ']' '['expresion']' {System.out.println("==== valor matrix ==== ");
-																//$$.obj = lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()); 
-																//makeMatrix(Token ide ,Object rowIndex, Object columnIndex);
-	                                                             makeMatrix((Token)$1.obj,((Token)$3.obj).getValue(),((Token)$6.obj).getValue());
-																 System.out.println("ultimos tercetos "+tercetos.size()+" agregados"+tercetos.get(tercetos.size()-2));
-																 //tercetos.get(tercetos.size()-1).setUse("mat");
-																 $$.obj = tercetos.get(tercetos.size()-1);
+	                                                             //makeMatrix((Token)$1.obj,((Token)$3.obj).getValue(),((Token)$6.obj).getValue());
+																// $$.obj = tercetos.get(tercetos.size()-1);
 																 if ( !((Element)$3.obj).getTypeVariable().equals("integer") || !((Element)$6.obj).getTypeVariable().equals("integer") ){
 																	UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". Variable ["+((Token)$1.obj).getLexema()+"] con limites no enteros");
 																	errores.add("Linea: "+lexAn.getLineNumber()+"Variable matriz con limites de tipo erroneos");
+																	}else {
+
+																		int currentRow=(Integer)((Token)$3.obj).getValue();
+																		int currentColumn=(Integer)((Token)$6.obj).getValue();
+																		String typeVariable = lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()).getTypeVariable();
+																		lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()).setCurrentRow(currentRow);
+																		lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()).setCurrentRow(currentColumn);
+																		$$.obj = $1.obj;
+																		((Token)$$.obj).setTypeVariable(typeVariable);
 																	}
 																}; 		
 
@@ -872,6 +893,7 @@ public void initMatrix (ArrayList<Token> listaValores,Object indexStart, Token i
 					//OLD: simpleAssign, NEW tercetos.get(tercetos.size()-2)aca cambiamos el segundo parametro del token asignacion para que cuando incializamos al matriz aparezca correctamente
 					//aca era -2 antes
 					TercetoAsignacion assign = new TercetoAsignacion(tercetos.get(tercetos.size()-1),listaValores.get(i));
+
 					assign.setTypeVariable("integer");
 					System.out.println("aall muuundoooooooooo 0000000000000000000000 terceto asignacion creado"+assign);
 					//tercetos.remove(tercetos.size()-1);

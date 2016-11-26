@@ -118,6 +118,7 @@ public class Assembler {
 		declaration += "_msjDC DB \"Error: Division por cero\", 0\n";
 		declaration += "_msjIC DB \"Error: Indices fuera de rango\", 0\n";
 		declaration += "_msjCP DB \"Error: Conversion con Perdida de informacion\", 0\n";
+		declaration += "_nourriturre DD ?\n";
 		Set<String> keys = symbolTable.getTokenList().keySet();
 		//int numCad = 0;
 		//    	System.out.println("TABLA DE SIMBOLOS");
@@ -253,6 +254,10 @@ public class Assembler {
 					token.setTypeVariable((String)terceto.getSecond());
 					
 				}
+				if (terceto.getOperator().equals("^")) {
+					token.setTypeVariable("integer");
+					
+				} 
 				symbolTable.addToken(terceto.getAux(), token);
 
 			}

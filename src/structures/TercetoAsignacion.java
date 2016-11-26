@@ -50,7 +50,7 @@ public class TercetoAsignacion extends Terceto{
 
 	@Override
 	public String toString() {
-		return  "("+operator+","+((Element) first).getLexema()+","+((Element)second).getLexema()+")";
+		return  "("+operator+","+((Element) first)+","+((Element)second)+")";
 	}
 
 	@Override
@@ -59,31 +59,64 @@ public class TercetoAsignacion extends Terceto{
 		Element variable = (Element) this.first; 
 		Element expresion = (Element) this.second;
 		System.out.println("terceto "+variable+" := "+expresion+" variable auxiliar must be null:"+typeVariable);
-		String codigo = "";
+		String codigo = "; asignacion\n";
 		//		if (this.typeVariable == null) {this.typeVariable="integer"; System.out.println("tipo cambiado");}
 
 
 
 		if (this.typeVariable.equals("integer")){
+			if ( expresion.getOperator().equals(">^") && (variable.getOperator().equals(">^")) ){
+
+				codigo += "; asignacion entera entre matrices\n";
+
+			}else
 			if (expresion.getOperator().equals(">^")){
 
-				codigo += "MOV EBX, " +  "dword ptr ["+expresion.getOperando()+"]"+"\n"; //o aca habria que cargarlo a BX por ser enteros de 2 bytes
-				codigo += "MOV "+variable.getOperando()+", BX\n";//aca puede ser que sea EBX en lugar de BX
+				codigo += "MOV EAX, "+expresion.getOperando()+"\n";
+//				codigo += "MOV BX, [EAX]\n";
+				codigo += "MOV EDX, [EAX]\n";
+//				codigo += "MOV EBX, " +  "dword ptr ["+expresion.getOperando()+"]"+"\n"; //o aca habria que cargarlo a BX por ser enteros de 2 bytes
+				codigo += "MOV "+variable.getOperando()+", DX\n";//aca puede ser que sea EBX en lugar de BX
 
 			}else 
 				if (variable.getOperator().equals(">^")){
-					codigo += "sentencias assembler para elementos de matriz ";
-					codigo += "MOV EBX, " + expresion.getOperando() + "\n";
-					codigo += "MOV dword ptr ["+variable.getOperando()+"], EBX\n";	
+//					codigo += "sentencias assembler para elementos de matriz ";
+					codigo += "MOV BX, " + expresion.getOperando() + "\n";
+					codigo += "MOV EAX, "+variable.getOperando()+"\n";
+					codigo += "MOV [EAX], BX\n";	
 				}else{
 					codigo += "MOV BX, " + expresion.getOperando() + "\n";
 					codigo += "MOV " + variable.getOperando() + ", BX\n";
 				}
 		}	 
 		else{ // if this.typeVariable.equals("integer") => rama por float
-			if (expresion.getOperator().equals(">^")){
-				codigo += "sentencias float para matrices" ;
-			}else{
+			if ( expresion.getOperator().equals(">^") && (variable.getOperator().equals(">^")) ){
+
+				codigo += "MOV EDX, dword ptr ["+expresion.getOperando()+"]\n";
+				codigo += "MOV EBX, [EDX]\n";
+				codigo += "MOV _nourriturre, EBX\n";
+				codigo += "FLD _nourriturre\n";
+				codigo += "FSTP dword ptr ["+variable.getOperando()+"]\n";
+				codigo += "MOV EDX, dword ptr ["+variable.getOperando()+"]\n";
+				codigo += "MOV [EBX], EDX\n";// revisar esta parte de la asignacion
+
+			}else
+				if (expresion.getOperator().equals(">^")){
+				System.out.println("sentencias float para matrices") ;
+				codigo += "MOV EDX, dword ptr ["+expresion.getOperando()+"]\n";
+				codigo += "MOV EBX, [EDX]\n";
+				codigo += "MOV _nourriturre, EBX\n";
+				codigo += "FLD _nourriturre\n";
+				codigo += "FSTP "+variable.getOperando()+"\n";
+			}else
+				if (variable.getOperator().equals(">^")){
+					codigo += "FLD "+expresion.getOperando()+"\n";
+					codigo += "FSTP dword ptr ["+variable.getOperando()+"]\n";
+					codigo += "MOV EDX, dword ptr ["+variable.getOperando()+"]\n";
+					codigo += "MOV [EBX], EDX\n";
+					
+				}
+			else{
 				codigo += "FLD " + expresion.getOperando() + "\n";
 				codigo += "FSTP " + variable.getOperando() + "\n";
 			}

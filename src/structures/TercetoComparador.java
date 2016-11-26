@@ -18,93 +18,174 @@ public class TercetoComparador extends Terceto{
 
 	@Override
 	public String getAssembler() {
-		String Codigo= "";
-		Element op1 = (Element) this.first;
-		Element op2 = (Element) this.second;
-		//        Token aux = new Token("Vacio","");
-		if ((op1.getClassType().equals("Terceto")) && (op2.getClassType().equals("Terceto"))){
-			boolean Arreglo1 = (((Element)op1).getOperando().equals(">^"));
-			boolean Arreglo2 = (((Element)op2).getOperando().equals(">^"));
-			if ((Arreglo1) && (Arreglo2)){ //CONTROLO SI LOS TERCETOS SON ARREGLOS
-				String ope1 =((Element)this.first).getOperando();
-				String ope2 =((Element)this.second).getOperando();
-				//          StringCodigo="";
-				//         System.out.println("==========================================getAssembler  terceto"+this);
-				//          System.out.println("Tipo del terceto comparador: "+this.typeVariable);
-				if (this.typeVariable.equals("integer")) {
-					Codigo = "MOV CX, " + "dword ptr ["+((Terceto) op2).getAux()+"]" + "\n";
-					Codigo += "CMP " + "dword ptr ["+((Terceto) op1).getAux()+"]" + ", CX\n";
-				} else {
-					Codigo = "FLD " + "dword ptr ["+((Terceto) op1).getAux()+"]" + "\n";
-					Codigo += "FLD " + "dword ptr ["+((Terceto) op2).getAux()+"]" + "\n";
-					Codigo += "FCOM \n";
-					Codigo += "FSTSW AX \n";//paso los valores del copro al proc
-					Codigo += "SAHF \n";//cargo los valores
+		System.out.println("=== TERCETO ASIGNACION getAssembler() ===");
+		Element operando1 = (Element) this.first; 
+		Element operando2 = (Element) this.second;
+		System.out.println("terceto "+operando1+" := "+operando2+" variable auxiliar must be null:"+typeVariable);
+		String codigo = "; comparador\n";
+		//		if (this.typeVariable == null) {this.typeVariable="integer"; System.out.println("tipo cambiado");}
+
+
+
+		if (this.typeVariable.equals("integer")){
+			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
+
+				codigo += ";comparacion entre elementos enteros de matrices\n";
+			}else
+			if (operando2.getOperator().equals(">^")){
+				codigo += "MOV EAX, "+operando2.getOperando()+"\n";
+				codigo += "MOV CX, [EAX]\n";
+				codigo += "CMP CX, "+operando1.getOperando()+"\n";
+				
+
+			}else 
+				if (operando1.getOperator().equals(">^")){
+					codigo += "MOV EAX, "+operando1.getOperando()+"\n";
+					codigo += "MOV CX, [EAX]\n";
+					codigo += "CMP CX, "+operando2.getOperando()+"\n";
+					
+				}else{
+					codigo = "MOV CX, "+operando1.getOperando()+"\n";
+					codigo += "CMP " +operando2.getOperando()+ ", CX\n";
 				}
+		}	 
+		else{ // if this.typeVariable.equals("integer") => rama por float
+			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
 
+				codigo += "MOV EDX, dword ptr ["+operando1.getOperando()+"]\n";
+				codigo += "MOV EBX, [EDX]\n";
+				codigo += "MOV _nourriturre, EBX\n";
+				codigo += "FLD _nourriturre\n";
+				codigo += "MOV EDX, dword ptr ["+operando2.getOperando()+"]\n";
+				codigo += "MOV EBX, [EDX]\n";
+				codigo += "MOV _nourriturre, EBX\n";
+				codigo += "FLD _nourriturre\n";
+				codigo += "FCOMPP \n";
+				codigo += "FSTSW AX \n";
+				codigo += "SAHF \n";
+			}else
+			if (operando2.getOperator().equals(">^")){
+				System.out.println("es AUX en comparador"+operando2.getOperando());
+				codigo += "MOV EDX, dword ptr ["+operando2.getOperando()+"]\n";
+				codigo += "MOV EBX, [EDX]\n";
+				codigo += "MOV _nourriturre, EBX\n";
+				codigo += "FLD _nourriturre\n";
+				codigo += "FLD "+operando1.getOperando()+"\n";
+				codigo += "FCOMPP \n";
+				codigo += "FSTSW AX \n";
+				codigo += "SAHF \n";
+				
 
-			} else  if (Arreglo1){
-				String ope1 =((Element)this.first).getOperando();
-				String ope2 =((Element)this.second).getOperando();
-				//   StringCodigo="";
-				System.out.println("==========================================getAssembler  terceto"+this);
-				System.out.println("Tipo del terceto comparador: "+this.typeVariable);
-				if (this.typeVariable.equals("integer")) {
-					Codigo = "MOV CX, " + ope2 + "\n";
-					Codigo += "CMP " + "dword ptr ["+((Terceto) op1).getAux()+"]" + ", CX\n";
-				} else {
-					Codigo = "FLD " + "dword ptr ["+((Terceto) op1).getAux()+"]" + "\n";
-					Codigo += "FLD " + ope2 + "\n";
-					Codigo += "FCOM \n";
-					Codigo += "FSTSW AX \n";//paso los valores del copro al proc
-					Codigo += "SAHF \n";//cargo los valores
+			}else
+				if (operando1.getOperator().equals(">^")){
+					
+					System.out.println("es AUX en comparador"+operando1.getOperando());
+					codigo += "MOV EDX, dword ptr ["+operando1.getOperando()+"]\n";
+					codigo += "MOV EBX, [EDX]\n";
+					codigo += "MOV _nourriturre, EBX\n";
+					codigo += "FLD _nourriturre\n";
+					codigo += "FLD "+operando2.getOperando()+"\n";
+					codigo += "FCOMPP \n";
+					codigo += "FSTSW AX \n";
+					codigo += "SAHF \n";
 				}
-
-			}
-
-
-
-			else if (Arreglo2)  { 
-				String ope1 =((Element)this.first).getOperando();
-				String ope2 =((Element)this.second).getOperando();
-				// StringCodigo="";
-				System.out.println("==========================================getAssembler  terceto"+this);
-				System.out.println("Tipo del terceto comparador: "+this.typeVariable);
-				if (this.typeVariable.equals("integer")) {
-					Codigo = "MOV CX, " + "dword ptr ["+((Terceto) op2).getAux()+"]" + "\n";
-					Codigo += "CMP " + ope1 + ", CX\n";
-				} else {
-					Codigo = "FLD " + ope1 + "\n";
-					Codigo += "FLD " + "dword ptr ["+((Terceto) op2).getAux()+"]" + "\n";
-					Codigo += "FCOM \n";
-					Codigo += "FSTSW AX \n";//paso los valores del copro al proc
-					Codigo += "SAHF \n";//cargo los valores
-				}
-
-			}
-
-		}else {
-			String ope1 =((Element)this.first).getOperando();
-			String ope2 =((Element)this.second).getOperando();
-			if (this.typeVariable.equals("integer")) {
-				Codigo = "MOV CX, " + ope2 + "\n";
-				Codigo += "CMP " + ope1 + ", CX\n";
-			} else {
-				Codigo = "FLD " + ope1 + "\n";
-				Codigo += "FLD " + ope2 + "\n";
-				Codigo += "FCOM \n";
-				Codigo += "FSTSW AX \n";//paso los valores del copro al proc
-				Codigo += "SAHF \n";//cargo los valores
+			else{
+				
+				codigo = "FLD "+operando1.getOperando()+"\n";
+				codigo += "FLD "+operando2.getOperando()+"\n";
+				codigo += "FCOMPP \n";
+				codigo += "FSTSW AX \n";//paso los valores del copro al proc
+				codigo += "SAHF \n";//cargo los valores
+				
+//				codigo += "FLD " + expresion.getOperando() + "\n";
+//				codigo += "FSTP " + variable.getOperando() + "\n";
 			}
 		}
 
-		return Codigo;
+		return codigo;
+
 	}
-
-
-
-
-
-
-
 }
+
+
+//String Codigo= "";
+//Element op1 = (Element) this.first;
+//Element op2 = (Element) this.second;
+////        Token aux = new Token("Vacio","");
+//if ((op1.getClassType().equals("Terceto")) && (op2.getClassType().equals("Terceto"))){
+//	boolean Arreglo1 = (((Element)op1).getOperando().equals(">^"));
+//	boolean Arreglo2 = (((Element)op2).getOperando().equals(">^"));
+//	if ((Arreglo1) && (Arreglo2)){ //CONTROLO SI LOS TERCETOS SON ARREGLOS
+//		String ope1 =((Element)this.first).getOperando();
+//		String ope2 =((Element)this.second).getOperando();
+//		//          StringCodigo="";
+//		//         System.out.println("==========================================getAssembler  terceto"+this);
+//		//          System.out.println("Tipo del terceto comparador: "+this.typeVariable);
+//		if (this.typeVariable.equals("integer")) {
+//			Codigo = "MOV CX, " + "dword ptr ["+((Terceto) op2).getAux()+"]" + "\n";
+//			Codigo += "CMP " + "dword ptr ["+((Terceto) op1).getAux()+"]" + ", CX\n";
+//		} else {
+//			Codigo = "FLD " + "dword ptr ["+((Terceto) op1).getAux()+"]" + "\n";
+//			Codigo += "FLD " + "dword ptr ["+((Terceto) op2).getAux()+"]" + "\n";
+//			Codigo += "FCOM \n";
+//			Codigo += "FSTSW AX \n";//paso los valores del copro al proc
+//			Codigo += "SAHF \n";//cargo los valores
+//		}
+//
+//
+//	} else  if (Arreglo1){
+//		String ope1 =((Element)this.first).getOperando();
+//		String ope2 =((Element)this.second).getOperando();
+//		//   StringCodigo="";
+//		System.out.println("==========================================getAssembler  terceto"+this);
+//		System.out.println("Tipo del terceto comparador: "+this.typeVariable);
+//		if (this.typeVariable.equals("integer")) {
+//			Codigo = "MOV CX, " + ope2 + "\n";
+//			Codigo += "CMP " + "dword ptr ["+((Terceto) op1).getAux()+"]" + ", CX\n";
+//		} else {
+//			Codigo = "FLD " + "dword ptr ["+((Terceto) op1).getAux()+"]" + "\n";
+//			Codigo += "FLD " + ope2 + "\n";
+//			Codigo += "FCOM \n";
+//			Codigo += "FSTSW AX \n";//paso los valores del copro al proc
+//			Codigo += "SAHF \n";//cargo los valores
+//		}
+//
+//	}
+//
+//
+//
+//	else if (Arreglo2)  { 
+//		String ope1 =((Element)this.first).getOperando();
+//		String ope2 =((Element)this.second).getOperando();
+//		// StringCodigo="";
+//		System.out.println("==========================================getAssembler  terceto"+this);
+//		System.out.println("Tipo del terceto comparador: "+this.typeVariable);
+//		if (this.typeVariable.equals("integer")) {
+//			Codigo = "MOV CX, " + "dword ptr ["+((Terceto) op2).getAux()+"]" + "\n";
+//			Codigo += "CMP " + ope1 + ", CX\n";
+//		} else {
+//			Codigo = "FLD " + ope1 + "\n";
+//			Codigo += "FLD " + "dword ptr ["+((Terceto) op2).getAux()+"]" + "\n";
+//			Codigo += "FCOM \n";
+//			Codigo += "FSTSW AX \n";//paso los valores del copro al proc
+//			Codigo += "SAHF \n";//cargo los valores
+//		}
+//
+//	}
+//
+//} else {
+//	String ope1 =((Element)this.first).getOperando();
+//	String ope2 =((Element)this.second).getOperando();
+//	if (this.typeVariable.equals("integer")) {
+//		Codigo = "MOV CX, " + ope2 + "\n";
+//		Codigo += "CMP " + ope1 + ", CX\n";
+//	} else {
+//		Codigo = "FLD " + ope1 + "\n";
+//		Codigo += "FLD " + ope2 + "\n";
+//		Codigo += "FCOM \n";
+//		Codigo += "FSTSW AX \n";//paso los valores del copro al proc
+//		Codigo += "SAHF \n";//cargo los valores
+//	}
+//}
+//
+//return Codigo;

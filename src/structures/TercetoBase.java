@@ -21,7 +21,8 @@ public class TercetoBase extends Terceto {
 
 	@Override
 	public String getAssembler() {
-		String codigo = "MOV "+this.aux+", "+0+"\n";
+		String codigo = ";base\n";
+		codigo += "MOV "+this.aux+", "+0+"\n";
 		//System.out.println("==========================================getAssembler  terceto"+this);
 		return codigo;
 	}
