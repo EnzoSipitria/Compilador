@@ -214,11 +214,11 @@ public class Assembler {
 
 	
 	public String getCodigo() {
-		System.out.println("LISTA DE TERCETOS");
-		for (int i = 0; i < listaTerceto.size(); i++) {
-			System.out.println(listaTerceto.get(i));
-
-		}
+//		System.out.println("LISTA DE TERCETOS");
+//		for (int i = 0; i < listaTerceto.size(); i++) {
+//			System.out.println(listaTerceto.get(i));
+//
+//		}
 		String Assemblercode = new String();
 		Assemblercode += getheadlines();
 		String instrucciones = new String();
@@ -232,7 +232,7 @@ public class Assembler {
 
 		generateOperators();
 		for (Terceto terceto : listaTerceto) {
-			System.out.println("CONDICION EVALUADORA: "+terceto+"   typeVariable"+terceto.getTypeVariable());
+//			System.out.println("CONDICION EVALUADORA: "+terceto+"   typeVariable"+terceto.getTypeVariable());
 
 			if(operators.contains(terceto.getOperator())){
 				if (terceto.getOperator().equals("conv")){
@@ -241,16 +241,16 @@ public class Assembler {
 						String aux = "_"+generator.getName();
 						token.setAux(aux);}
 				}
-				System.out.println("=TTTTTTTTT=============== aux generada "+generator.control());
+//				System.out.println("=TTTTTTTTT=============== aux generada "+generator.control());
 				terceto.setAux("@"+generator.getName());
 				
 				Token token = new Token("IDENTIFICADOR", terceto.getAux(), 0, 0, terceto.getTypeVariable());
 				if (terceto.getOperator().equals(">^")){
-					System.out.println("variabletype del terceto referencia cambiado a float"+terceto.getAux());
+//					System.out.println("variabletype del terceto referencia cambiado a float"+terceto.getAux());
 					token.setTypeVariable("float");
 				}
 				if (terceto.getOperator().equals("conv")){
-					System.out.println("variable type del terceto conversion cambiado a second"+terceto.getSecond());
+//					System.out.println("variable type del terceto conversion cambiado a second"+terceto.getSecond());
 					token.setTypeVariable((String)terceto.getSecond());
 					
 				}
@@ -262,22 +262,22 @@ public class Assembler {
 
 			}
 
-			System.out.println("IF CONSTANTES===================================================================================");
+//			System.out.println("IF CONSTANTES===================================================================================");
 			if (!terceto.getOperator().equals("label") && !terceto.getOperator().equals("conv") && !terceto.getOperator().equals("simple") ){
 				if (terceto.getFirst()!=null && ((Element)terceto.getFirst()).getClassType().equals("Token")){
 					Token token = symbolTable.getToken(((Token) terceto.getFirst()).getLexema());
 					if (((Token)terceto.getFirst()).getType().equals("FLOAT")){
 						if (token.getAux()==null){
-							System.out.println("First terceto: "+terceto);
-							System.out.println("first: "+terceto.getFirst());
+//							System.out.println("First terceto: "+terceto);
+//							System.out.println("first: "+terceto.getFirst());
 							String aux = "_"+generator.getName();
-							System.out.println("AUXILIAR SETEADA first AL TOKEN"+aux);
+//							System.out.println("AUXILIAR SETEADA first AL TOKEN"+aux);
 							token.setAux(aux);
 							((Token) terceto.getFirst()).setAux(aux);
 						}else {
-							System.out.println("First terceto: "+terceto);
-							System.out.println("first: "+terceto.getFirst());
-							System.out.println("token first"+token.getAux()+"    token: "+token);
+//							System.out.println("First terceto: "+terceto);
+//							System.out.println("first: "+terceto.getFirst());
+//							System.out.println("token first"+token.getAux()+"    token: "+token);
 							((Token) terceto.getFirst()).setAux(token.getAux());
 						}
 
@@ -287,16 +287,16 @@ public class Assembler {
 					if (((Token)terceto.getSecond()).getType().equals("FLOAT")){
 						Token token = symbolTable.getToken(((Token) terceto.getSecond()).getLexema());
 						if (token.getAux()==null){
-							System.out.println("Second terceto: "+terceto);
-							System.out.println("second: "+terceto.getSecond());
+//							System.out.println("Second terceto: "+terceto);
+//							System.out.println("second: "+terceto.getSecond());
 							String aux = "_"+generator.getName();
-							System.out.println("AUXILIAR SETEADA second AL TOKEN"+aux);
+//							System.out.println("AUXILIAR SETEADA second AL TOKEN"+aux);
 							token.setAux(aux);
 							((Token) terceto.getSecond()).setAux(aux);
 						}else {
-							System.out.println("Second terceto: "+terceto);
-							System.out.println("second: "+terceto.getSecond());
-							System.out.println("token Second"+token.getAux()+"    token: "+token);
+//							System.out.println("Second terceto: "+terceto);
+//							System.out.println("second: "+terceto.getSecond());
+//							System.out.println("token Second"+token.getAux()+"    token: "+token);
 							((Token) terceto.getSecond()).setAux(token.getAux());
 						}
 

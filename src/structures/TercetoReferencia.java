@@ -44,6 +44,7 @@ public class TercetoReferencia extends Terceto {
         System.out.println("size referencia"+size);
         codigo+= "MOV "+"EBX"+", OFFSET "+matrix.getAssembler()+"\n";
         codigo+= "ADD "+"BX"+", "+position.getOperando()+"\n";
+        codigo+= "PrintDec "+position.getOperando()+"\n";
         codigo+= "MOV AX, "+position.getOperando()+"\n";
         codigo+= "MOV DX, "+size+"\n";// guardo limite del arraay
         codigo+= "CMP DX, AX\n"; // comparacion de rangos 

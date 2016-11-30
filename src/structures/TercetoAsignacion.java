@@ -68,6 +68,12 @@ public class TercetoAsignacion extends Terceto{
 			if ( expresion.getOperator().equals(">^") && (variable.getOperator().equals(">^")) ){
 
 				codigo += "; asignacion entera entre matrices\n";
+				codigo += "MOV EAX, "+expresion.getOperando()+"\n";
+//				codigo += "MOV BX, [EAX]\n";
+				codigo += "MOV EDX, [EAX]\n";
+				codigo += "MOV EAX, "+variable.getOperando()+"\n";
+				codigo += "MOV [EAX], DX\n";
+				
 
 			}else
 			if (expresion.getOperator().equals(">^")){
@@ -122,7 +128,7 @@ public class TercetoAsignacion extends Terceto{
 			}
 		}
 
-		return codigo;
+		return codigo+"PrintDec "+variable.getOperando()+", \""+variable.getOperando()+"\" \n";
 	}
 
 
