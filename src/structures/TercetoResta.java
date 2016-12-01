@@ -29,24 +29,29 @@ public class TercetoResta extends Terceto {
 
 		if (this.typeVariable.equals("integer")){
 			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
-				codigo += "sentencias assembler para los dos operando de matrices";
-				codigo+="MOV "+"EBX" +", " + "dword ptr ["+((Terceto) operando1).getAux()+"]"+"\n";
-				codigo +="SUB " + "EBX" + ", " + "dword ptr ["+((Terceto) operando2).getAux()+"]"+"\n";
-				codigo+= "MOV " + getAux() + ", BX" +"\n";
+				//si son los dos matrices 
+				codigo += "MOV EAX, "+operando1.getOperando()+"\n";
+				codigo += "MOV BX, [EAX]\n";
+				codigo += "MOV EAX, "+operando2.getOperando()+"\n";
+				codigo += "SUB BX, [EAX]\n";
+				codigo += "MOV "+getAux()+", BX\n";
 			}
 			else
 				if (operando1.getOperator().equals(">^")) {
-					codigo += "sentencias assembler para elementos de matriz cuando el primer operando es una matriz";
-					codigo+="MOV "+"EBX" +", " + "dword ptr ["+((Terceto) operando1).getAux()+"]"+"\n";
-					codigo +="SUB "+"EBX"+", "+((Terceto) operando2).getAux()+"\n";
-					codigo+= "MOV " + getAux() + ", BX" +"\n";
+					// primer operando es matrix 
+					codigo += "MOV EAX, "+operando1.getOperando()+"\n";
+					codigo += "MOV BX, [EAX]\n";
+					codigo += "SUB BX, "+operando2.getOperando()+"\n";
+					codigo += "MOV "+getAux()+", BX\n";
 				}
 				else 
 					if  (operando2.getOperator().equals(">^")) {
-						codigo += "sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
-						codigo+="MOV "+"EBX"+", "+"dword ptr ["+((Terceto) operando2).getAux()+"]"+"\n";
-						codigo +="SUB "+"EBX"+", "+((Terceto) operando1).getAux()+"\n";
-						codigo+= "MOV " + getAux() + ", BX" +"\n";
+						//el segundo es un operador matriz 
+						codigo += "MOV EAX, "+operando2.getOperando()+"\n";
+						codigo += "MOV BX, [EAX]\n";
+						codigo += "SUB "+operando1.getOperando()+", BX"+"\n";
+						codigo += "MOV DX,"+operando1.getOperando()+"\n";
+						codigo += "MOV "+getAux()+", DX\n";
 					} 
 					else{
 						codigo +="MOV " + "BX"+ ", " + operando1.getOperando()+"\n";       
@@ -56,7 +61,6 @@ public class TercetoResta extends Terceto {
 		}
 		else   // if this.typeVariable.equals("integer") => rama por float 
 			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
-
 				codigo += "MOV EDX, dword ptr ["+operando1.getOperando()+"]\n";
 				codigo += "MOV EBX, [EDX]\n";
 				codigo += "MOV _nourriturre, EBX\n";

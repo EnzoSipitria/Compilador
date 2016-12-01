@@ -29,29 +29,36 @@ public class TercetoComparador extends Terceto{
 
 		if (this.typeVariable.equals("integer")){
 			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
-
 				codigo += ";comparacion entre elementos enteros de matrices\n";
+				codigo += "MOV EAX, "+operando1.getOperando()+"\n";
+				codigo += "MOV BX, [EAX]\n";
+				codigo += "MOV CX, BX\n";
+				codigo += "MOV EAX, "+operando2.getOperando()+"\n";
+				codigo += "MOV BX, [EAX]\n";
+				codigo += "CMP CX, BX\n";
+				
 			}else
 			if (operando2.getOperator().equals(">^")){
+				codigo += "MOV CX, "+operando1.getOperando()+"\n";
 				codigo += "MOV EAX, "+operando2.getOperando()+"\n";
-				codigo += "MOV CX, [EAX]\n";
-				codigo += "CMP CX, "+operando1.getOperando()+"\n";
+				codigo += "MOV BX, [EAX]\n";
+				codigo += "CMP CX, BX\n";
 				
 
 			}else 
 				if (operando1.getOperator().equals(">^")){
 					codigo += "MOV EAX, "+operando1.getOperando()+"\n";
-					codigo += "MOV CX, [EAX]\n";
+					codigo += "MOV BX, [EAX]\n";
+					codigo += "MOV CX, BX\n";
 					codigo += "CMP CX, "+operando2.getOperando()+"\n";
 					
 				}else{
 					codigo = "MOV CX, "+operando1.getOperando()+"\n";
-					codigo += "CMP " +operando2.getOperando()+ ", CX\n";
+					codigo += "CMP CX ," + operando2.getOperando()+ "\n"; /// cambie esto al reves por q no me funcionaba una condicion del for ver si lo dejo 
 				}
 		}	 
 		else{ // if this.typeVariable.equals("integer") => rama por float
 			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
-
 				codigo += "MOV EDX, dword ptr ["+operando1.getOperando()+"]\n";
 				codigo += "MOV EBX, [EDX]\n";
 				codigo += "MOV _nourriturre, EBX\n";
@@ -65,6 +72,7 @@ public class TercetoComparador extends Terceto{
 				codigo += "SAHF \n";
 			}else
 			if (operando2.getOperator().equals(">^")){
+				// aca hay que ver si esta bien el orden de los operandos
 				System.out.println("es AUX en comparador"+operando2.getOperando());
 				codigo += "MOV EDX, dword ptr ["+operando2.getOperando()+"]\n";
 				codigo += "MOV EBX, [EDX]\n";
@@ -74,11 +82,8 @@ public class TercetoComparador extends Terceto{
 				codigo += "FCOMPP \n";
 				codigo += "FSTSW AX \n";
 				codigo += "SAHF \n";
-				
-
 			}else
 				if (operando1.getOperator().equals(">^")){
-					
 					System.out.println("es AUX en comparador"+operando1.getOperando());
 					codigo += "MOV EDX, dword ptr ["+operando1.getOperando()+"]\n";
 					codigo += "MOV EBX, [EDX]\n";
@@ -90,15 +95,11 @@ public class TercetoComparador extends Terceto{
 					codigo += "SAHF \n";
 				}
 			else{
-				
 				codigo = "FLD "+operando1.getOperando()+"\n";
 				codigo += "FLD "+operando2.getOperando()+"\n";
 				codigo += "FCOMPP \n";
 				codigo += "FSTSW AX \n";//paso los valores del copro al proc
 				codigo += "SAHF \n";//cargo los valores
-				
-//				codigo += "FLD " + expresion.getOperando() + "\n";
-//				codigo += "FSTP " + variable.getOperando() + "\n";
 			}
 		}
 

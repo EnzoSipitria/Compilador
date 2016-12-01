@@ -37,10 +37,10 @@ public class TercetoReferencia extends Terceto {
         if (indexStart == 0){
         	size = ((indexStart+rows+1)*(indexStart+columns+1));
         }
-        size = size*2;
         if (matrix.getTypeVariable().equals("float")){
         	size = size*4;
-        }
+        }else size = size*2;
+        		
         System.out.println("size referencia"+size);
         codigo+= "MOV "+"EBX"+", OFFSET "+matrix.getAssembler()+"\n";
         codigo+= "ADD "+"BX"+", "+position.getOperando()+"\n";

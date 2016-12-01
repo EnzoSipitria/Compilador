@@ -139,7 +139,10 @@ public class Assembler {
 				if (token.getTypeVariable().equals("integer")) {
 
 					if (token.getUse() != null && token.getUse().equals("mat")){
-						int size = token.getRows()*token.getColumns();
+					   int size = token.getRows()*token.getColumns();
+				        if (token.getIndexStart() == 0){
+				        	size = ((token.getIndexStart()+token.getRows()+1)*(token.getIndexStart()+token.getColumns()+1));
+				        }
 						declaration += token.getAssembler() + " DW "+size+" DUP(?)\n";
 					} else {
 						if (token.getType().equals("INTEGER")){

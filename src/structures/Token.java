@@ -10,6 +10,7 @@ public class Token extends Element{
 	private int columns;
 	private int currentRow;
 	private int currentColumn;
+
 	
 
 /**

@@ -69,27 +69,31 @@ public class TercetoAsignacion extends Terceto{
 
 				codigo += "; asignacion entera entre matrices\n";
 				codigo += "MOV EAX, "+expresion.getOperando()+"\n";
-//				codigo += "MOV BX, [EAX]\n";
-				codigo += "MOV EDX, [EAX]\n";
+				codigo += "MOV DX, [EAX]\n";
+				codigo += "PrintDec EAX, \"direccion de la"+expresion.getOperando()+" expresion matriz\"\n";
+				codigo += "PrintDec DX\n";
 				codigo += "MOV EAX, "+variable.getOperando()+"\n";
 				codigo += "MOV [EAX], DX\n";
-				
-
+				codigo += "MOV DX, [EAX]\n";
+				codigo += "MOV _nourriturre, EDX\n";
+				codigo += "PrintDec _nourriturre\n";
+				codigo += "PrintDec "+expresion.getOperando()+", \"direccion de la"+expresion.getOperando()+" expresion matriz\"\n";
+				codigo += "PrintDec "+variable.getOperando()+", \"direccion de la"+variable.getOperando()+" expresion matriz\"\n";
 			}else
 			if (expresion.getOperator().equals(">^")){
 
 				codigo += "MOV EAX, "+expresion.getOperando()+"\n";
 //				codigo += "MOV BX, [EAX]\n";
-				codigo += "MOV EDX, [EAX]\n";
+				codigo += "MOV DX, [EAX]\n";
 //				codigo += "MOV EBX, " +  "dword ptr ["+expresion.getOperando()+"]"+"\n"; //o aca habria que cargarlo a BX por ser enteros de 2 bytes
 				codigo += "MOV "+variable.getOperando()+", DX\n";//aca puede ser que sea EBX en lugar de BX
-
 			}else 
 				if (variable.getOperator().equals(">^")){
 //					codigo += "sentencias assembler para elementos de matriz ";
 					codigo += "MOV BX, " + expresion.getOperando() + "\n";
 					codigo += "MOV EAX, "+variable.getOperando()+"\n";
-					codigo += "MOV [EAX], BX\n";	
+					codigo += "MOV [EAX], BX\n";
+					
 				}else{
 					codigo += "MOV BX, " + expresion.getOperando() + "\n";
 					codigo += "MOV " + variable.getOperando() + ", BX\n";

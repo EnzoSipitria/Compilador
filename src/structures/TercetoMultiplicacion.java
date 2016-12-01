@@ -28,35 +28,38 @@ public class TercetoMultiplicacion extends Terceto {
 
 		if (this.typeVariable.equals("integer")){
 			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
-				codigo += "sentencias assembler para los dos operando de matrices";
-				codigo+="MOV "+"EAX" +", " + "dword ptr ["+((Terceto) operando1).getAux()+"]"+"\n";
+				codigo += ";sentencias assembler para los dos operando de matrices\n";
+				codigo += "MOV EBX, "+operando1.getOperando()+"\n";
+				codigo += "MOV AX, [EBX]\n";
+				codigo += "MOV EBX, "+operando2.getOperando()+"\n";
 				codigo += "MOV DX, 0\n";
-				codigo += "IMUL EAX, " + "dword ptr ["+((Terceto) operando2).getAux()+"]"+ "\n";
-				codigo+= "MOV" + getAux() + "AX" +"\n";
+				codigo += "IMUL AX, [EBX]\n";
+				codigo += "MOV "+getAux()+", AX" +"\n";
 
 			}
 			else
 				if (operando1.getOperator().equals(">^")) {
-					codigo += "sentencias assembler para elementos de matriz cuando el primer operando es una matriz";
-					codigo+="MOV "+"EAX" +", " + "dword ptr ["+((Terceto) operando1).getAux()+"]"+"\n";
+					codigo += ";elementos de matriz cuando el primer operando es una matriz\n";
+					codigo += "MOV EBX, "+operando1.getOperando()+"\n";
+					codigo += "MOV AX, [EBX]\n";
 					codigo += "MOV DX, 0\n";
-					codigo += "IMUL AX, "+((Terceto) operando2).getAux()+"\n";
-					codigo+= "MOV" + getAux() + "AX" +"\n";
+					codigo += "IMUL AX, "+operando2.getOperando()+"\n";
+					codigo += "MOV "+getAux()+", AX \n";
 				}
 				else 
 					if  (operando2.getOperator().equals(">^")) {
-						codigo += "sentencias assembler para elementos de matriz cuando el segundo operando es una matriz";
-						codigo+="MOV "+"AX" +", "+((Terceto) operando1).getAux()+"\n";
+						codigo += ";elementos de matriz cuando el segundo operando es una matriz\n";
+						codigo += "MOV EBX, "+operando2.getOperando()+"\n";
+						codigo += "MOV AX, [EBX]\n";
 						codigo += "MOV DX, 0\n";
-						codigo += "IMUL EAX, " + "dword ptr ["+((Terceto) operando2).getAux()+"]"+ "\n";
-						codigo+= "MOV" + getAux() + "AX" +"\n";
-					
+						codigo += "IMUL AX, "+operando1.getOperando()+"\n";
+						codigo += "MOV "+getAux()+", AX \n";
 					} 
 					else{
 						codigo += "MOV AX, " + operando1.getOperando() + "\n";
 						codigo += "MOV DX, 0\n";   
 						codigo += "IMUL AX, " + operando2.getOperando() + "\n";
-						codigo += "MOV " + getAux() + ", AX \n";
+						codigo += "MOV "+getAux()+", AX \n";
 					} 
 		}
 		else if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
