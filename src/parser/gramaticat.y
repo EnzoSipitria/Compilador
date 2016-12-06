@@ -374,6 +374,8 @@ System.out.println("(left)"+(Element)val_peek(3).obj+" := (right)"+(Element)val_
 					System.out.println("asignado a la izquierda de la asignacion"+tercetos.get(tercetos.size()-14));
 					System.out.println("asignado a la derecha de la asignacion"+tercetos.get(tercetos.size()-1));
 					leftExpresion = tercetos.get(tercetos.size()-14);
+					putValuesMatrix(tercetos.get(tercetos.size()-2).getValue(), tercetos.get(tercetos.size()-1).getValue());
+					
 					rightExpresion = makeConvertion(leftExpresion, leftType, rightType, tercetos.get(tercetos.size()-1), typeResult);
 					System.out.println("rightExpresion dsps de make matrix"+tercetos.get(tercetos.size()-1));
 					//rightExpresion = tercetos.get(tercetos.size()-1);
@@ -385,6 +387,8 @@ System.out.println("(left)"+(Element)val_peek(3).obj+" := (right)"+(Element)val_
 						System.out.println("matriz del lado derecho solamente"+leftExpresion+" := "+rightExpresion);
 						System.out.println("asignado a la derecha de la asignacion"+tercetos.get(tercetos.size()-1));
 						//rightExpresion = tercetos.get(tercetos.size()-1);
+						putValuesMatrix(tercetos.get(tercetos.size()-2).getValue(), tercetos.get(tercetos.size()-1).getValue());
+						
 						rightExpresion = makeConvertion(leftExpresion, leftType, rightType, tercetos.get(tercetos.size()-1), typeResult);
 						$$.obj = new TercetoAsignacion(leftExpresion,rightExpresion);
 					} else
@@ -392,7 +396,11 @@ System.out.println("(left)"+(Element)val_peek(3).obj+" := (right)"+(Element)val_
 							System.out.println("matriz del lado izquierdo solamente"+leftExpresion+" := "+rightExpresion);
 							System.out.println("asignado a la derecha de la asignacion"+tercetos.get(tercetos.size()-1));
 							leftExpresion = tercetos.get(tercetos.size()-1);
-							rightExpresion = makeConvertion(leftExpresion, leftType, rightType, tercetos.get(tercetos.size()-1), typeResult);
+							System.out.println("tercetos suma???"+tercetos.get(tercetos.size()-2)+"  value:"+tercetos.get(tercetos.size()-2).getValue()+" valor (i)"+rightExpresion.getValue());
+							
+							putValuesMatrix(tercetos.get(tercetos.size()-2).getValue(), rightExpresion.getValue());
+							
+							rightExpresion = makeConvertion(leftExpresion, leftType, rightType, rightExpresion, typeResult);
 							$$.obj = new TercetoAsignacion(leftExpresion,rightExpresion);
 						} else {
 							System.out.println("caso que ninguno sea  matriz"+leftExpresion+" := "+rightExpresion);
@@ -841,12 +849,22 @@ valor_matrix : IDENTIFICADOR '[' expresion ']' '['expresion']' {System.out.print
 																	}else {
 																		//capaaz que tenemos que agregar set useaca tmbn
 																		int currentRow=(Integer)((Element)$3.obj).getValue();
-																		int currentColumn=(Integer)((Element)$6.obj).getValue();
+																		int currentColumn=0;
+																		if ( ((Element)val_peek(1).obj).getClassType().equals("Token") ){
+																			if ( ((Token)val_peek(1).obj).getType().equals("INTEGER") && ((Element)val_peek(1).obj).getUse()!= null && ((Element)val_peek(1).obj).getUse().equals("mat"))
+																				currentColumn=(Integer)tercetos.get(tercetos.size()-1).getValue();
+																		}
+																		else
+																				currentColumn=(Integer)((Element)val_peek(1).obj).getValue();
 																		String typeVariable = lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()).getTypeVariable();
 																		lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()).setCurrentRow(currentRow);
 																		lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()).setCurrentColumn(currentColumn);
 																		//lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()).setTypeVariable(typeVariable);
 																		makeMatrix((Token)$1.obj,(Object)currentRow,(Object)currentColumn);
+																		System.out.println("referencia: "+tercetos.get(tercetos.size()-1)+"   suma: "+tercetos.get(tercetos.size()-2));
+																		tercetos.get(tercetos.size()-1).setValue(valoresMatriz.get(tercetos.get(tercetos.size()-2).getValue()));
+																		System.out.println("get value "+tercetos.get(tercetos.size()-1).getValue());
+																		
 																		$$.obj = $1.obj;
 																		((Token)$$.obj).setTypeVariable(typeVariable);
 																		((Token)$$.obj).setUse("mat");
@@ -873,6 +891,7 @@ operador_asignacion : ASIGNACION;
 *COMIENZO CODIGO AGREGADO POR NOSOTROS
 *
 */
+
 private LexicalAnalyzer lexAn;
 private ArrayList<String> errores;
 private ArrayList<String> estructuras;
@@ -884,6 +903,8 @@ private AssignMatrix convertionMatrix;
 private DivisionMatrix divisionMatrix;
 private OperationMatrix operationMatrix;
 private static AuxGenerator generator;
+private HashMap<Object, Object> valoresMatriz=new HashMap<Object, Object>();
+
 
 private int annotation;
 
@@ -932,9 +953,18 @@ public ArrayList<Terceto> getTercetos() {
  */
 
 
+ 
 private Object getValueReference(){
 	return null;
 }
+
+
+	public void putValuesMatrix(Object key, Object value){		
+	if(!valoresMatriz.containsKey(key)){		
+		valoresMatriz.put(key, value);		
+	}		
+}
+
 
 /*
 *se asigna el valor de la expresion al identificador indicado
@@ -1028,6 +1058,9 @@ public void controlRedefVariables (Token token,Token aux, String prefix){
 				}
 	}
 }
+
+
+
 
 
 private boolean controlVarNotDeclared (Token token){
@@ -1159,6 +1192,8 @@ public void makeMatrix(Token ide ,Object rowIndex, Object columnIndex){
 															  suma1.setUse("SHIFT");
 										                      tercetos.add((Terceto)suma1);
 										                      ((Terceto)suma1).setPosition(tercetos.size());
+															  int value = ((i1-indexStart)*shift)+(i2-indexStart);
+										                      suma1.setValue(value);
 
 										                      Terceto ref= new TercetoReferencia(suma1,lexAn.getSymbolTable().getToken(ide.getLexema()));
 										                      tercetos.add((Terceto)ref);
@@ -1211,8 +1246,10 @@ public void initMatrix (ArrayList<Token> listaValores,Object indexStart, Token i
 					//OLD: simpleAssign, NEW tercetos.get(tercetos.size()-2)aca cambiamos el segundo parametro del token asignacion para que cuando incializamos al matriz aparezca correctamente
 					//aca era -2 antes
 					TercetoAsignacion assign = new TercetoAsignacion(tercetos.get(tercetos.size()-1),listaValores.get(i));
+					System.out.println("tercetos suma???"+tercetos.get(tercetos.size()-2)+"  value:"+tercetos.get(tercetos.size()-2).getValue()+" valor (i)"+listaValores.get(i).getValue());
+					putValuesMatrix(tercetos.get(tercetos.size()-2).getValue(), listaValores.get(i).getValue());
 					assignValue(tercetos.get(tercetos.size()-1), listaValores.get(i));
-					assign.setTypeVariable("integer");
+					assign.setTypeVariable(listaValores.get(i).getTypeVariable());
 					System.out.println("aall muuundoooooooooo 0000000000000000000000 terceto asignacion creado"+assign);
 					//tercetos.remove(tercetos.size()-1);
 					//tercetos.add(simpleAssign);

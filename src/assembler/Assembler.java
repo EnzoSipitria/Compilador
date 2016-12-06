@@ -152,6 +152,9 @@ public class Assembler {
 				} else {
 					if (token.getUse() != null && token.getUse().equals("mat")){
 						int size = token.getRows()*token.getColumns();
+						if ( token.getIndexStart() == 0){
+							size = (token.getRows()+1)*(token.getColumns()+1);
+						}
 						declaration += token.getAssembler() + " DD "+size+" DUP(?)\n";
 					} else 
 						if (token.getType().equals("FLOAT")){
