@@ -375,7 +375,7 @@ System.out.println("(left)"+(Element)val_peek(3).obj+" := (right)"+(Element)val_
 					System.out.println("asignado a la derecha de la asignacion"+tercetos.get(tercetos.size()-1));
 					leftExpresion = tercetos.get(tercetos.size()-14);
 					putValuesMatrix(tercetos.get(tercetos.size()-2).getValue(), tercetos.get(tercetos.size()-1).getValue());
-					
+
 					rightExpresion = makeConvertion(leftExpresion, leftType, rightType, tercetos.get(tercetos.size()-1), typeResult);
 					System.out.println("rightExpresion dsps de make matrix"+tercetos.get(tercetos.size()-1));
 					//rightExpresion = tercetos.get(tercetos.size()-1);
@@ -388,7 +388,7 @@ System.out.println("(left)"+(Element)val_peek(3).obj+" := (right)"+(Element)val_
 						System.out.println("asignado a la derecha de la asignacion"+tercetos.get(tercetos.size()-1));
 						//rightExpresion = tercetos.get(tercetos.size()-1);
 						putValuesMatrix(tercetos.get(tercetos.size()-2).getValue(), tercetos.get(tercetos.size()-1).getValue());
-						
+
 						rightExpresion = makeConvertion(leftExpresion, leftType, rightType, tercetos.get(tercetos.size()-1), typeResult);
 						$$.obj = new TercetoAsignacion(leftExpresion,rightExpresion);
 					} else
@@ -397,9 +397,9 @@ System.out.println("(left)"+(Element)val_peek(3).obj+" := (right)"+(Element)val_
 							System.out.println("asignado a la derecha de la asignacion"+tercetos.get(tercetos.size()-1));
 							leftExpresion = tercetos.get(tercetos.size()-1);
 							System.out.println("tercetos suma???"+tercetos.get(tercetos.size()-2)+"  value:"+tercetos.get(tercetos.size()-2).getValue()+" valor (i)"+rightExpresion.getValue());
-							
+
 							putValuesMatrix(tercetos.get(tercetos.size()-2).getValue(), rightExpresion.getValue());
-							
+
 							rightExpresion = makeConvertion(leftExpresion, leftType, rightType, rightExpresion, typeResult);
 							$$.obj = new TercetoAsignacion(leftExpresion,rightExpresion);
 						} else {
@@ -840,6 +840,8 @@ variable : IDENTIFICADOR {
 									}
 		 | valor_matrix{ $$.obj = $1.obj;};
 
+// tiene un par de errores veremos que onda mañana
+
 valor_matrix : IDENTIFICADOR '[' expresion ']' '['expresion']' {System.out.println("==== valor matrix ==== ");
 	                                                             //makeMatrix((Token)$1.obj,((Token)$3.obj).getValue(),((Token)$6.obj).getValue());
 																// $$.obj = tercetos.get(tercetos.size()-1);
@@ -852,8 +854,10 @@ valor_matrix : IDENTIFICADOR '[' expresion ']' '['expresion']' {System.out.print
 																		int currentColumn=0;
 																		if ( ((Element)val_peek(1).obj).getClassType().equals("Token") ){
 																			if ( ((Token)val_peek(1).obj).getType().equals("INTEGER") && ((Element)val_peek(1).obj).getUse()!= null && ((Element)val_peek(1).obj).getUse().equals("mat"))
-																				currentColumn=(Integer)tercetos.get(tercetos.size()-1).getValue();
-																		}
+                                        System.out.println("entro a cargar el valor del terceto xq es matriz");
+                                        currentColumn=(Integer)tercetos.get(tercetos.size()-1).getValue();
+                                        System.out.println(currentColumn+" del terceto xq es matriz");
+                                    }
 																		else
 																				currentColumn=(Integer)((Element)val_peek(1).obj).getValue();
 																		String typeVariable = lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()).getTypeVariable();
@@ -864,7 +868,7 @@ valor_matrix : IDENTIFICADOR '[' expresion ']' '['expresion']' {System.out.print
 																		System.out.println("referencia: "+tercetos.get(tercetos.size()-1)+"   suma: "+tercetos.get(tercetos.size()-2));
 																		tercetos.get(tercetos.size()-1).setValue(valoresMatriz.get(tercetos.get(tercetos.size()-2).getValue()));
 																		System.out.println("get value "+tercetos.get(tercetos.size()-1).getValue());
-																		
+
 																		$$.obj = $1.obj;
 																		((Token)$$.obj).setTypeVariable(typeVariable);
 																		((Token)$$.obj).setUse("mat");
@@ -953,16 +957,16 @@ public ArrayList<Terceto> getTercetos() {
  */
 
 
- 
+
 private Object getValueReference(){
 	return null;
 }
 
 
-	public void putValuesMatrix(Object key, Object value){		
-	if(!valoresMatriz.containsKey(key)){		
-		valoresMatriz.put(key, value);		
-	}		
+	public void putValuesMatrix(Object key, Object value){
+	if(!valoresMatriz.containsKey(key)){
+		valoresMatriz.put(key, value);
+	}
 }
 
 
