@@ -122,7 +122,7 @@ public class Token extends Element{
 	public String getOperando() {
 		if (this.getType().equals("INTEGER")){
 			// TODO Auto-generated method stub
-			return "_"+String.valueOf(this.value);	
+			return String.valueOf(this.value);	
 		}else if (this.getType().equals("FLOAT")){
 			return this.aux;
 		}

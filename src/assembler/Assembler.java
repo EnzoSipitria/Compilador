@@ -146,7 +146,7 @@ public class Assembler {
 						declaration += token.getAssembler() + " DW "+size+" DUP(?)\n";
 					} else {
 						if (token.getType().equals("INTEGER")){
-							declaration += token.getAssembler() + " DW "+token.getValue()+"\n";
+							declaration +=";"+token.getAssembler() + " DW "+token.getValue()+"\n";
 						} else declaration += token.getAssembler() + " DW ?\n"; // entero = 2 bytes
 					}	                	
 				} else {
@@ -268,7 +268,8 @@ public class Assembler {
 
 			}
 
-//			System.out.println("IF CONSTANTES===================================================================================");
+			System.out.println("IF CONSTANTES=================================="+terceto);
+			
 			if (!terceto.getOperator().equals("label") && !terceto.getOperator().equals("conv") && !terceto.getOperator().equals("simple") ){
 				if (terceto.getFirst()!=null && ((Element)terceto.getFirst()).getClassType().equals("Token")){
 					Token token = symbolTable.getToken(((Token) terceto.getFirst()).getLexema());
