@@ -58,7 +58,7 @@ public class TercetoReferencia extends Terceto {
 //        Codigo+= "ADD "+"AX"+", "+((structures.Element) op1).getOperando()+"\n";
 //        Codigo+= "MOV "+ getAux() + ", AX"+"\n";
         
-        UI2.addText(UI2.txtConsole, codigo);
+//        UI2.addText(UI2.txtConsole, codigo);
         return codigo;
 	}
 

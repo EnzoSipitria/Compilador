@@ -52,7 +52,7 @@ public class UI2 extends JFrame {
 	private JButton btnCompile;
 	private JButton btnSaveFile;
 	private JButton btnLoadFile;
-	private JTextArea txtTokenList;
+	private JTextArea txtAssembler;
 	private Assembler assembler;
 	
 	public static JTextArea txtSymbolsTable;
@@ -60,6 +60,7 @@ public class UI2 extends JFrame {
 	public JTextArea txtTercetos;
 	public static JTextArea txtConsole;
 	public static JTextArea txtDebug;
+	private String assemblerCode="";
 	
 
 	public UI2() {
@@ -112,8 +113,16 @@ public class UI2 extends JFrame {
 		/*
 		 * ocultar esta pestaña
 		 */
-		txtTokenList = new JTextArea();
-        txtTokenList.setEditable(false); 
+		txtAssembler = new JTextArea();
+        txtAssembler.setEditable(false); 
+//        // pruueba cambio de interfaz
+//        
+//    	JScrollPane scrollTokenList = new JScrollPane(txtAssembler);
+//		tabRight.addTab("Assembler", null, scrollTokenList, null);
+//		TextLineNumber assemblerNumber = new TextLineNumber(txtAssembler);
+//		scrollTokenList.setRowHeaderView(assemblerNumber);
+//		
+//		//fi
 
     	txtTercetos = new JTextArea();
 		txtTercetos.setEditable(false);
@@ -126,8 +135,10 @@ public class UI2 extends JFrame {
 		JScrollPane scrollReservedWords = new JScrollPane(txtReservedWords);
 		tabRight.addTab("Reserved Words", null, scrollReservedWords, null);
 		
-		JScrollPane scrollTokenList = new JScrollPane(txtTokenList);
-		tabRight.addTab("Token List", null, scrollTokenList, null);
+		JScrollPane scrollTokenList = new JScrollPane(txtAssembler);
+		tabRight.addTab("Assembler", null, scrollTokenList, null);
+		TextLineNumber assemblerNumber = new TextLineNumber(txtAssembler);
+		scrollTokenList.setRowHeaderView(assemblerNumber);
 
 		JScrollPane scrollTercetos = new JScrollPane(txtTercetos);
 		tabRight.addTab("Tercetos", null, scrollTercetos, null);
@@ -156,7 +167,7 @@ public class UI2 extends JFrame {
 				txtDebug.setText("");
 				txtSymbolsTable.setText("");
 				txtReservedWords.setText("");
-				txtTokenList.setText("");
+				txtAssembler.setText("");
 				txtConsole.setText("");
 				
 				JFileChooser chooser = new JFileChooser();
@@ -177,11 +188,12 @@ public class UI2 extends JFrame {
 		});
 
 
-		/**
+		
+			/**
 		 * BOTON SAVE FILE: guardar el archivo editado y dejar el parser listo para ejecutarse nuevamente, 
 		 */
 		btnSaveFile = new JButton("Guardar Como");
-		btnSaveFile.setEnabled(false);
+		btnSaveFile.setEnabled(true);
 		btnSaveFile.addMouseListener(new MouseAdapter() {
 			private File fileSaved;
 
@@ -191,39 +203,48 @@ public class UI2 extends JFrame {
 				chooser.setDialogTitle("Guardar Como");
 				chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 				int selection = chooser.showSaveDialog(null);
-				if (selection == JFileChooser.APPROVE_OPTION)
+				if (selection == JFileChooser.APPROVE_OPTION){
 					file = chooser.getSelectedFile();
-				
-				FileWriter out = null;
-				BufferedWriter bufferwriter = null;
-				pathFile = file.getAbsolutePath();
-				txtPath.setText(pathFile);
-				try {
-					out = new FileWriter(file);
-					bufferwriter = new BufferedWriter(out);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				String[] textSplit = sourceCodeEditor.getText().split("\n");
-				for (String line : textSplit) {
+					
+
+					FileWriter out = null;
+					BufferedWriter bufferwriter = null;
+					pathFile = file.getAbsolutePath();
+					txtPath.setText(pathFile);
 					try {
-						bufferwriter.write(line+"\n");
+						out = new FileWriter(file);
+						bufferwriter = new BufferedWriter(out);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
+					String[] textSplit = sourceCodeEditor.getText().split("\n");
+					for (String line : textSplit) {
+						try {
+							bufferwriter.write(line+"\n");
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 
-				}
-				try {
-					bufferwriter.close();
-					JOptionPane.showMessageDialog(null, "Archivo Guardado", "Informacion", JOptionPane.INFORMATION_MESSAGE);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+					}
+					try {
+						bufferwriter.close();
+						JOptionPane.showMessageDialog(null, "Archivo Guardado", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+//					viewSourceCode();
+//					txtDebug.setText("");
+//					txtSymbolsTable.setText("");
+//					txtReservedWords.setText("");
+//					txtAssembler.setText("");
+//					txtConsole.setText("");
+//					btnCompile.setEnabled(true);
+				}  else JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.INFORMATION_MESSAGE);
 				viewSourceCode();
 				txtDebug.setText("");
 				txtSymbolsTable.setText("");
 				txtReservedWords.setText("");
-				txtTokenList.setText("");
+				txtAssembler.setText("");
 				txtConsole.setText("");
 				btnCompile.setEnabled(true);
 			}
@@ -236,6 +257,8 @@ public class UI2 extends JFrame {
 		btnCompile = new JButton("Compilar");
 		btnCompile.setEnabled(false);
 		btnCompile.addMouseListener(new MouseAdapter() {
+			
+
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if (file!=null){
@@ -251,18 +274,20 @@ public class UI2 extends JFrame {
 				addText(txtSymbolsTable,parser.getLexicalAnalizer().getSymbolTable().toString());
 				addText(txtDebug, "ERRORES LEXICOS: "+"\n");
 				addText(txtDebug,parser.getLexicalAnalizer().viewErrors());
-				addText(txtTokenList, parser.getLexicalAnalizer().viewTokenList());
 				viewEstructuras();	
 				viewTercetos();
 				System.out.println("ERRORES"+parser.getErrores().size());
 				if (parser.getErrores().size()!=0 || parser.getLexicalAnalizer().getErrors().size()!=0  ){
 					
 					JOptionPane.showMessageDialog(null, "Consulte Debug para detalle de errores", "ERRORES DE COMPILACION", JOptionPane.INFORMATION_MESSAGE);
-				
+					assemblerCode = "error en la generacion de codigo";
 				} else{
 					
 					assembler = new Assembler(parser.getTercetos(),parser.getLexicalAnalizer().getSymbolTable());
-					writeAssemblerFile(assembler.getCodigo());}
+					assemblerCode = assembler.getCodigo();
+					}
+				writeAssemblerFile(assemblerCode);
+				addText(txtAssembler, assemblerCode);
 				txtSymbolsTable.setText("");
 				addText(txtSymbolsTable,parser.getLexicalAnalizer().getSymbolTable().toString());
 //				addText(txtTokenList, assembler.getCodigo());
@@ -279,8 +304,16 @@ public class UI2 extends JFrame {
 //				for (String string : keys) {
 //					addText(txtDebug,string+"\n");
 //				}
-				
+			try {
+				Process m = Runtime.getRuntime().exec("C:\\masm32\\qeditor.exe");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, "error al intentar abrir masm32", "Error externo a la aplicacion", JOptionPane.INFORMATION_MESSAGE);
+				e.printStackTrace();
+			}	
+			
 			}
+			
 		});
 
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
