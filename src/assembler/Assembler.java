@@ -146,6 +146,7 @@ public class Assembler {
 						declaration += token.getAssembler() + " DW "+size+" DUP(?)\n";
 					} else {
 						if (token.getType().equals("INTEGER")){
+							System.out.println("token get declarations :"+token.getAux());
 							declaration +=";"+token.getAssembler() + " DW "+token.getValue()+"\n";
 						} else declaration += token.getAssembler() + " DW ?\n"; // entero = 2 bytes
 					}	                	

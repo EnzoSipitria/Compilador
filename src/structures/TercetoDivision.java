@@ -52,7 +52,8 @@ public class TercetoDivision extends Terceto {
 					codigo += "CWD\n";//copia el signo a DX
 					codigo += "MOV ECX, "+dividendo.getOperando()+"\n";
 					codigo += "MOV EAX, [ECX]\n"; 
-					codigo += "IDIV "+divisor.getOperando()+"\n";
+					codigo += "MOV EBX, "+divisor.getOperando()+"\n";
+					codigo += "IDIV EBX\n";
 	                codigo += "MOV " + getAux() + ", AX\n";
 				}
 				else 
@@ -77,7 +78,8 @@ public class TercetoDivision extends Terceto {
                         codigo += "MOV DX, 0\n";//Cargo la parte alta con cero, porque todos
                         codigo += "MOV AX, "+dividendo.getOperando()+"\n";//los enteros son de 16 bits no más
                         codigo += "CWD\n";//copia el signo a DX
-                        codigo += "IDIV " +divisor.getOperando()+ "\n";
+                        codigo += "MOV EBX, "+divisor.getOperando()+"\n";
+    					codigo += "IDIV EBX\n";
                         codigo += "MOV " + getAux() + ", AX\n";
 
 

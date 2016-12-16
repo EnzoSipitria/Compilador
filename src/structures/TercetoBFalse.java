@@ -38,7 +38,7 @@ public class TercetoBFalse extends Terceto {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         String comparator = (String) ((Element)this.first).getOperator();
         String label = "label"+((Element)this.second).getPosition();
-        //System.out.println("LABEL TERCETO BFALSE"+((Element)this.second).getPosition());
+      System.out.println("LABEL TERCETO BFALSE"+((Element)this.second).getPosition());
 //        		((Element)this.second).getAssembler().replace(":", ""); // ver si esto va 
         String jump = "";
        if(comparator.equals(">="))

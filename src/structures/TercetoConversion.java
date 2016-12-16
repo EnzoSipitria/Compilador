@@ -37,8 +37,16 @@ public class TercetoConversion extends Terceto {
 		} else{
 		//aca generar sentencias assembler para control de perdida de informacion
 		//solamente la conversion, la cuenta en le siguiente paso
-        codigo += "FILD " + operando1.getOperando() + "\n";
-        codigo += "FSTP " + getAux() + "\n";
+	    if (operando1.getClassType().equals("Token")) {
+	    	codigo += "MOV "+ getAux()+ ", " +operando1.getOperando()+ "\n";	
+	    	codigo += "FILD " + getAux() + "\n";
+	    	codigo += "FSTP " + getAux() + "\n";
+			
+		} else {
+	    	codigo += "FILD "+operando1.getOperando()+ "\n";
+	    	codigo += "FSTP " + getAux() + "\n";
+
+		}		
 		}
         return codigo;
     } 

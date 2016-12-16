@@ -220,15 +220,17 @@
                                                                                                       tercetos.add(bInconditional);
                                                                                                       bInconditional.setPosition(tercetos.size());
                                                                                                       bInconditional.setHasLabel(true);
+																									  
                                                                                                       Terceto bFalse = stack.pop();
                                                                                                       System.out.println("terceto size "+tercetos.size());
                                                                                                       tercetos.add(new TercetoLabel((Integer)tercetos.size()+2,(Integer)tercetos.size()+1));
-                                                                                                      Terceto simple = new TercetoSimple(tercetos.size()+1);
-
+                                                                                                      Terceto simple = new TercetoSimple(tercetos.size()+1);//+1
+																									  System.out.println("terceto simple "+bFalse);	 
                                                                                                       bFalse.setSecond(simple);
-                                                                                                      simple = stack.pop();
+                                                                                                      simple.setPosition(tercetos.size()+1);
+																									  simple = stack.pop();
                                                                                                       //se cambio la linea siguiente como la posicion del simple para que no falle laposicion a  la uqe se debe volver en el, salto incondicional
-                                                                                                      simple.setPosition(simple.getPosition());
+                                                                                                      //simple.setPosition(simple.getPosition());
                                                                                                       bInconditional.setFirst(simple);
                                                                                                     }
                            | FOR '(' error ')' { System.out.println("tFOR ERROR");};
@@ -291,6 +293,7 @@
                                                                       //System.out.println("==================COND FOR==========El tamaño del arreglo TERCETO en CONDICION DEL FOR es: "+tercetos.size());
                                                                       Terceto bFalse = new TercetoBFalse(tercetos.get(tercetos.size()-1));
                                                                       tercetos.add(bFalse);
+																	  
                                                                       bFalse.setPosition(tercetos.size());
                                                                       stack.push(bFalse);};
 
@@ -397,10 +400,10 @@
                                                                                              if ( leftExpresion.getUse() != null && leftExpresion.getUse().equals("mat")) {
                                                                                                   System.out.println("matriz del lado izquierdo solamente"+leftExpresion+" := "+rightExpresion);
                                                                                                   System.out.println("asignado a la derecha de la asignacion"+tercetos.get(tercetos.size()-1));
-                                                                                                  leftExpresion = tercetos.get(tercetos.size()-1);
-                                                                                                  System.out.println("tercetos suma???"+tercetos.get(tercetos.size()-2)+"  value:"+tercetos.get(tercetos.size()-2).getValue()+" valor (i)"+rightExpresion.getValue());
+                                                                                                  leftExpresion = tercetos.get(tercetos.size()-2);
+                                                                                                 // System.out.println("tercetos suma???"+tercetos.get(tercetos.size()-2)+"  value:"+tercetos.get(tercetos.size()-2).getValue()+" valor (i)"+rightExpresion.getValue());
 
-                                                                                                  putValuesMatrix(tercetos.get(tercetos.size()-2).getValue(), rightExpresion.getValue());
+                                                                                                 //putValuesMatrix(tercetos.get(tercetos.size()-2).getValue(), rightExpresion.getValue());
 
                                                                                                   rightExpresion = makeConvertion(leftExpresion, leftType, rightType, rightExpresion, typeResult);
                                                                                                   $$.obj = new TercetoAsignacion(leftExpresion,rightExpresion);
@@ -1329,7 +1332,8 @@
             System.out.println("leftOperand"+leftOperand+"  rightOperand"+rightOperand+"   leftType"+leftType+"     rightType"+rightType);
             System.out.println("accept Operation"+convertionMatrix.acceptOperation(leftType,rightType));
             if (convertionMatrix.acceptOperation(leftType,rightType)){
-              if(  !rightOperand.getTypeVariable().equals(leftOperand.getTypeVariable()) ){
+				
+              if( (rightOperand.getTypeVariable()!= null) && (!rightOperand.getTypeVariable().equals(leftOperand.getTypeVariable()))){
                 System.out.println("tipos distintos creacion terceto conversion");
 
                 typeResult = convertionMatrix.getTypeOperation( leftOperand.getTypeVariable() , rightOperand.getTypeVariable() );
