@@ -139,15 +139,17 @@
                                                                ((ArrayList<Token>)($$.obj)).add((Token)$3.obj);};
 
 
-          sentencia_declarativa_datos : tipo lista_variables ';'{assignType(((Token)$1.obj).getLexema(),(ArrayList<Token>)$2.obj);
-                                                                 System.out.println("ejecuto regla de ASSIGN TYPE");};
+          sentencia_declarativa_datos : tipo lista_variables ';'{System.out.println("ejecuto regla de ASSIGN TYPE"+$2.obj);
+																  if ( !$2.obj.getClass().toString().equals("class structures.Token") ) 
+																	assignType(((Token)$1.obj).getLexema(),(ArrayList<Token>)$2.obj);};
+                                                                 //System.out.println("ejecuto regla de ASSIGN TYPE"+$1.obj);};
 
 
             tipo : INTEGER {$$.obj = $1.obj;
                             System.out.println("Problando INTEGER: "+((Token)$1.obj).getLexema());} //ANDA
                  | FLOAT   {$$.obj = $1.obj;
                             System.out.println("Problando FLOAT: "+((Token)$1.obj).getLexema());}  //ANDA
-                 | error{UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". Columna: "+lexAn.getIndexLine()+" ERROR DE TIPO DESCONOCIDO "+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR DE TIPO DESCONOCIDO");};
+                 | error{UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". ERROR EN DECLARACION DE VARIABLES "+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR EN DECLARACION DE VARIABLES");};
 
                 lista_variables :IDENTIFICADOR  {$$.obj=new ArrayList<Token>();
                                                  Token aux=lexAn.getSymbolTable().getToken(((Token) $1.obj).getLexema());
@@ -211,9 +213,20 @@
 
                     inicio_For: FOR '(' asig_for cond_for variable DECREMENTO')' bloque_sentencias  { System.out.println("====== INICIO FOR ======= ");
                                                                                                       estructuras.add(numberLine.pop()+". sentencia ejecutable for\n");
-                                                                                                      Terceto varUpdate = new TercetoDecremento((Token)$5.obj);
-                                                                                                      tercetos.add(varUpdate);
-                                                                                                      varUpdate.setPosition(tercetos.size());
+                                                                                                      //Terceto varUpdate = new TercetoDecremento((Token)$5.obj);
+                                                                                                      //tercetos.add(varUpdate);
+																									  Token one = new Token ("INTEGER","_i1",0,1);
+																									  one.setTypeVariable("integer");
+																									  addTokenSymbolTable(one);
+																									  
+																									  Terceto resta= new TercetoResta((Token)$5.obj,one);
+																									  tercetos.add(resta);
+																									  resta.setPosition(tercetos.size());
+																									  resta.setTypeVariable("integer");
+																									  
+																									  Terceto varUpdate = new TercetoAsignacion((Token)$5.obj,tercetos.get(tercetos.size()-1));
+																									  tercetos.add(varUpdate);
+																									  varUpdate.setPosition(tercetos.size());
                                                                                                       varUpdate.setTypeVariable("integer");
 
                                                                                                       Terceto bInconditional = new TercetoBInconditional();
@@ -234,6 +247,8 @@
                                                                                                       bInconditional.setFirst(simple);
                                                                                                     }
                            | FOR '(' error ')' { System.out.println("tFOR ERROR");};
+						   
+						  // | FOR '(' asig_for cond_for variable DECREMENTO')' bloque_sentencias error {UI2.addText(UI2.txtDebug,"Linea: "+printLine+". ERROR QUE ESTAMOS PROBANDO "+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR QUE ESTAMOS PROBANDO");};
 
                   asig_for:  IDENTIFICADOR operador_asignacion expresion ';' {System.out.println("isssssss show time");
                                                                               Terceto initFor=null;
@@ -306,6 +321,8 @@
                 sentencia_ejecutable : inicio_IF {estructuras.add(numberLine.pop()+". sentencia ejecutable if\n");}
 
                                      | inicio_For
+									 
+									 //| inicio_For error {UI2.addText(UI2.txtDebug,"Linea: "+printLine+". ERROR QUE ESTAMOS PROBANDO "+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR QUE ESTAMOS PROBANDO");};
 
                           // | FOR '(' error ')'  bloque_sentencias {UI2.addText(UI2.txtDebug,"Linea: "+numberLine.peek()+". ERROR EN SENTENCIA FOR: INICIALIZACION, CONDICION, ACTUALIZACION "+"\n");estructuras.add(numberLine.peek()+". sentencia ejecutable for\n"); errores.add("Linea: "+numberLine.pop()+"ERROR EN SENTENCIA FOR CONDICION BLOQUE INVALIDO");}
 
@@ -327,7 +344,8 @@
 
                                     | PRINT '(' CADENA ')' error {UI2.addText(UI2.txtDebug,"Linea: "+printLine+". ERROR EN PRINT FALTA \n"); errores.add("Linea: "+printLine+"ERROR EN PRINT FALTA ;");};
 
-
+									| error { UI2.addText(UI2.txtDebug,"Linea: "+printLine+" ERROR EN BLOQUE DE SENTENCIA \n"); errores.add("Linea: "+printLine+"ERROR EN SENTENCIA EJECUTABLE");}
+								
 
                   asignacion : variable operador_asignacion expresion ';'{System.out.println("==ASIGNACION==");
                                                                           System.out.println("(left)"+(Element)val_peek(3).obj+" := (right)"+(Element)val_peek(1).obj);
@@ -548,7 +566,7 @@
                                                                         //((Element)$$.obj).setHasLabel(true);
                                                                         //System.out.println("El tamaño del arreglo TERCETO en CONDICION es: "+tercetos.size());
                                                                       }
-                | '('error')'{UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". Columna: "+lexAn.getIndexLine()+" ERROR EN CONDICION"+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR EN CONDICION");}
+                | '('error')'{UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+"."+lexAn.getIndexLine()+" ERROR EN CONDICION"+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR EN CONDICION");}
 
                 |'('expresion comparador  error {UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". ERROR EN IF paren2"+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR EN CONDICION");};
 
@@ -558,6 +576,8 @@
                 bloque_sentencias_ejecutable: '{' grupo_sentencias '}'
 
                 | sentencia_ejecutable;
+				
+				//| error {UI2.addText(UI2.txtDebug,"Linea: "+printLine+". ERROR QUE ESTAMOS PROBANDO en bloque de sentencias "+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR QUE ESTAMOS PROBANDO en bloque desentencias");};
 
                 grupo_sentencias: sentencia_ejecutable grupo_sentencias
 
@@ -843,7 +863,7 @@
 
           variable : IDENTIFICADOR {
             if (controlVarNotDeclared(((Token)$1.obj))){
-              UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". Variable ["+((Token)$1.obj).getLexema()+"] no declarada");
+              UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". Variable ["+((Token)$1.obj).getLexema()+"] no declarada \n");
               errores.add("Linea: "+lexAn.getLineNumber()+"Variable no declarada");
             } else {$$.obj = lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()); // ANDA
               System.out.println("Probando IDENTIFICADOR en regla de variable ident: "+lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()));}
@@ -1005,6 +1025,7 @@
               tk = lexAn.getSymbolTable().getToken(token.getLexema());
               System.out.println("===================TOKEN"+tk.toString());
               if ((tk != null) && (tk.hasTypeVariable())){
+				  UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". ERROR VARIABLE REDECLARADA"+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR VARIABLE REDECLARADA");
                 //System.out.println("===================Error Sintactico");
               } else if (tk != null){
                 tk.setTypeVariable(type);
