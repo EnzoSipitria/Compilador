@@ -23,8 +23,8 @@ public class TercetoMultiplicacion extends Terceto {
 		Element operando1 = (Element) this.first;
 		Element operando2 = (Element) this.second;
 
-		System.out.println("terceto "+operando1+" + "+operando2+" variable auxiliar"+this.getAux());
-		String codigo = ";multiplicacion\n";
+		System.out.println("terceto "+operando1+" * "+operando2+" variable auxiliar"+this.getAux());
+		String codigo = ";multiplicacion "+operando1+" * "+operando2+"\n";
 
 		if (this.typeVariable.equals("integer")){
 			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){

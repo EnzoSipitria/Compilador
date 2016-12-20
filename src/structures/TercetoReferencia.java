@@ -26,7 +26,7 @@ public class TercetoReferencia extends Terceto {
 	public String getAssembler() {
 		System.out.println("===terceto referencia===");
 		System.out.println("====terceto"+this);
-        String codigo = ";referencia\n";
+        String codigo = ";referencia "+second+" position del elemento "+first+"\n";
         Element position = (Element) this.first;/// resultado de la busqueda del desplazamiento (suma)
         Element matrix = (Element) this.second;///  token de la matriz
         System.out.println("position: "+position.getOperando());

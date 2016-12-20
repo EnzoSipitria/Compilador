@@ -24,7 +24,7 @@ public class TercetoDivision extends Terceto {
 		Element divisor = (Element) this.second;
 
 		System.out.println("terceto "+dividendo+" + "+divisor+" variable auxiliar"+this.getAux());
-		String codigo = ";division\n";
+		String codigo = ";division "+dividendo+" / "+divisor+"\n";
 
 		if (this.typeVariable.equals("integer")){
 			if ( dividendo.getOperator().equals(">^") && (divisor.getOperator().equals(">^")) ){

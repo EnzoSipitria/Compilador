@@ -19,7 +19,7 @@ public class TercetoConversion extends Terceto {
 	@Override
 	public String getAssembler() {
 		Element operando1 =((Element)this.first);
-		String codigo ="";
+		String codigo =";conversion el elemento a convertir "+operando1+" al tipo "+second+"\n";
 		System.out.println(operando1+": este fue el operando 1 de la conversion");
 		if (second.equals("integer")) {
 //			codigo+= "MOV AX, "+0+"\n";// cargo 0 xq se que va a haber perdida de informacion

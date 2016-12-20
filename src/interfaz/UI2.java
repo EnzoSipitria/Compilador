@@ -305,7 +305,7 @@ public class UI2 extends JFrame {
 //					addText(txtDebug,string+"\n");
 //				}
 			try {
-				Process m = Runtime.getRuntime().exec("D:\\masm32\\qeditor.exe");
+				Process m = Runtime.getRuntime().exec("C:\\masm32\\qeditor.exe");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "error al intentar abrir masm32", "Error externo a la aplicacion", JOptionPane.INFORMATION_MESSAGE);

@@ -59,7 +59,7 @@ public class TercetoAsignacion extends Terceto{
 		Element variable = (Element) this.first; 
 		Element expresion = (Element) this.second;
 		System.out.println("terceto "+variable+" := "+expresion+" variable auxiliar must be null:"+typeVariable);
-		String codigo = "; asignacion\n";
+		String codigo = "; asignacion "+variable+" := "+expresion+"\n";
 		//		if (this.typeVariable == null) {this.typeVariable="integer"; System.out.println("tipo cambiado");}
 
 
@@ -77,8 +77,8 @@ public class TercetoAsignacion extends Terceto{
 				codigo += "MOV DX, [EAX]\n";
 				codigo += "MOV _nourriturre, EDX\n";
 				codigo += "PrintDec _nourriturre\n";
-				codigo += "PrintDec "+expresion.getOperando()+", \"direccion de la"+expresion.getOperando()+" expresion matriz\"\n";
-				codigo += "PrintDec "+variable.getOperando()+", \"direccion de la"+variable.getOperando()+" expresion matriz\"\n";
+//				codigo += "PrintDec "+expresion.getOperando()+", \"direccion de la"+expresion.getOperando()+" expresion matriz\"\n";
+//				codigo += "PrintDec "+variable.getOperando()+", \"direccion de la"+variable.getOperando()+" expresion matriz\"\n";
 			}else
 			if (expresion.getOperator().equals(">^")){
 

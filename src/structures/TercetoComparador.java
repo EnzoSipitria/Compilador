@@ -18,11 +18,11 @@ public class TercetoComparador extends Terceto{
 
 	@Override
 	public String getAssembler() {
-		System.out.println("=== TERCETO ASIGNACION getAssembler() ===");
+		System.out.println("=== TERCETO comparador getAssembler() ===");
 		Element operando1 = (Element) this.first; 
 		Element operando2 = (Element) this.second;
 		System.out.println("terceto "+operando1+" := "+operando2+" variable auxiliar must be null:"+typeVariable);
-		String codigo = "; comparador\n";
+		String codigo = "; comparacion "+operando1+" "+this.getOperator()+" "+operando2+"\n";
 		//		if (this.typeVariable == null) {this.typeVariable="integer"; System.out.println("tipo cambiado");}
 
 

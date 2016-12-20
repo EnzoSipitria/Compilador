@@ -3,7 +3,7 @@ package lexicalAnalyzer;
 import java.util.HashMap;
 
 import structures.Token;
-import structures.TokenMatrix;
+//import structures.TokenMatrix;
 
 
 public class SymbolTable {
@@ -31,9 +31,9 @@ public class SymbolTable {
 		symbolsTable.put(key, token);
 	}
 
-	public void addToken(String key, TokenMatrix token) {
-		symbolsTable.put(key, token);
-	}
+//	public void addToken(String key, TokenMatrix token) {
+//		symbolsTable.put(key, token);
+//	}
 	public HashMap<String,Token> getTokenList(){
 		return this.symbolsTable;
 	}

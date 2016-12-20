@@ -25,7 +25,7 @@ public class TercetoResta extends Terceto {
 		Element operando2 = (Element) this.second;
 
 		System.out.println("terceto "+operando1+" - "+operando2+" variable auxiliar"+this.getAux());
-		String codigo = "";
+		String codigo = ";resta "+operando1+" - "+operando2+"\n";
 
 		if (this.typeVariable.equals("integer")){
 			if ( operando1.getOperator().equals(">^") && (operando2.getOperator().equals(">^")) ){
