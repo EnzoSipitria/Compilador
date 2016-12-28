@@ -317,7 +317,9 @@ public class Assembler {
 				token.setAux(aux);
 				terceto.setAux(aux);
 			}
-			if (terceto.getOperator().equals(">^")){
+			//acabo de cambiar esta linea para poder probar que se genere el comtrol de indices en el terceto base, ademas 
+//			se modifico el metodo makeMatrix para que genere en terceto base las dos varaibles con los limites para controlarlos
+			if (terceto.getOperator().equals("^")){
 				terceto.setNumber(generator.getCounter());
 			}
 			//    		if(operators.contains(terceto.getOperator())){

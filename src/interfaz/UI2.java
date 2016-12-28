@@ -435,9 +435,11 @@ public class UI2 extends JFrame {
 	public static void writeAssemblerFile(String code){
 		FileWriter out = null;
 		BufferedWriter bufferwriter = null;
+		
+		System.out.println("file: "+file.getName());
 //		System.out.println(file.getAbsolutePath());
 		try {
-			out = new FileWriter("assembler.asm");
+			out = new FileWriter(file.getName()+".asm");
 			System.out.println("assembler.txt");
 			bufferwriter = new BufferedWriter(out);
 			bufferwriter.write(code);

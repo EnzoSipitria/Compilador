@@ -3,6 +3,9 @@ package structures;
 public class TercetoResta extends Terceto {
 
 
+
+
+
 	public TercetoResta(Object first, Object second){
 		this.operator = "-";
 		this.first    = first;
@@ -16,6 +19,10 @@ public class TercetoResta extends Terceto {
 		// TODO Auto-generated method stub
 		return "["+String.valueOf(this.position)+"]";
 	}
+	
+
+
+	
 
 	@Override
 	public String getAssembler() {
