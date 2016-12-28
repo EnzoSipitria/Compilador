@@ -160,7 +160,10 @@ public class Token extends Element{
 
 	@Override
 	public String toString() {
-		return String.valueOf(lineNumber)+". "+lexema+" - "+type+" - "+typeVariable+" - "+use+" - ope"+operator;
+		if(this.use!=null && this.use.equals("mat"))
+			return lexema+" - "+typeVariable+" - "+"columnas: "+this.columns+" - filas:"+this.rows+" - inicio: "+this.indexStart;
+		else
+			return String.valueOf(lineNumber)+". "+lexema+" - "+typeVariable;
 	}
 
 	@Override

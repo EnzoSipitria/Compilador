@@ -350,8 +350,9 @@
                   asignacion : variable operador_asignacion expresion ';'{System.out.println("==ASIGNACION==");
                                                                           System.out.println("(left)"+(Element)val_peek(3).obj+" := (right)"+(Element)val_peek(1).obj);
                                                                           /*	String typeResult = ((Element)$1.obj).getTypeVariable();*/
+																		if( ((Element)val_peek(1).obj).getTypeVariable()!=null ){
                                                                           if(((Element)val_peek(3).obj).getTypeVariable()!=null){
-                                                                              Token T1 =lexAn.getSymbolTable().getToken((((Element)val_peek(3).obj).getLexema())); /* it's the left operand of assign*/
+                                                                             // Token T1 =lexAn.getSymbolTable().getToken((((Element)val_peek(3).obj).getLexema())); /* it's the left operand of assign*/
                                                                               Element rightExpresion = (Element)val_peek(1).obj;
                                                                               //
                                                                               //
@@ -361,37 +362,14 @@
                                                                               if ( ((Element)val_peek(1).obj).getClassType().equals("Token") ){
                                                                                   rightExpresion = lexAn.getSymbolTable().getToken((((Element)val_peek(1).obj).getLexema()));
                                                                                 }
-                                                                              String typeResult = T1.getTypeVariable();
-                                                                              String leftType = T1.getTypeVariable();
+                                                                              String typeResult = ((Element)val_peek(3).obj).getTypeVariable();
+                                                                              String leftType = ((Element)val_peek(3).obj).getTypeVariable();
                                                                               System.out.println("la expresion a asignar es"+ rightExpresion);
                                                                               String rightType = rightExpresion.getTypeVariable();
-                                                                              /*		if ( ((Element)val_peek(1).obj).getUse() != null && ((Element)val_peek(1).obj).getUse().equals("mat"))*/
-                                                                              /*		{*/
-                                                                              /*			Token T1 =lexAn.getSymbolTable().getToken((((Element)val_peek(3).obj).getLexema()));*/
-                                                                              /*			yyval.obj = new TercetoAsignacion(T1,tercetos.get(tercetos.size()-1));*/
-                                                                              /*			/*System.out.print("Terceto que voy a eliminar: "+tercetos.get((tercetos.size()-1)));* /*/
-                                                                              /*			/*tercetos.remove(tercetos.size()-1);* /*/
-                                                                              /*			/*System.out.print("Terceto despues de eliminar: "+tercetos.get(tercetos.size()-1));* /*/
-                                                                              /*			tercetos.add((Terceto)yyval.obj);*/
-                                                                              /**/
-                                                                              /*			((Terceto)yyval.obj).setPosition((Integer)tercetos.size()); */
-                                                                              /**/
-                                                                              /*		}*/
-                                                                              /*	Element expresion;*/
-                                                                              /*		System.out.println("accept Operation"+convertionMatrix.acceptOperation(leftType,rightType));*/
-                                                                              /*		if (convertionMatrix.acceptOperation(leftType,rightType)){	*/
-                                                                              /*			if(  !((Element)val_peek(3).obj).getTypeVariable().equals(((Element) val_peek(1).obj).getTypeVariable()) ){*/
-                                                                              /*				System.out.println("tipos distintos creacion terceto conversion");*/
-                                                                              /*				typeResult = convertionMatrix.getTypeOperation( ((Element)val_peek(3).obj).getTypeVariable() , ((Element) val_peek(1).obj).getTypeVariable() );*/
-                                                                              /*				Terceto conversion = new TercetoConversion(((Element)val_peek(1).obj), typeResult);*/
-                                                                              /*				tercetos.add(conversion);*/
-                                                                              /*				expresion = conversion;*/
-                                                                              /*				System.out.println("Terceto conv"+conversion);*/
-                                                                              /*				(conversion).setPosition(tercetos.size());*/
-                                                                              /*			}*/
-
-                                                                              Element leftExpresion = T1;
-
+                                                                              
+                                                                             // Element leftExpresion = T1;
+																			 Element leftExpresion = ((Element)val_peek(3).obj);
+																			 
                                                                               if ( ( rightExpresion.getUse() != null && rightExpresion.getUse().equals("mat")) && ( leftExpresion.getUse() != null && leftExpresion.getUse().equals("mat")) ){
                                                                                     System.out.println("matrices de los dos lados de la asignacion"+leftExpresion+" := "+rightExpresion);
                                                                                     System.out.println("asignado a la izquierda de la asignacion"+tercetos.get(tercetos.size()-12));
@@ -418,7 +396,7 @@
                                                                                              if ( leftExpresion.getUse() != null && leftExpresion.getUse().equals("mat")) {
                                                                                                   System.out.println("matriz del lado izquierdo solamente"+leftExpresion+" := "+rightExpresion);
                                                                                                   System.out.println("asignado a la derecha de la asignacion"+tercetos.get(tercetos.size()-1));
-                                                                                                  leftExpresion = tercetos.get(tercetos.size()-2);
+                                                                                                 // leftExpresion = tercetos.get(tercetos.size()-1);
                                                                                                  // System.out.println("tercetos suma???"+tercetos.get(tercetos.size()-2)+"  value:"+tercetos.get(tercetos.size()-2).getValue()+" valor (i)"+rightExpresion.getValue());
 
                                                                                                  //putValuesMatrix(tercetos.get(tercetos.size()-2).getValue(), rightExpresion.getValue());
@@ -449,18 +427,18 @@
 
                                                                                 //if ( T1.getUse() != null && T1.getUse().equals("mat"))
                                                                                 /*	if ( ((Element)val_peek(3).obj).getUse() != null && ((Element)val_peek(3).obj).getUse().equals("mat"))*/
-                                                                                //	{
+                                                                                //	
                                                                                 //System.out.println("IF MATRIZ DEL LADO IZQUIERDO"+T1);
                                                                                 //int currentRow = T1.getCurrentRow();
                                                                                 //int currentColumn = T1.getCurrentColumn();
                                                                                 //makeMatrix(((Token)val_peek(3).obj),currentRow,currentColumn);
                                                                                 //System.out.println("se cambio MAKEmatrix matifacu hacia abajo"+tercetos.get(tercetos.size()-1));
                                                                                 //leftExpresion = tercetos.get(tercetos.size()-1);
-                                                                                //}
+                                                                                //
 
                                                                                 //if ( rightExpresion.getUse() != null && rightExpresion.getUse().equals("mat"))
                                                                                 /*if ( ((Element)val_peek(1).obj).getUse() != null && ((Element)val_peek(1).obj).getUse().equals("mat"))*/
-                                                                                //{
+                                                                                //
                                                                                 //System.out.println("el elemento de la derecha es matriz");
                                                                                 //Token matriz = lexAn.getSymbolTable().getToken(((Element)val_peek(1).obj).getLexema());
                                                                                 //int currentRow = ((Token) rightExpresion).getCurrentRow();
@@ -478,7 +456,7 @@
                                                                                 //((Terceto)yyval.obj).setPosition((Integer)tercetos.size());
                                                                                 //System.out.println("Tipo variableMMMMMM asignacion "+typeResult+"El tipo del TERCETO en ASIGNACION es: "+((Terceto)yyval.obj).getTypeVariable()+":="+((Element)val_peek(1).obj).getTypeVariable());
 
-                                                                                //}else {
+                                                                                //else 
                                                                                 ///System.out.println("el elemento de la derecha no es una matriz");
                                                                                 //System.out.println("expresion de la asignacion"+rightExpresion);
                                                                                 /*agregar llamado a conversion metodo nuevo*/
@@ -498,6 +476,7 @@
                                                                                   UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". ERROR tipos incompatibles\n");
                                                                                   errores.add("Linea: "+lexAn.getLineNumber()+"ERROR tipos incompatibles\n");
                                                                                 }
+																			}// aca se controla el error de variables no declaradas
                                                                           }
 
                         | variable error expresion ';' {UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". ERROR DE OPERADOR ASIGNACION"+"\n"); errores.add("Linea: "+lexAn.getLineNumber()+"ERROR DE OPERADOR ASIGNACION\n");}
@@ -865,7 +844,11 @@
             if (controlVarNotDeclared(((Token)$1.obj))){
               UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". Variable ["+((Token)$1.obj).getLexema()+"] no declarada \n");
               errores.add("Linea: "+lexAn.getLineNumber()+"Variable no declarada");
-            } else {$$.obj = lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()); // ANDA
+            } else { if ( lexAn.getSymbolTable().containsSymbol("var@"+((Token)$1.obj).getLexema()) ){
+							$$.obj = lexAn.getSymbolTable().getToken("var@"+((Token)$1.obj).getLexema());
+						} else {
+								$$.obj = lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema());
+							}// ANDA
               System.out.println("Probando IDENTIFICADOR en regla de variable ident: "+lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()));}
             }
             | valor_matrix{ $$.obj = $1.obj;};
@@ -873,39 +856,40 @@
             // tiene un par de errores veremos que onda mañana
 
             valor_matrix : IDENTIFICADOR '[' expresion ']' '['expresion']' {System.out.println("==== valor matrix ==== ");
+			
+			if (controlVarNotDeclared(((Token)$1.obj))){
+              UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". Variable ["+((Token)$1.obj).getLexema()+"] no declarada \n");
+              errores.add("Linea: "+lexAn.getLineNumber()+"Variable no declarada");
+			  }
+				else {
+			
+			
             //makeMatrix((Token)$1.obj,((Token)$3.obj).getValue(),((Token)$6.obj).getValue());
             // $$.obj = tercetos.get(tercetos.size()-1);
             if ( !((Element)$3.obj).getTypeVariable().equals("integer") || !((Element)$6.obj).getTypeVariable().equals("integer") ){
               UI2.addText(UI2.txtDebug,"Linea: "+lexAn.getLineNumber()+". Variable ["+((Token)$1.obj).getLexema()+"] con limites no enteros");
               errores.add("Linea: "+lexAn.getLineNumber()+"Variable matriz con limites de tipo erroneos");
             }else {
-              //capaaz que tenemos que agregar set useaca tmbn
-              //	int currentRow=(Integer)((Element)$3.obj).getValue();
-              //	int currentColumn=0;
-              //	if ( ((Element)val_peek(1).obj).getClassType().equals("Token") ){
-              //		if ( ((Token)val_peek(1).obj).getType().equals("INTEGER") && ((Element)val_peek(1).obj).getUse()!= null && ((Element)val_peek(1).obj).getUse().equals("mat"))
-              //      System.out.println("entro a cargar el valor del terceto xq es matriz");
-              //      currentColumn=(Integer)tercetos.get(tercetos.size()-1).getValue();
-              //      System.out.println(currentColumn+" del terceto xq es matriz");
-              //  }
-              //	else
-              //		currentColumn=(Integer)((Element)val_peek(1).obj).getValue();
-              String typeVariable = lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()).getTypeVariable();
-              //lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()).setCurrentRow(currentRow);
-              //lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()).setCurrentColumn(currentColumn);
-              //lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema()).setTypeVariable(typeVariable);
+				Token identificador=null;
+				if (lexAn.getSymbolTable().containsSymbol("mat@"+((Token)$1.obj).getLexema())){
+							identificador = lexAn.getSymbolTable().getToken("mat@"+((Token)$1.obj).getLexema());
+						} else {
+								identificador = lexAn.getSymbolTable().getToken(((Token)$1.obj).getLexema());
+							}
+              String typeVariable = lexAn.getSymbolTable().getToken(identificador.getLexema()).getTypeVariable();
               System.out.println("elementos enviados a make matrix fila"+((Element)$3.obj)+"  columna"+((Element)val_peek(1).obj));
-              makeMatrix((Token)$1.obj,((Element)$3.obj),((Element)val_peek(1).obj));
+              makeMatrix(identificador,((Element)$3.obj),((Element)val_peek(1).obj));
               System.out.println("referencia: "+tercetos.get(tercetos.size()-1)+"   suma: "+tercetos.get(tercetos.size()-2));
               tercetos.get(tercetos.size()-1).setValue(valoresMatriz.get(tercetos.get(tercetos.size()-2).getValue()));
               System.out.println("get value "+tercetos.get(tercetos.size()-1).getValue());
 
-              $$.obj = $1.obj;
-              ((Token)$$.obj).setTypeVariable(typeVariable);
-              ((Token)$$.obj).setUse("mat");
+              $$.obj = tercetos.get(tercetos.size()-1);
+              ((Element)$$.obj).setTypeVariable(typeVariable);
+              ((Element)$$.obj).setUse("mat");
 
             }
-          };
+          }
+		  };
 
 
           comparador : '>'
@@ -1018,6 +1002,7 @@
             }
             System.out.println("== AV END ==");
           }
+		  
           public void assignType(String type, ArrayList<Token> tokens ) {
             Token tk=null;
             System.out.println("===================asignacion de tipos: type "+type);
@@ -1033,6 +1018,7 @@
               }
             }
           }
+		  
           /* metodo para asignar tipos para asignaciones*/
           public String assignTypeVariable(Element left,Element right){
             String leftTypeVariable = left.getTypeVariable();
@@ -1078,21 +1064,30 @@
 
 
           public void controlRedefVariables (Token token,Token aux, String prefix){
-            String lexema = token.getLexema();
-            System.out.println("========================IF estaen la tabla de simbolos");
-            //System.out.println("Uso que viene de la tabla de simbolos: "+lexAn.getSymbolTable().getToken(lexema).getUse());
-            //System.out.println("Uso que viene del token: "+token.getUse());
-            if (token.getLexema().equals(aux.getLexema())){
-              if (!token.getUse().equals(aux.getUse())) {
-                System.out.println("========================USO DISTINTO, FIJATE LOS NOMBRES");
-                token.setLexema(prefix+"@"+lexema);
-                lexAn.getSymbolTable().addToken(prefix+"@"+lexema, token);
-                System.out.println("AAA token lexema: "+token.getLexema());
-                System.out.println("AAAAtoken lexema de la tabla desimbolos:"+lexAn.getSymbolTable().getToken(prefix+"@"+lexema));
 
+        	  System.out.println("========================controlRedefVariables");
+        	  String lexema = token.getLexema();
+        	  System.out.println("Uso que viene de la tabla de simbolos: "+aux);
+        	  System.out.println("Uso que viene del token: "+token);
+        	  if (token.getLexema().equals(aux.getLexema())){
+        		  if (!token.getUse().equals(aux.getUse())) {
+        			  System.out.println("========USO DISTINTO "+token.getUse().equals(prefix));
+        			  System.out.println("========USO DISTINTO PREFIX "+prefix);
+        			  if ( !lexAn.getSymbolTable().containsSymbol(prefix+"@"+lexema) ){
+        				  System.out.println("========================USO DISTINTO, FIJATE LOS NOMBRES");
+        				  token.setLexema(prefix+"@"+lexema);
+        				  lexAn.getSymbolTable().addToken(prefix+"@"+lexema, token);
+        				  System.out.println("AAA token lexema: "+token.getLexema());
+        			  }
+        			  else {
+        				  //UI2.addText(UI2.txtDebug, lexAn.getLineNumber()+" VARIABLE REDEFINIDA \n");
+						  errores.add(" VARIABLE REDEFINIDA ");
+        				  System.out.println("VARIABLE YA DECLARADA==================");
+        				  System.out.println("token re declarado: "+token);
+        			  }
 
-              }
-            }
+        		  }
+        	  }
           }
 
 
@@ -1318,7 +1313,7 @@
                   putValuesMatrix(tercetos.get(tercetos.size()-2).getValue(), listaValores.get(i).getValue());
                   assignValue(tercetos.get(tercetos.size()-1), listaValores.get(i));
                   assign.setTypeVariable(listaValores.get(i).getTypeVariable());
-                  System.out.println("aall muuundoooooooooo 0000000000000000000000 terceto asignacion creado"+assign);
+                  System.out.println("aall muuundoooooooooo  terceto asignacion creado"+assign);
                   //tercetos.remove(tercetos.size()-1);
                   //tercetos.add(simpleAssign);
                   simpleAssign.setPosition(tercetos.size());
@@ -1328,7 +1323,10 @@
                 }
               }
 
-            } else {System.out.println("Error en la cantidad de elementos declarados al inicializar la matriz");}
+            } else {   System.out.println("Error en la cantidad de elementos declarados al inicializar la matriz");
+					   errores.add("Error en la cantidad de elementos declarados al inicializar la matriz");
+                       UI2.addText(UI2.txtDebug, "Error en la cantidad de elementos declarados al inicializar la matriz");
+					}
           }
 
 
@@ -1363,8 +1361,12 @@
                 expresion = conversion;
                 System.out.println("Terceto conv"+conversion);
                 (conversion).setPosition(tercetos.size());
-              }
-            }
+				}
+				
+              }else {   errores.add("No se pueden realizar la operacion: "+leftType+" := "+rightType );
+                        UI2.addText(UI2.txtDebug, "No se pueden realizar la operacion: "+leftType+" := "+rightType );
+					}
+            
             return expresion;
           }
 

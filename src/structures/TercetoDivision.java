@@ -36,10 +36,10 @@ public class TercetoDivision extends Terceto {
 					codigo += "MOV DX, 0\n";//Cargo la parte alta con cero, porque todos
 					codigo += "CWD\n";//copia el signo a DX
 					codigo += "MOV ECX, "+dividendo.getOperando()+"\n";
-					codigo += "MOV EAX, [ECX]\n"; 
+					codigo += "MOV AX, [ECX]\n"; 
 					codigo += "MOV ECX, "+divisor.getOperando()+"\n";
-					codigo += "MOV EBX, [ECX]\n";
-					codigo += "IDIV EBX\n";
+					codigo += "MOV BX, [ECX]\n";
+					codigo += "IDIV BX\n";
 	                codigo += "MOV " + getAux() + ", AX\n";
 			}
 			else
@@ -51,9 +51,9 @@ public class TercetoDivision extends Terceto {
 					codigo += "MOV DX, 0\n";//Cargo la parte alta con cero, porque todos
 					codigo += "CWD\n";//copia el signo a DX
 					codigo += "MOV ECX, "+dividendo.getOperando()+"\n";
-					codigo += "MOV EAX, [ECX]\n"; 
-					codigo += "MOV EBX, "+divisor.getOperando()+"\n";
-					codigo += "IDIV EBX\n";
+					codigo += "MOV AX, [ECX]\n"; 
+					codigo += "MOV BX, "+divisor.getOperando()+"\n";
+					codigo += "IDIV BX\n";
 	                codigo += "MOV " + getAux() + ", AX\n";
 				}
 				else 
@@ -67,8 +67,8 @@ public class TercetoDivision extends Terceto {
 						codigo += "MOV AX, "+dividendo.getOperando()+"\n";
 						codigo += "CWD\n";//copia el signo a DX
 						codigo += "MOV ECX, "+divisor.getOperando()+"\n";
-						codigo += "MOV EBX, [ECX]\n";
-						codigo += "IDIV EBX\n";
+						codigo += "MOV BX, [ECX]\n";
+						codigo += "IDIV BX \n";
 		                codigo += "MOV " + getAux() + ", AX\n";
 					} 
 					else{
@@ -79,7 +79,7 @@ public class TercetoDivision extends Terceto {
                         codigo += "MOV AX, "+dividendo.getOperando()+"\n";//los enteros son de 16 bits no más
                         codigo += "CWD\n";//copia el signo a DX
                         codigo += "MOV BX, "+divisor.getOperando()+"\n";
-    					codigo += "IDIV EBX\n";
+    					codigo += "IDIV BX\n"; // ya esta corregido, antes decia EBX
                         codigo += "MOV " + getAux() + ", AX\n";
 
 
@@ -149,7 +149,6 @@ public class TercetoDivision extends Terceto {
 			}
 
 		return codigo;
-		//no llores por un bou
 	}
 
 

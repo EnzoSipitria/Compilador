@@ -1,5 +1,6 @@
 package semanticalActions;
 
+import interfaz.UI2;
 import lexicalAnalyzer.LexicalAnalyzer;
 import structures.Token;
 
@@ -32,7 +33,9 @@ public class SemAction2 extends SemanticalAction{
 			}
 		}else{
 			String validLexema = lexema.substring(0,20);
-			lexicalAnalyzer.addErrors("Linea: "+lexicalAnalyzer.getIndexLine()+". WARNING: Identificador truncado - "+lexema+" ==> "+validLexema);
+			// mostrarlo pero no agregarlo a la lista de errores, 
+			//lexicalAnalyzer.addErrors("Linea: "+lexicalAnalyzer.getIndexLine()+". WARNING: Identificador truncado - "+lexema+" ==> "+validLexema);
+			UI2.addText(UI2.txtDebug,"Linea: "+lexicalAnalyzer.getIndexLine()+". WARNING: Identificador truncado - "+lexema+" ==> "+validLexema );
 			if (lexicalAnalyzer.getSymbolTable().containsSymbol(validLexema)) {
 				return new Token("IDENTIFICADOR", validLexema, lexicalAnalyzer.getLineNumber());
 			} else {

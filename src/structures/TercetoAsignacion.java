@@ -139,10 +139,4 @@ public class TercetoAsignacion extends Terceto{
 
 }
 
-/**
- * 
- * TODO: Acomodar IF (terceto) para que quede mas comprensible, yno se repita tanto codigo
- * 
- * posible problema: cuando vengan 2 elementos que sean 1 terceto y 1 token...
- * 
- */
+

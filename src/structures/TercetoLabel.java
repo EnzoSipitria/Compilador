@@ -7,7 +7,7 @@ public class TercetoLabel extends Terceto {
 		// TODO Auto-generated constructor stub
 		this.operator = "label";
 		this.first = first;
-		this.position = (Integer) Position;//-1 para la posicion xq viene con un +2
+		this.position = (Integer) Position;
 		this.classType = "Terceto";
 	}
 	
@@ -15,7 +15,7 @@ public class TercetoLabel extends Terceto {
 	@Override
 	public String getAssembler() {
 		
-		return "label"+this.first+": ";
+		return "label"+this.first+": \n";
 	}
 
 	@Override

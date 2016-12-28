@@ -32,7 +32,7 @@ public class SemAction6 extends SemanticalAction{
 			float zero = (float) 0.0;
 			if ( (value < infLimitFloatNegative ||value > topLimitFloatPositive) 
 					&& !value.equals(zero) ){
-				lexicalAnalyzer.addErrors("Linea: "+lexicalAnalyzer.getLineNumber()+". ERROR: rango de numero flotante invalido. MaxValue: "+topLimitFloatPositive+" - MinValue: "+infLimitFloatNegative);
+				lexicalAnalyzer.addErrors("Linea: "+lexicalAnalyzer.getLineNumber()+". ERROR: rango de numero flotante invalido. MaxValue: "+topLimitFloatPositive+" - MinValue: "+infLimitFloatNegative+"\n");
 				return null;
 			}
 			else {
@@ -42,9 +42,6 @@ public class SemAction6 extends SemanticalAction{
 					return new Token("FLOAT",lexema,lexicalAnalyzer.getLineNumber());
 				}
 				else {
-//					Float valueToken = Float.valueOf(lexicalAnalyzer.getLexema().substring(2));
-//					System.out.println("--------------------------value token as6"+valueToken);
-					//lexema = prefix+String.valueOf(value);
 					token = new Token("FLOAT",lexema,lexicalAnalyzer.getLineNumber(),value,"float");
 					lexicalAnalyzer.getSymbolTable().addToken(lexema, token);
 					return token;
@@ -56,14 +53,10 @@ public class SemAction6 extends SemanticalAction{
 			
 			Integer infLimitInteger = -32768;
 			Integer topLimitInteger = 32767;
-//			Integer infLimitInteger = Integer.MIN_VALUE;
-//			Integer topLimitInteger = Integer.MAX_VALUE;
-//			System.out.println("limite inferior enteros"+infLimitInteger);
-//			System.out.println("limite superior enteros"+topLimitInteger);
 			Integer value = Integer.parseInt(number);
 
 			if  (value < infLimitInteger || value > topLimitInteger ){
-				lexicalAnalyzer.addErrors("Linea: "+lexicalAnalyzer.getLineNumber()+". ERROR: rango de numero entero invalido. MaxValue: "+topLimitInteger+" - MinValue: "+infLimitInteger);
+				lexicalAnalyzer.addErrors("Linea: "+lexicalAnalyzer.getLineNumber()+". ERROR: rango de numero entero invalido. MaxValue: "+topLimitInteger+" - MinValue: "+infLimitInteger+"\n");
 				return null;
 			}
 
@@ -74,7 +67,6 @@ public class SemAction6 extends SemanticalAction{
 					}
 				else {
 					Integer valueToken = Integer.valueOf(lexicalAnalyzer.getLexema().substring(2));
-//					System.out.println("--------------------------value token as6"+valueToken);
 					token = new Token("INTEGER",lexicalAnalyzer.getLexema(),lexicalAnalyzer.getLineNumber(),valueToken,"integer");
 					lexicalAnalyzer.getSymbolTable().addToken(lexicalAnalyzer.getLexema(), token);
 					return token;

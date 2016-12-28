@@ -285,6 +285,13 @@ public class UI2 extends JFrame {
 					
 					assembler = new Assembler(parser.getTercetos(),parser.getLexicalAnalizer().getSymbolTable());
 					assemblerCode = assembler.getCodigo();
+					try {
+						Process m = Runtime.getRuntime().exec("C:\\masm32\\qeditor.exe");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						JOptionPane.showMessageDialog(null, "error al intentar abrir masm32", "Error externo a la aplicacion", JOptionPane.INFORMATION_MESSAGE);
+						e.printStackTrace();
+					}
 					}
 				writeAssemblerFile(assemblerCode);
 				addText(txtAssembler, assemblerCode);
@@ -304,13 +311,7 @@ public class UI2 extends JFrame {
 //				for (String string : keys) {
 //					addText(txtDebug,string+"\n");
 //				}
-			try {
-				Process m = Runtime.getRuntime().exec("C:\\masm32\\qeditor.exe");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, "error al intentar abrir masm32", "Error externo a la aplicacion", JOptionPane.INFORMATION_MESSAGE);
-				e.printStackTrace();
-			}	
+				
 			
 			}
 			
@@ -436,7 +437,6 @@ public class UI2 extends JFrame {
 		BufferedWriter bufferwriter = null;
 //		System.out.println(file.getAbsolutePath());
 		try {
-			
 			out = new FileWriter("assembler.asm");
 			System.out.println("assembler.txt");
 			bufferwriter = new BufferedWriter(out);
